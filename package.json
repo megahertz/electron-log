@@ -1,0 +1,42 @@
+{
+  "name": "electron-log",
+  "version": "1.0.0",
+  "description": "Just a very simple logging module for your Electron application",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run jshint && npm run jscs && npm run mocha",
+    "mocha": "node_modules/.bin/mocha ./index.spec.js",
+    "jscs": "node_modules/.bin/jscs .",
+    "jshint": "node_modules/.bin/jshint --exclude ./node_modules . --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/megahertz/electron-log.git"
+  },
+  "keywords": [
+    "electron",
+    "atom",
+    "log",
+    "logger",
+    "logging",
+    "windows",
+    "mac",
+    "osx",
+    "linux",
+    "desktop"
+  ],
+  "author": "Alexey Prokhorov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/megahertz/electron-log/issues"
+  },
+  "homepage": "https://github.com/megahertz/electron-log#readme",
+  "devDependencies": {
+    "chai": "*",
+    "jscs": "*",
+    "jshint": "*",
+    "jshint-reporter-jscs": "*",
+    "mocha": "*",
+    "rewire": "*"
+  }
+}
