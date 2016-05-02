@@ -96,6 +96,7 @@ function transportConsole(msg) {
 
 function transportFile(msg) {
   var text = format(msg, transportFile.format || module.exports.format);
+  var eol = process.platform === 'win32' ? '\r\n' : '\n';
 
   if (!transportFile.stream) {
     transportFile.stream = fs.createWriteStream(
@@ -104,7 +105,7 @@ function transportFile(msg) {
     );
   }
 
-  transportFile.stream.write(text + '\n');
+  transportFile.stream.write(text + eol);
 }
 // endregion transport
 
