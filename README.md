@@ -7,9 +7,9 @@ No dependencies. No complicated configuration. Just require and use.
 
 By default, writes logs on the following locations:
 
- * **on Linux:** ~/.cache/<app name>/log.log
- * **on OS X:** ~/Library/Caches/<app name>/log.log
- * **on Windows:** $HOME/AppData/Roaming/<app name>/log.log
+ * **on Linux:** `~/.cache/<app name>/log.log`
+ * **on OS X:** `~/Library/Caches/<app name>/log.log`
+ * **on Windows:** `$HOME/AppData/Roaming/<app name>/log.log`
 
 ## Installation
 
