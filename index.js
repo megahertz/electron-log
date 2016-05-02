@@ -3,6 +3,7 @@
 var fs   = require('fs');
 var path = require('path');
 var util = require('util');
+var EOL  = require('os').EOL;
 
 
 var LEVELS = [ 'error', 'warn', 'info', 'verbose', 'debug', 'silly' ];
@@ -56,8 +57,13 @@ for (var i = 0; i < LEVELS.length; i++) {
  * @param {string} text
  */
 function log(level, text) {
-  if (typeof text !== 'string') {
-    text = util.inspect(text);
+  var args = Array.prototype.slice.call(arguments, 1);
+  if (typeof text === 'string') {
+    if (arguments.length > 2) {
+      text = util.format.apply(util, args);
+    }
+  } else {
+    text = args.map(util.inspect).join(EOL);
   }
   
   var msg = {
@@ -96,16 +102,26 @@ function transportConsole(msg) {
 
 function transportFile(msg) {
   var text = format(msg, transportFile.format || module.exports.format);
-  var eol = process.platform === 'win32' ? '\r\n' : '\n';
-
-  if (!transportFile.stream) {
+  
+  if (undefined === transportFile.stream) {
+    transportFile.file = transportFile.file || findLogPath();
+    if (!transportFile.file) {
+      transportFile.stream = false;
+      log('warning', 'electron-log.transports.file: Could not set a log file');
+      return;
+    }
+    
     transportFile.stream = fs.createWriteStream(
-      transportFile.file || findLogPath(),
+      transportFile.file,
       transportFile.streamConfig || { flags: 'a' }
     );
   }
 
-  transportFile.stream.write(text + eol);
+  if (!transportFile.stream) {
+    return;
+  }
+  
+  transportFile.stream.write(text + EOL);
 }
 // endregion transport
 
