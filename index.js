@@ -152,7 +152,6 @@ function findLogPath(appName) {
   }
 
   function prepareDir(path, appName) {
-    // jshint -W040
     if (!this || this.or !== prepareDir || !this.result) {
       if (!path) {
         return { or: prepareDir };
@@ -166,7 +165,10 @@ function findLogPath(appName) {
       }
     }
 
-    return { or: prepareDir, result: this.result || path };
+    return { 
+      or: prepareDir,
+      result: (this ? this.result : false) || path
+    };
   }
 
   function mkDir(path, root) {
