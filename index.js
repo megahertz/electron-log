@@ -9,27 +9,33 @@ var EOL  = require('os').EOL;
 var LEVELS = [ 'error', 'warn', 'info', 'verbose', 'debug', 'silly' ];
 
 /**
- * @param {string} text
+ * @param {string|Object} text
+ * @param {...Object} [objects]
  * @name module.exports.error
  */
 /**
- * @param {string} text
+ * @param {string|Object} text
+ * @param {...Object} [objects]
  * @name module.exports.warn
  */
 /**
- * @param {string} text
+ * @param {string|Object} text
+ * @param {...Object} [objects]
  * @name module.exports.info
  */
 /**
- * @param {string} text
+ * @param {string|Object} text
+ * @param {...Object} [objects]
  * @name module.exports.verbose
  */
 /**
- * @param {string} text
+ * @param {string|Object} text
+ * @param {...Object} [objects]
  * @name module.exports.debug
  */
 /**
- * @param {string} text
+ * @param {string|Object} text
+ * @param {...Object} [objects]
  * @name module.exports.silly
  */
 
