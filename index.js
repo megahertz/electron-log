@@ -64,13 +64,10 @@ for (var i = 0; i < LEVELS.length; i++) {
  */
 function log(level, text) {
   var args = Array.prototype.slice.call(arguments, 1);
-  if (typeof text === 'string') {
-    if (arguments.length > 2) {
-      text = util.format.apply(util, args);
-    }
-  } else {
-    text = args.map(util.inspect).join(EOL);
-  }
+  args = args.map(function formatErrors(arg) {
+    return arg instanceof Error ? arg.stack + EOL : arg;
+  });
+  text = util.format.apply(util, args);
   
   var msg = {
     level: level,
