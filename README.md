@@ -19,10 +19,11 @@ Install with [npm](https://npmjs.org/package/comments-parser):
 
 ## Usage
 
-    javascript
-    var log = require('electron-log');
-    
-    log.info('Hello, log');
+```js
+var log = require('electron-log');
+
+log.info('Hello, log');
+```
     
 
 ### Transport
@@ -32,44 +33,52 @@ depend on current platform.
 
 #### Disable default transport:
 
-    log.transport.file = false;
-    log.transport.console = false;
+```js
+log.transport.file = false;
+log.transport.console = false;
+```
     
 #### Override transport:
 
-    log.transports.console = function(msg) {
-      console.log(`[${msg.date.toLocaleTimeString()} ${msg.level}] ${msg.text}`);
-    };
+```js
+log.transports.console = function(msg) {
+  console.log(`[${msg.date.toLocaleTimeString()} ${msg.level}] ${msg.text}`);
+};
+```
     
 #### Console Transport
 
-    // Log level
-    log.transports.console.level = 'warning';
-    
-    /** 
-     * Set output format template. Available variables:
-     * Main: {level}, {text}
-     * Date: {y},{m},{d},{h},{i},{s},{ms}
-     */
-    log.transports.console.format = '{h}:{i}:{s}:{ms} {text}';
-    
-    // Set a function which formats output
-    log.transports.console.format = (msg) => msg.text;
+```js
+// Log level
+log.transports.console.level = 'warning';
+
+/** 
+ * Set output format template. Available variables:
+ * Main: {level}, {text}
+ * Date: {y},{m},{d},{h},{i},{s},{ms}
+ */
+log.transports.console.format = '{h}:{i}:{s}:{ms} {text}';
+
+// Set a function which formats output
+log.transports.console.format = (msg) => msg.text;
+```
     
 #### File transport
 
-    // Same as for console transport
-    log.transports.file.level = 'warning';
-    log.transports.file.format = '{h}:{i}:{s}:{ms} {text}';
-    
-    // Write to this file, must be set before first logging
-    log.transports.file.file = __dirname + '/log.txt';
-    
-    // fs.createWriteStream options, must be set before first logging
-    log.transports.file.streamConfig = { flags: 'w' };
-    
-    // set existed file stream
-    log.transports.file.stream = fs.createWriteStream('log.txt');
+```js
+// Same as for console transport
+log.transports.file.level = 'warning';
+log.transports.file.format = '{h}:{i}:{s}:{ms} {text}';
+
+// Write to this file, must be set before first logging
+log.transports.file.file = __dirname + '/log.txt';
+
+// fs.createWriteStream options, must be set before first logging
+log.transports.file.streamConfig = { flags: 'w' };
+
+// set existed file stream
+log.transports.file.stream = fs.createWriteStream('log.txt');
+```
 
 ## License
 
