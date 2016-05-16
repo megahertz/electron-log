@@ -4,8 +4,9 @@
 
 Just a very simple logging module for your Electron application.
 No dependencies. No complicated configuration. Just require and use.
+Also it can be used without Electron.
 
-By default, writes logs on the following locations:
+By default it writes logs to the following locations:
 
  * **on Linux:** `~/.cache/<app name>/log.log`
  * **on OS X:** `~/Library/Caches/<app name>/log.log`
