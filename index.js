@@ -145,6 +145,7 @@ function findLogPath(appName) {
         return false;
       }
     } catch (e) {
+      log('warning', 'electron-log: ' + e.message);
       return false;
     }
   }
