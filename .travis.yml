@@ -1,11 +1,9 @@
 sudo: false
 language: node_js
 node_js:
-  - "0.10"
   - "4"
   - "5"
   - "6"
   - "node"
-  - "iojs"
 matrix:
   fast_finish: true

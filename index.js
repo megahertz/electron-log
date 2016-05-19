@@ -141,11 +141,10 @@ function findLogPath(appName) {
       appName = appPkg.name;
       if (!appName) {
         transportFile.stream = false;
-
+        log('warning', 'electron-log cannot read a name from package.json');
         return false;
       }
     } catch (e) {
-      log('warning', 'electron-log: ' + e.message);
       return false;
     }
   }
