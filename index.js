@@ -139,7 +139,13 @@ function findLogPath(appName) {
     try {
       var appPkg = loadAppPackage();
       appName = appPkg.name;
+      if (!appName) {
+        transportFile.stream = false;
+
+        return false;
+      }
     } catch (e) {
+      log('warning', 'electron-log: ' + e.message);
       return false;
     }
   }
@@ -208,16 +214,33 @@ function findLogPath(appName) {
 
     return !dirs.length || mkDir(dirs.join('/'), root);
   }
+}
 
-  /**
-   * Try to load main app package
-   * @throws {Error}
-   * @return {Object}
-   */
-  function loadAppPackage() {
-    var packageFile = path.dirname(require.main.filename) + '/package.json';
-    fs.statSync(packageFile);
-    return require(packageFile);
+/**
+ * Try to load main app package
+ * @throws {Error}
+ * @return {Object}
+ */
+function loadAppPackage() {
+  var packageFile = find(process.cwd()) ||
+    find(path.dirname(require.main.filename));
+  return require(packageFile);
+
+  function find(root) {
+    var file;
+    while (!file) {
+      file = path.join(root, 'package.json');
+      try {
+        fs.statSync(file);
+      } catch (e) {
+        root = path.resolve(root, '..');
+        file = null;
+      }
+      if (root === path.sep) {
+        break;
+      }
+    }
+    return file;
   }
 }
 // endregion get log path

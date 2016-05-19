@@ -4,11 +4,12 @@
 const expect = require('chai').expect;
 const index  = require('rewire')('.');
 
-const format        = index.__get__('format');
-const formatConsole = index.__get__('formatConsole');
-const formatFile    = index.__get__('formatFile');
-const pad           = index.__get__('pad');
-const compareLevels = index.__get__('compareLevels');
+const format         = index.__get__('format');
+const formatConsole  = index.__get__('formatConsole');
+const formatFile     = index.__get__('formatFile');
+const pad            = index.__get__('pad');
+const compareLevels  = index.__get__('compareLevels');
+const loadAppPackage = index.__get__('loadAppPackage');
 
 
 describe('module', () => {
@@ -69,18 +70,36 @@ describe('format', () => {
     expect(formatFile(msg)).to.equals('[2000-01-01 01:01:01:0000] [info] test');
   });
   
-  it('should par numeric', () => {
+  it('should pad numeric', () => {
     expect(pad(1, 1)).to.equals('1');
     expect(pad(1)).to.equals('01');
     expect(pad(10, 4)).to.equals('0010');
   });
 });
 
-describe('compareLevels', () => {
-  expect(compareLevels('error', 'info')).to.be.false;
-  expect(compareLevels('info', 'error')).to.be.true;
-  expect(compareLevels('error', 'error')).to.be.true;
-  expect(compareLevels('error', 'not_exists')).to.be.true;
+describe('log levels', () => {
+  it('should be compared', () => {
+    expect(compareLevels('error', 'info')).to.be.false;
+    expect(compareLevels('info', 'error')).to.be.true;
+    expect(compareLevels('error', 'error')).to.be.true;
+    expect(compareLevels('error', 'not_exists')).to.be.true;
+  });
+});
+
+describe('loadAppPackage', () => {
+  it('should find package.json', () => {
+    expect(loadAppPackage().name).to.equals('electron-log');
+
+    let cwd = process.cwd();
+    
+    process.chdir(__dirname + '/node_modules');
+    expect(loadAppPackage().name).to.equals('electron-log');
+    process.chdir(cwd);
+
+    process.chdir(__dirname + '/..');
+    expect(loadAppPackage().name).to.equals('mocha');
+    process.chdir(cwd);
+  });
 });
 
 function requireLog() {

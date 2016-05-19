@@ -1,6 +1,6 @@
 {
   "name": "electron-log",
-  "version": "1.0.4",
+  "version": "1.0.7",
   "description": "Just a very simple logging module for your Electron application",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,10 @@
     "type": "git",
     "url": "git+https://github.com/megahertz/electron-log.git"
   },
+  "files": [
+    "index.js",
+    "README.md"
+  ],
   "keywords": [
     "electron",
     "atom",
