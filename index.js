@@ -153,14 +153,14 @@ function findLogPath(appName) {
   var dir;
   switch (process.platform) {
     case 'linux':
-      dir = prepareDir(process.env['XDG_CACHE_HOME'], appName)
-        .or(process.env['HOME'] + '/.cache', appName)
+      dir = prepareDir(process.env['XDG_CONFIG_HOME'], appName)
+        .or(process.env['HOME'] + '/.config', appName)
         .or(process.env['XDG_DATA_HOME'], appName)
         .or(process.env['HOME'] + '/.local/share', appName)
         .result;
       break;
     case 'darwin':
-      dir = prepareDir(process.env['HOME'] + '/Library/Caches', appName)
+      dir = prepareDir(process.env['HOME'] + '/Library/Logs', appName)
         .or(process.env['HOME'] + '/Library/Application Support', appName)
         .result;
       break;
