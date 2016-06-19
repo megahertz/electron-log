@@ -233,12 +233,13 @@ function loadAppPackage() {
       try {
         fs.statSync(file);
       } catch (e) {
-        root = path.resolve(root, '..');
+        var parent = path.resolve(root, '..');
         file = null;
       }
-      if (root === path.sep) {
+      if (root === parent) {
         break;
       }
+      root = parent
     }
     return file;
   }
