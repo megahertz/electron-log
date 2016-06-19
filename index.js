@@ -229,11 +229,12 @@ function loadAppPackage() {
   function find(root) {
     var file;
     while (!file) {
+      var parent;
       file = path.join(root, 'package.json');
       try {
         fs.statSync(file);
       } catch (e) {
-        var parent = path.resolve(root, '..');
+        parent = path.resolve(root, '..');
         file = null;
       }
       if (root === parent) {
