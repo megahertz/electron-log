@@ -222,23 +222,25 @@ function findLogPath(appName) {
  * @return {Object}
  */
 function loadAppPackage() {
-  var packageFile = find(process.cwd()) ||
-    find(path.dirname(require.main.filename));
+  var packageFile = find(path.dirname(require.main.filename)) ||
+    find(process.cwd());
   return require(packageFile);
 
   function find(root) {
     var file;
     while (!file) {
+      var parent;
       file = path.join(root, 'package.json');
       try {
         fs.statSync(file);
       } catch (e) {
-        root = path.resolve(root, '..');
+        parent = path.resolve(root, '..');
         file = null;
       }
-      if (root === path.sep) {
+      if (root === parent) {
         break;
       }
+      root = parent;
     }
     return file;
   }
