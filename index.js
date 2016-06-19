@@ -222,8 +222,8 @@ function findLogPath(appName) {
  * @return {Object}
  */
 function loadAppPackage() {
-  var packageFile = find(process.cwd()) ||
-    find(path.dirname(require.main.filename));
+  var packageFile = find(path.dirname(require.main.filename)) ||
+    find(process.cwd());
   return require(packageFile);
 
   function find(root) {
