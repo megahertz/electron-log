@@ -240,7 +240,7 @@ function loadAppPackage() {
       if (root === parent) {
         break;
       }
-      root = parent
+      root = parent;
     }
     return file;
   }
