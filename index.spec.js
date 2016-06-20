@@ -88,17 +88,10 @@ describe('log levels', () => {
 
 describe('loadAppPackage', () => {
   it('should find package.json', () => {
-    expect(loadAppPackage().name).to.equals('electron-log');
-
-    let cwd = process.cwd();
-    
-    process.chdir(__dirname + '/node_modules');
-    expect(loadAppPackage().name).to.equals('electron-log');
-    process.chdir(cwd);
-
-    process.chdir(__dirname + '/..');
-    expect(loadAppPackage().name).to.equals('mocha');
-    process.chdir(cwd);
+    expect(loadAppPackage().name).to.equals(
+      'mocha', 
+      'It has to load a mocha package, because it\'s an entry point'
+    );
   });
 });
 

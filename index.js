@@ -135,19 +135,9 @@ function transportFile(msg) {
  * @return {string|boolean}
  */
 function findLogPath(appName) {
+  appName = appName || findAppName();
   if (!appName) {
-    try {
-      var appPkg = loadAppPackage();
-      appName = appPkg.name;
-      if (!appName) {
-        transportFile.stream = false;
-        log('warning', 'electron-log cannot read a name from package.json');
-        return false;
-      }
-    } catch (e) {
-      log('warning', 'electron-log: ' + e.message);
-      return false;
-    }
+    return false;
   }
 
   var dir;
@@ -175,6 +165,23 @@ function findLogPath(appName) {
     return dir + '/' + 'log.log';
   } else {
     return false;
+  }
+
+  function findAppName() {
+    var appName;
+    try {
+      var appPkg = loadAppPackage();
+      if (!appPkg || !appPkg.name) {
+        transportFile.stream = false;
+        log('warning', 'electron-log cannot read a name from package.json');
+        return false;
+      }
+      appName = appPkg.name;
+    } catch (e) {
+      log('warning', 'electron-log: ' + e.message);
+      return false;
+    }
+    return appName;
   }
 
   function prepareDir(path, appName) {
@@ -219,12 +226,12 @@ function findLogPath(appName) {
 /**
  * Try to load main app package
  * @throws {Error}
- * @return {Object}
+ * @return {Object|null}
  */
 function loadAppPackage() {
   var packageFile = find(path.dirname(require.main.filename)) ||
     find(process.cwd());
-  return require(packageFile);
+  return packageFile ? require(packageFile) : null;
 
   function find(root) {
     var file;
