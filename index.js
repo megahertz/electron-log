@@ -178,6 +178,7 @@ function findLogPath(appName) {
       }
       appName = appPkg.name;
     } catch (e) {
+      transportFile.stream = false;
       log('warning', 'electron-log: ' + e.message);
       return false;
     }
