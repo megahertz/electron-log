@@ -43,6 +43,12 @@ module.exports.log = log;
 
 module.exports.format = formatFile;
 
+/**
+ * Set this variable if you doesn't specify app name in package.json
+ * @type {undefined|string}
+ */
+module.exports.appName = undefined;
+
 module.exports.transports = {};
 module.exports.transports.console = transportConsole;
 module.exports.transports.console.format = formatConsole;
@@ -107,7 +113,7 @@ function transportFile(msg) {
   var text = format(msg, transportFile.format || module.exports.format);
   
   if (undefined === transportFile.stream) {
-    transportFile.file = transportFile.file || findLogPath();
+    transportFile.file = transportFile.file || findLogPath(module.exports.appName);
     if (!transportFile.file) {
       transportFile.stream = false;
       log('warning', 'electron-log.transports.file: Could not set a log file');
