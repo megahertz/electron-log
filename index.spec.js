@@ -3,6 +3,8 @@
 
 const expect = require('chai').expect;
 const index  = require('rewire')('.');
+const os     = require('os');
+const fs     = require('fs');
 
 const format         = index.__get__('format');
 const formatConsole  = index.__get__('formatConsole');
@@ -10,6 +12,7 @@ const formatFile     = index.__get__('formatFile');
 const pad            = index.__get__('pad');
 const compareLevels  = index.__get__('compareLevels');
 const loadAppPackage = index.__get__('loadAppPackage');
+const logRotate      = index.__get__('logRotate');
 
 
 describe('module', () => {
@@ -92,6 +95,41 @@ describe('loadAppPackage', () => {
       'mocha', 
       'It has to load a mocha package, because it\'s an entry point'
     );
+  });
+});
+
+describe('logRotate', () => {
+  const log    = os.tmpdir() + '/temp.log';
+  const oldLog = os.tmpdir() + '/temp.old.log';
+
+  beforeEach(done => {
+    fs.unlink(oldLog, () => done());
+  });
+
+  it('should move log to a new path if its size exceeds maxSize', done => {
+    fs.writeFile(log, '7 bytes', err => {
+      if (err) {
+        return done(err);
+      }
+      logRotate(log, 5);
+      fs.stat(oldLog, e => done(e));
+    });
+  });
+
+  it('should not move log to a new path if its size not exceeds maxSize', done => {
+    fs.writeFile(log, '7 bytes', err => {
+      if (err) {
+        return done(err);
+      }
+      logRotate(log, 10);
+      fs.stat(oldLog, e => {
+        if (e) {
+          done();
+        } else {
+          done('Log is rotated when its size is not exceeds maxSize');
+        }
+      });
+    });
   });
 });
 

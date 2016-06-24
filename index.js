@@ -57,6 +57,8 @@ module.exports.transports.console.level = 'silly';
 module.exports.transports.file = transportFile;
 module.exports.transports.file.format = formatFile;
 module.exports.transports.file.level = 'warning';
+module.exports.transports.file.maxSize = 1024 * 1024;
+module.exports.transports.file.streamConfig = undefined;
 
 module.exports.findLogPath = findLogPath;
 
@@ -119,7 +121,11 @@ function transportFile(msg) {
       log('warning', 'electron-log.transports.file: Could not set a log file');
       return;
     }
-    
+
+    if (transportFile.maxSize > 0) {
+      logRotate(transportFile.file, transportFile.maxSize);
+    }
+
     transportFile.stream = fs.createWriteStream(
       transportFile.file,
       transportFile.streamConfig || { flags: 'a' }
@@ -131,6 +137,15 @@ function transportFile(msg) {
   }
   
   transportFile.stream.write(text + EOL);
+}
+
+function logRotate(file, maxSize) {
+  try {
+    const stat = fs.statSync(file);
+    if (stat.size > maxSize) {
+      fs.renameSync(file, file.replace(/log$/, 'old.log'));
+    }
+  } catch (e) {}
 }
 // endregion transport
 
