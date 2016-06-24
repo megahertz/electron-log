@@ -75,7 +75,7 @@ log.transports.file.format = '{h}:{i}:{s}:{ms} {text}';
 
 // Set maximum log size in bytes. When it exceeds, old log will be saved
 // as log.old.log file
-log.maxSize = 5 * 1024 * 1024;
+log.transports.file.maxSize = 5 * 1024 * 1024;
 
 // Write to this file, must be set before first logging
 log.transports.file.file = __dirname + '/log.txt';
