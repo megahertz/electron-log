@@ -37,8 +37,8 @@ depend on current platform.
 #### Disable default transport:
 
 ```js
-log.transport.file = false;
-log.transport.console = false;
+log.transports.file = false;
+log.transports.console = false;
 ```
     
 #### Override transport:
