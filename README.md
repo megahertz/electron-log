@@ -87,7 +87,7 @@ log.transports.file.streamConfig = { flags: 'w' };
 log.transports.file.stream = fs.createWriteStream('log.txt');
 ```
 
-By default, file transport reads a name property from package.json to
+By default, file transport reads a productName or name property from package.json to
 determine a log path like `~/.config/<app name>/log.log`.
 If you have no package.json or you want to specify another <app name>,
 just set the appName property:

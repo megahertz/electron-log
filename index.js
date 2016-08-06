@@ -192,12 +192,12 @@ function findLogPath(appName) {
     var appName;
     try {
       var appPkg = loadAppPackage();
-      if (!appPkg || !appPkg.name) {
+      if (!appPkg || (!appPkg.productName && !appPkg.name)) {
         transportFile.stream = false;
         log('warning', 'electron-log cannot read a name from package.json');
         return false;
       }
-      appName = appPkg.name;
+      appName = appPkg.productName || appPkg.name;
     } catch (e) {
       transportFile.stream = false;
       log('warning', 'electron-log: ' + e.message);
