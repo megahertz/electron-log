@@ -87,10 +87,10 @@ function log(level, text) {
   for (var i in transports) {
     // jshint -W089
     if (!transports.hasOwnProperty(i) || typeof transports[i] !== 'function') {
-      return;
+      continue;
     }
     if (!compareLevels(transports[i].level, level)) {
-      return;
+      continue;
     }
     transports[i].call(module.exports, msg);
   }

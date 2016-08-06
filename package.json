@@ -1,6 +1,6 @@
 {
   "name": "electron-log",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "Just a very simple logging module for your Electron application",
   "main": "index.js",
   "scripts": {
