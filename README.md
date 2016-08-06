@@ -96,6 +96,12 @@ just set the appName property:
 log.appName = 'test';
 ```
 
+## Change Log
+**1.0.16**
+
+ - Prefer to use package.json:productName instead of package.json:name to
+ determine a log path.
+
 ## License
 
 Licensed under MIT.
