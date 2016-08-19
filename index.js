@@ -76,13 +76,13 @@ function log(level, text) {
     return arg instanceof Error ? arg.stack + EOL : arg;
   });
   text = util.format.apply(util, args);
-  
+
   var msg = {
     level: level,
     text: text,
     date: new Date()
   };
-  
+
   var transports = module.exports.transports;
   for (var i in transports) {
     // jshint -W089
@@ -113,7 +113,7 @@ function transportConsole(msg) {
 
 function transportFile(msg) {
   var text = format(msg, transportFile.format || module.exports.format);
-  
+
   if (undefined === transportFile.stream) {
     transportFile.file = transportFile.file || findLogPath(module.exports.appName);
     if (!transportFile.file) {
@@ -135,7 +135,7 @@ function transportFile(msg) {
   if (!transportFile.stream) {
     return;
   }
-  
+
   transportFile.stream.write(text + EOL);
 }
 
@@ -221,7 +221,7 @@ function findLogPath(appName) {
       }
     }
 
-    return { 
+    return {
       or: prepareDir,
       result: (this ? this.result : false) || dirPath
     };
@@ -288,7 +288,7 @@ function format(msg, formatter) {
     .replace('{level}', msg.level)
     .replace('{text}', msg.text)
     .replace('{y}', date.getFullYear())
-    .replace('{m}', pad(date.getMonth()))
+    .replace('{m}', pad(date.getMonth() + 1))
     .replace('{d}', pad(date.getDate()))
     .replace('{h}', pad(date.getHours()))
     .replace('{i}', pad(date.getMinutes()))
@@ -307,9 +307,9 @@ function formatConsole(msg) {
 }
 
 function formatFile(msg) {
-  var date = 
+  var date =
     msg.date.getFullYear() + '-' +
-    pad(msg.date.getMonth()) + '-' +
+    pad(msg.date.getMonth() + 1) + '-' +
     pad(msg.date.getDate()) + ' ' +
     pad(msg.date.getHours()) + ':' +
     pad(msg.date.getMinutes()) + ':' +
