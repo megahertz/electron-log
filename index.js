@@ -288,7 +288,7 @@ function format(msg, formatter) {
     .replace('{level}', msg.level)
     .replace('{text}', msg.text)
     .replace('{y}', date.getFullYear())
-    .replace('{m}', pad(date.getMonth()))
+    .replace('{m}', pad(date.getMonth() + 1))
     .replace('{d}', pad(date.getDate()))
     .replace('{h}', pad(date.getHours()))
     .replace('{i}', pad(date.getMinutes()))
@@ -309,7 +309,7 @@ function formatConsole(msg) {
 function formatFile(msg) {
   var date =
     msg.date.getFullYear() + '-' +
-    pad(msg.date.getMonth()) + '-' +
+    pad(msg.date.getMonth() + 1) + '-' +
     pad(msg.date.getDate()) + ' ' +
     pad(msg.date.getHours()) + ':' +
     pad(msg.date.getMinutes()) + ':' +
