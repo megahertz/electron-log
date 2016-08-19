@@ -50,7 +50,7 @@ describe('format', () => {
   const msg = {
     level: 'info',
     text: 'test',
-    date: new Date(2000, 1, 1, 1, 1, 1)
+    date: new Date(2000, 0, 1, 1, 1, 1)
   };
 
   it('should call formatter if it\'s a function', () => {
@@ -64,7 +64,7 @@ describe('format', () => {
     const text = format(msg, '{y}:{m}:{d} {h}:{i}:{s}:{ms} {level} {text}');
     expect(text).to.equal('2000:01:01 01:01:01:0000 info test');
   });
-  
+
   it('should format console output', () => {
     expect(formatConsole(msg)).to.equals('[01:01:01:0000] [info] test');
   });
@@ -72,7 +72,7 @@ describe('format', () => {
   it('should format file output', () => {
     expect(formatFile(msg)).to.equals('[2000-01-01 01:01:01:0000] [info] test');
   });
-  
+
   it('should pad numeric', () => {
     expect(pad(1, 1)).to.equals('1');
     expect(pad(1)).to.equals('01');
@@ -92,7 +92,7 @@ describe('log levels', () => {
 describe('loadAppPackage', () => {
   it('should find package.json', () => {
     expect(loadAppPackage().name).to.equals(
-      'mocha', 
+      'mocha',
       'It has to load a mocha package, because it\'s an entry point'
     );
   });
