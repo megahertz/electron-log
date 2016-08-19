@@ -165,25 +165,25 @@ function findLogPath(appName) {
   switch (process.platform) {
     case 'linux':
       dir = prepareDir(process.env['XDG_CONFIG_HOME'], appName)
-        .or(process.env['HOME'] + '/.config', appName)
+        .or(path.join(process.env['HOME'], '.config'), appName)
         .or(process.env['XDG_DATA_HOME'], appName)
-        .or(process.env['HOME'] + '/.local/share', appName)
+        .or(path.join(process.env['HOME'], '.local', 'share'), appName)
         .result;
       break;
     case 'darwin':
-      dir = prepareDir(process.env['HOME'] + '/Library/Logs', appName)
-        .or(process.env['HOME'] + '/Library/Application Support', appName)
+      dir = prepareDir(path.join(process.env['HOME'], 'Library', 'Logs'), appName)
+        .or(path.join(process.env['HOME'], 'Library', 'Application Support'), appName)
         .result;
       break;
     case 'win32':
       dir = prepareDir(process.env['APPDATA'], appName)
-        .or(process.env['HOME'] + '/AppData', appName)
+        .or(path.join(process.env['HOME'], 'AppData'), appName)
         .result;
       break;
   }
 
   if (dir) {
-    return dir + '/' + 'log.log';
+    return path.join(dir, 'log.log');
   } else {
     return false;
   }
@@ -206,16 +206,16 @@ function findLogPath(appName) {
     return appName;
   }
 
-  function prepareDir(path, appName) {
+  function prepareDir(dirPath, appName) {
     // jshint -W040
     if (!this || this.or !== prepareDir || !this.result) {
-      if (!path) {
+      if (!dirPath) {
         return { or: prepareDir };
       }
-      path = path + '/' + appName;
-      mkDir(path);
+      dirPath = path.join(dirPath, appName);
+      mkDir(dirPath);
       try {
-        fs.accessSync(path, fs.W_OK);
+        fs.accessSync(dirPath, fs.W_OK);
       } catch (e) {
         return { or: prepareDir };
       }
@@ -223,14 +223,14 @@ function findLogPath(appName) {
 
     return { 
       or: prepareDir,
-      result: (this ? this.result : false) || path
+      result: (this ? this.result : false) || dirPath
     };
   }
 
-  function mkDir(path, root) {
-    var dirs = path.split('/');
+  function mkDir(dirPath, root) {
+    var dirs = dirPath.split(path.sep);
     var dir = dirs.shift();
-    root = (root || '') + dir + '/';
+    root = (root || '') + dir + path.sep;
 
     try {
       fs.mkdirSync(root);
@@ -241,7 +241,7 @@ function findLogPath(appName) {
       }
     }
 
-    return !dirs.length || mkDir(dirs.join('/'), root);
+    return !dirs.length || mkDir(dirs.join(path.sep), root);
   }
 }
 
