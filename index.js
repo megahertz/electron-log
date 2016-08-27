@@ -165,19 +165,19 @@ function findLogPath(appName) {
   switch (process.platform) {
     case 'linux':
       dir = prepareDir(process.env['XDG_CONFIG_HOME'], appName)
-        .or(path.join(process.env['HOME'], '.config'), appName)
+        .or(process.env['HOME'], '.config', appName)
         .or(process.env['XDG_DATA_HOME'], appName)
-        .or(path.join(process.env['HOME'], '.local', 'share'), appName)
+        .or(process.env['HOME'], '.local', 'share', appName)
         .result;
       break;
     case 'darwin':
-      dir = prepareDir(path.join(process.env['HOME'], 'Library', 'Logs'), appName)
-        .or(path.join(process.env['HOME'], 'Library', 'Application Support'), appName)
+      dir = prepareDir(process.env['HOME'], 'Library', 'Logs', appName)
+        .or(process.env['HOME'], 'Library', 'Application Support', appName)
         .result;
       break;
     case 'win32':
       dir = prepareDir(process.env['APPDATA'], appName)
-        .or(path.join(process.env['HOME'], 'AppData'), appName)
+        .or(process.env['HOME'], 'AppData', appName)
         .result;
       break;
   }
@@ -206,13 +206,13 @@ function findLogPath(appName) {
     return appName;
   }
 
-  function prepareDir(dirPath, appName) {
+  function prepareDir(dirPath) {
     // jshint -W040
     if (!this || this.or !== prepareDir || !this.result) {
       if (!dirPath) {
         return { or: prepareDir };
       }
-      dirPath = path.join(dirPath, appName);
+      dirPath = path.join.apply(path, arguments);
       mkDir(dirPath);
       try {
         fs.accessSync(dirPath, fs.W_OK);
