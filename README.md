@@ -31,8 +31,8 @@ log.info('Hello, log');
 
 ### Transport
 Transport is a simple function which requires an object which describes a message.
-By default, two transports is active: console and file. The file path is 
-depend on current platform.
+By default, two transports are active: console and file. The file path is 
+dependent on current platform.
 
 #### Disable default transport:
 
