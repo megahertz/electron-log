@@ -177,7 +177,7 @@ function findLogPath(appName) {
       break;
     case 'win32':
       dir = prepareDir(process.env['APPDATA'], appName)
-        .or(process.env['HOME'], 'AppData', appName)
+        .or(process.env['USERPROFILE'], 'AppData', 'Roaming', appName)
         .result;
       break;
   }
