@@ -253,7 +253,13 @@ function findLogPath(appName) {
 function loadAppPackage() {
   var packageFile = find(path.dirname(require.main.filename)) ||
     find(process.cwd());
-  return packageFile ? require(packageFile) : null;
+
+  if (packageFile) {
+    var content = fs.readFileSync(packageFile, 'utf-8');
+    return JSON.parse(content);
+  } else {
+    return null;
+  }
 
   function find(root) {
     var file;
