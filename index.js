@@ -251,15 +251,20 @@ function findLogPath(appName) {
  * @return {Object|null}
  */
 function loadAppPackage() {
-  var packageFile = find(path.dirname(require.main.filename)) ||
-    find(process.cwd());
-
-  if (packageFile) {
-    var content = fs.readFileSync(packageFile, 'utf-8');
-    return JSON.parse(content);
-  } else {
+  var packageFile;
+  try {
+    packageFile = find(path.dirname(require.main.filename));
+  } catch (e) {}
+  if (!packageFile) {
+    packageFile = find(process.cwd());
+  }
+  if (!packageFile) {
     return null;
   }
+
+  var content = fs.readFileSync(packageFile, 'utf-8');
+  return JSON.parse(content);
+
 
   function find(root) {
     var file;
