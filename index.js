@@ -108,7 +108,11 @@ function compareLevels(passLevel, checkLevel) {
 // region transport
 function transportConsole(msg) {
   var text = format(msg, transportConsole.format || module.exports.format);
-  console.log(text);
+  if (console[msg.level]) {
+    console[msg.level](text);
+  } else {
+    console.log(text);
+  }
 }
 
 function transportFile(msg) {

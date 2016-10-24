@@ -102,6 +102,10 @@ log.appName = 'test';
  - Prefer to use package.json:productName instead of package.json:name to
  determine a log path.
 
+**1.2.0**
+
+ - #14 Use native console levels instead of console.log
+
 ## License
 
 Licensed under MIT.
