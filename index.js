@@ -259,6 +259,9 @@ function loadAppPackage() {
   try {
     packageFile = find(path.dirname(require.main.filename));
   } catch (e) {}
+  if (!packageFile && process.resourcesPath) {
+    packageFile = find(path.join(process.resourcesPath, 'app.asar'));
+  }
   if (!packageFile) {
     packageFile = find(process.cwd());
   }
