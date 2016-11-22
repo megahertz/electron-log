@@ -4,7 +4,7 @@
 
 ## Description
 
-Just a very simple logging module for your Electron application.
+Just a very simple logging module for your Electron or NW.js application.
 No dependencies. No complicated configuration. Just require and use.
 Also it can be used without Electron.
 
