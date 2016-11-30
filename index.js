@@ -41,7 +41,7 @@ var LEVELS = [ 'error', 'warn', 'info', 'verbose', 'debug', 'silly' ];
 
 module.exports.log = log;
 
-module.exports.format = formatFile;
+module.exports.format = format;
 
 /**
  * Set this variable if you doesn't specify app name in package.json
