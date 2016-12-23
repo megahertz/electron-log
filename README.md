@@ -53,7 +53,7 @@ log.transports.console = function(msg) {
 
 ```js
 // Log level
-log.transports.console.level = 'warning';
+log.transports.console.level = 'warn';
 
 /** 
  * Set output format template. Available variables:
@@ -70,7 +70,7 @@ log.transports.console.format = (msg) => msg.text;
 
 ```js
 // Same as for console transport
-log.transports.file.level = 'warning';
+log.transports.file.level = 'warn';
 log.transports.file.format = '{h}:{i}:{s}:{ms} {text}';
 
 // Set maximum log size in bytes. When it exceeds, old log will be saved
