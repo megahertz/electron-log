@@ -56,7 +56,7 @@ module.exports.transports.console.level = 'silly';
 
 module.exports.transports.file = transportFile;
 module.exports.transports.file.format = formatFile;
-module.exports.transports.file.level = 'warning';
+module.exports.transports.file.level = 'warn';
 module.exports.transports.file.maxSize = 1024 * 1024;
 module.exports.transports.file.streamConfig = undefined;
 
@@ -122,7 +122,7 @@ function transportFile(msg) {
     transportFile.file = transportFile.file || findLogPath(module.exports.appName);
     if (!transportFile.file) {
       transportFile.stream = false;
-      log('warning', 'electron-log.transports.file: Could not set a log file');
+      log('warn', 'electron-log.transports.file: Could not set a log file');
       return;
     }
 
@@ -198,13 +198,13 @@ function findLogPath(appName) {
       var appPkg = loadAppPackage();
       if (!appPkg || (!appPkg.productName && !appPkg.name)) {
         transportFile.stream = false;
-        log('warning', 'electron-log cannot read a name from package.json');
+        log('warn', 'electron-log cannot read a name from package.json');
         return false;
       }
       appName = appPkg.productName || appPkg.name;
     } catch (e) {
       transportFile.stream = false;
-      log('warning', 'electron-log: ' + e.message);
+      log('warn', 'electron-log: ' + e.message);
       return false;
     }
     return appName;
