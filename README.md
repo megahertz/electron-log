@@ -97,14 +97,19 @@ log.appName = 'test';
 ```
 
 ## Change Log
-**1.0.16**
 
- - Prefer to use package.json:productName instead of package.json:name to
- determine a log path.
+**1.3.0**
+
+- #18 Rename 'warning' log level to 'warn'
 
 **1.2.0**
 
  - #14 Use native console levels instead of console.log
+ 
+**1.0.16**
+
+ - Prefer to use package.json:productName instead of package.json:name to
+ determine a log path. 
 
 ## License
 
