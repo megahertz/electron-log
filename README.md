@@ -48,6 +48,8 @@ log.transports.console = function(msg) {
   console.log(`[${msg.date.toLocaleTimeString()} ${msg.level}] ${msg.text}`);
 };
 ```
+Please be aware that if you override a transport function the default transport
+options (like level or format) will be undefined.
     
 #### Console Transport
 
