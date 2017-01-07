@@ -27,7 +27,10 @@ var log = require('electron-log');
 
 log.info('Hello, log');
 ```
-    
+### Log levels
+electron-log supports the following log levels:
+
+    error, warn, info, verbose, debug, silly
 
 ### Transport
 Transport is a simple function which requires an object which describes a message.
