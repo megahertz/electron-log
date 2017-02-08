@@ -34,8 +34,9 @@ electron-log supports the following log levels:
 
 ### Transport
 Transport is a simple function which requires an object which describes a message.
-By default, two transports are active: console and file. The file path is 
-dependent on current platform.
+By default, two transports are active: console and file. Please be aware that the
+file log level is 'warn' by default, so info and debug messages will be filtered.
+The file path is dependent on current platform.
 
 #### Disable default transport:
 
