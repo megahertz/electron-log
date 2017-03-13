@@ -23,7 +23,7 @@
     "maxdepth": 5,
     "maxstatements": 40,
     "maxcomplexity": 8,
-    "maxlen": 120,
+    "maxlen": 80,
     "asi": false,
     "boss": false,
     "debug": false,
@@ -51,9 +51,6 @@
     "noyield": false,
     "browser": true,
     "node": true,
-    "globals": {
-        "angular": false
-    },
     "predef": [
         "jasmine",
         "describe",
