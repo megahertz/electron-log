@@ -1,6 +1,7 @@
 # electron-log
 [![Build Status](https://travis-ci.org/megahertz/electron-log.svg?branch=master)](https://travis-ci.org/megahertz/electron-log)
-[![npm version](https://badge.fury.io/js/electron-log.svg)](https://badge.fury.io/js/electron-log)
+[![NPM version](https://badge.fury.io/js/electron-log.svg)](https://badge.fury.io/js/electron-log)
+[![Dependencies status](https://david-dm.org/megahertz/electron-log/status.svg)](https://david-dm.org/megahertz/electron-log)
 
 ## Description
 
