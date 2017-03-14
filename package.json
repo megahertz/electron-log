@@ -7,7 +7,7 @@
     "test": "npm run jshint && npm run jscs && npm run tslint &&npm run mocha",
     "mocha": "mocha index.spec.js lib/{,**/}{,**/}*.spec.js",
     "jscs": "jscs .",
-    "jshint": "jshint --exclude ./node_modules . --verbose",
+    "jshint": "jshint --exclude ./node_modules,./test-projects . --verbose",
     "tslint": "tslint electron-log.d.ts"
   },
   "typings": "./electron-log.d.ts",
