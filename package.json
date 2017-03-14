@@ -17,6 +17,8 @@
   },
   "files": [
     "index.js",
+    "main.js",
+    "renderer.js",
     "lib/**/*.js",
     "!lib/**/*.spec.js",
     "electron-log.d.ts"
