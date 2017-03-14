@@ -1,0 +1,13 @@
+{
+  "name": "electron-log-test-nwjs",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.html",
+  "chromium-args": "--enable-logging=stderr",
+  "scripts": {
+    "start": "nw --enable-logging ."
+  },
+  "dependencies": {
+    "nw": "*"
+  }
+}
