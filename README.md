@@ -123,7 +123,7 @@ inside the main process.
 
 ## Change Log
 
-**2.0.0 (will be available on npm soon)**
+**2.0.0**
  - Move log.appName property to log.transports.file.appName.
  - Change a log message object. See updated
  [Override transport section](#override-transport) if you use a custom
