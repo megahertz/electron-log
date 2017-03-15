@@ -1,8 +1,8 @@
 'use strict';
 
-const fs       = require('fs');
-const path     = require('path');
-const { exec } = require('child_process');
+const fs   = require('fs');
+const path = require('path');
+const exec = require('child_process').exec;
 
 module.exports = {
   runApplication(appName) {
@@ -12,7 +12,7 @@ module.exports = {
         { cwd: path.join(__dirname, appName) },
         (error, stdout, stderr) => {
           error ? reject(error) : resolve();
-          console.log(error, stdout, stderr);
+          console.log(stdout + stderr);
         }
       );
     });

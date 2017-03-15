@@ -11,7 +11,9 @@
   },
   "author": "Alexey Prokhorov",
   "dependencies": {
-    "electron-log": "file:../..",
+    "electron-log": "file:../.."
+  },
+  "devDependencies": {
     "babel-core": "*",
     "babel-loader": "*",
     "babel-preset-latest": "*",

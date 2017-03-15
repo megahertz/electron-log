@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron ./main.js"
   },
-  "dependencies": {
+  "devDependencies": {
     "electron": "*"
   }
 }
