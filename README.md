@@ -78,7 +78,7 @@ log.transports.console.level = 'warn';
 log.transports.console.format = '{h}:{i}:{s}:{ms} {text}';
 
 // Set a function which formats output
-log.transports.console.format = (msg) => msg.text;
+log.transports.console.format = (msg) => util.format.apply(util, msg.data);
 ```
     
 #### File transport
