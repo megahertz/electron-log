@@ -1,7 +1,7 @@
 {
     "bitwise": true,
     "camelcase": true,
-    "curly": true,
+    "curly": false,
     "eqeqeq": true,
     "es3": false,
     "forin": true,

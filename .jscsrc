@@ -4,7 +4,6 @@
     "test-projects/**"
   ],
   "requireCurlyBraces": [
-    "if",
     "else",
     "for",
     "while",
