@@ -27,6 +27,14 @@ interface IFileTransport {
     findLogPath(appName: string): string;
 }
 
+interface ILogSTransport {
+    (msg: ILogMessage): void;
+    client: Object;
+    depth: number;
+    level: LevelOption;
+    url?: string;
+}
+
 export declare function error(...params: any[]): void;
 export declare function warn(...params: any[]): void;
 export declare function info(...params: any[]): void;
@@ -37,4 +45,5 @@ export declare function silly(...params: any[]): void;
 export declare const transports: {
     console: IConsoleTransport;
     file: IFileTransport;
+    logS: ILogSTransport;
 };
