@@ -1,1 +1,1 @@
-Here are a few test projects which are used for development purposes.
+Here are a few projects for test purposes. These projects ARE NOT examples.

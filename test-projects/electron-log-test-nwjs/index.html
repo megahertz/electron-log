@@ -7,7 +7,12 @@
 <body>
 <script>
   const log = require('../..');
+  const App = require('nw.gui').App;
   log.warn('Log from nw.js');
+
+  if (App.argv.indexOf('--test') !== -1) {
+    App.quit();
+  }
 </script>
 </body>
 </html>

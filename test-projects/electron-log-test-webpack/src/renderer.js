@@ -1,3 +1,10 @@
-const log = require('electron-log');
+import { remote } from 'electron';
+import log from 'electron-log';
 
-setInterval(() => log.warn('log from renderer process'), 1000);
+const proc = remote.process;
+
+log.warn('log from a renderer process');
+
+if (proc.argv.indexOf('--test') !== -1) {
+  remote.process.exit(0);
+}
