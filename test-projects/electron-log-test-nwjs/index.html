@@ -11,7 +11,7 @@
   log.warn('Log from nw.js');
 
   if (App.argv.indexOf('--test') !== -1) {
-    App.quit();
+    setTimeout(() => App.quit(), 50);
   }
 </script>
 </body>

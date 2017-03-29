@@ -10,6 +10,7 @@ describe('nwjs test project', function() {
 
   it('should write one line to a log file', () => {
     return helper.run(APP_NAME).then((logs) => {
+      expect(logs.length).to.equal(2);
       expect(logs[0]).to.match(/\[[\d-]{10} [\d:]{13}] \[warn] Log from nw.js/);
     });
   })
