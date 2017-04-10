@@ -127,7 +127,7 @@ inside the main process.
 
 ## Change Log
 
-*2.1.0**
+**2.1.0**
  - Add Renderer Console transport
 
 **2.0.0**
