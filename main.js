@@ -2,9 +2,7 @@
 
 var electron;
 try {
-  if (require.resolve('electron')) {
-    electron = require('electron');
-  }
+  electron = require('electron');
 } catch (e) {
   electron = null;
 }
