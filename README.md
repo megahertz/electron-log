@@ -80,7 +80,11 @@ log.transports.console.format = '{h}:{i}:{s}:{ms} {text}';
 // Set a function which formats output
 log.transports.console.format = (msg) => util.format.apply(util, msg.data);
 ```
-    
+
+#### Renderer Console transport
+Show logs in Chromium DevTools Console. It has the same options as
+console transport.
+
 #### File transport
 
 ```js
@@ -122,6 +126,9 @@ but please be aware that transport configuration is available only
 inside the main process.
 
 ## Change Log
+
+*2.1.0**
+ - Add Renderer Console transport
 
 **2.0.0**
  - Move log.appName property to log.transports.file.appName.

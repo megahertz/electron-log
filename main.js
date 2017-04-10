@@ -9,15 +9,17 @@ try {
   electron = null;
 }
 
-var log                = require('./lib/log');
-var transportConsole   = require('./lib/transports/console');
-var transportFile      = require('./lib/transports/file');
-var transportLogS      = require('./lib/transports/log-s');
+var log                      = require('./lib/log');
+var transportConsole         = require('./lib/transports/console');
+var transportFile            = require('./lib/transports/file');
+var transportLogS            = require('./lib/transports/log-s');
+var transportRendererConsole = require('./lib/transports/renderer-console');
 
 var transports = {
   console: transportConsole,
   file: transportFile,
-  logS: transportLogS
+  logS: transportLogS,
+  rendererConsole: transportRendererConsole
 };
 
 module.exports = {
