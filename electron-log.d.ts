@@ -1,14 +1,12 @@
 type LogLevel = "error" | "warn" | "info" | "verbose" | "debug" | "silly";
 type LevelOption = LogLevel | false;
 
+type IFormat = (msg: ILogMessage) => void;
+
 export interface ILogMessage {
     data: any[];
     date: Date;
     level: LogLevel;
-}
-
-interface IFormat {
-    (msg: ILogMessage): void;
 }
 
 interface IConsoleTransport {
@@ -22,14 +20,14 @@ interface IFileTransport {
     appName?: string;
     level: LevelOption;
     maxSize: number;
-    streamConfig?: Object;
+    streamConfig?: object;
     format: IFormat | string;
     findLogPath(appName: string): string;
 }
 
 interface ILogSTransport {
     (msg: ILogMessage): void;
-    client: Object;
+    client: object;
     depth: number;
     level: LevelOption;
     url?: string;
@@ -46,4 +44,5 @@ export declare const transports: {
     console: IConsoleTransport;
     file: IFileTransport;
     logS: ILogSTransport;
+    rendererConsole: IConsoleTransport;
 };
