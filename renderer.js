@@ -4,7 +4,7 @@ module.exports = null;
 
 var ipcRenderer;
 try {
-  ipcRenderer = window.require('electron').ipcRenderer;
+  ipcRenderer = require('electron').ipcRenderer;
 } catch (e) {
   ipcRenderer = null;
 }
