@@ -20,6 +20,10 @@ if (ipcRenderer) {
   };
 
   ipcRenderer.on('__ELECTRON_LOG_RENDERER__', function(event, level, text) {
+    if (level ==='verbose')
+      level = 'log';
+    else if (level === 'silly')
+      level = 'debug';
     console[level](text);
   });
 }
