@@ -18,10 +18,11 @@ interface IConsoleTransport {
 interface IFileTransport {
     (msg: ILogMessage): void;
     appName?: string;
+    file?: string;
+    format: IFormat | string;
     level: LevelOption;
     maxSize: number;
     streamConfig?: object;
-    format: IFormat | string;
     findLogPath(appName: string): string;
 }
 
