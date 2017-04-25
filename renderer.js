@@ -16,7 +16,8 @@ if (ipcRenderer) {
     info:    log.bind(null, 'info'),
     verbose: log.bind(null, 'verbose'),
     debug:   log.bind(null, 'debug'),
-    silly:   log.bind(null, 'silly')
+    silly:   log.bind(null, 'silly'),
+    log:     log.bind(null, 'info')
   };
 
   ipcRenderer.on('__ELECTRON_LOG_RENDERER__', function(event, level, text) {

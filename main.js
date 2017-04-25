@@ -28,7 +28,8 @@ module.exports = {
   info:    log.bind(null, transports, 'info'),
   verbose: log.bind(null, transports, 'verbose'),
   debug:   log.bind(null, transports, 'debug'),
-  silly:   log.bind(null, transports, 'silly')
+  silly:   log.bind(null, transports, 'silly'),
+  log:     log.bind(null, transports, 'info')
 };
 
 if (electron && electron.ipcMain) {
