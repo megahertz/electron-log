@@ -47,3 +47,13 @@ export declare const transports: {
     logS: ILogSTransport;
     rendererConsole: IConsoleTransport;
 };
+
+export default {
+  error,
+  warn,
+  info,
+  verbose,
+  debug,
+  silly,
+  transports,
+};
