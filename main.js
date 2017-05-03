@@ -32,6 +32,8 @@ module.exports = {
   log:     log.bind(null, transports, 'info')
 };
 
+module.exports.default = module.exports;
+
 if (electron && electron.ipcMain) {
   electron.ipcMain.on('__ELECTRON_LOG__', onRendererLog);
   var appName = electron.app.getName();
