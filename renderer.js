@@ -35,5 +35,14 @@ if (ipcRenderer) {
 
 function log() {
   var data = Array.prototype.slice.call(arguments);
+
+  data = data.map(function(obj) {
+    if (obj instanceof Error) {
+      obj = obj.stack || obj;
+    }
+
+    return obj;
+  });
+
   ipcRenderer.send('__ELECTRON_LOG__', data);
 }
