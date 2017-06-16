@@ -10,12 +10,15 @@ describe('simple test project', function() {
 
   it('should write one line to a log file', () => {
     return helper.run(APP_NAME).then((logs) => {
-      expect(logs.length).to.equal(3);
+      expect(logs.length).to.equal(4);
       expect(logs[0]).to.match(
         /\[[\d-]{10} [\d:]{13}] \[warn] log from the main process/
       );
       expect(logs[1]).to.match(
         /\[[\d-]{10} [\d:]{13}] \[warn] log from a renderer process/
+      );
+      expect(logs[2]).to.match(
+        /\[[\d-]{10} [\d:]{13}] \[warn] log from the second renderer process/
       );
     });
   })

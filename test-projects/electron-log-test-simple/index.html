@@ -7,15 +7,11 @@
 <body>
 
 <script>
-  const remote = require('electron').remote;
-  const log    = require('../..');
-  const proc   = remote.process;
+  const log = require('../..');
 
   log.warn('log from a renderer process');
 
-  if (proc.argv.indexOf('--test') !== -1) {
-    proc.exit(0);
-  }
+  window.open('file://' + __dirname + '/index-second.html');
 </script>
 
 </body>
