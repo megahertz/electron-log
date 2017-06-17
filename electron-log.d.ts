@@ -48,6 +48,7 @@ export declare const transports: {
     rendererConsole: IConsoleTransport;
 };
 
+// tslint:disable object-literal-sort-keys
 export default {
   error,
   warn,
