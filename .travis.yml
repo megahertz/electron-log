@@ -9,7 +9,7 @@ addons:
   apt:
     packages:
       - xvfb
-      - clang-3.4
+      - libstdc++6-4.8.4
 install:
   - npm install
   - npm run test-projects-install
