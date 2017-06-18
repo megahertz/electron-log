@@ -1,3 +1,4 @@
+dist: trusty
 sudo: false
 language: node_js
 node_js:
@@ -9,7 +10,6 @@ addons:
   apt:
     packages:
       - xvfb
-      - libstdc++6-4.8.4
 install:
   - npm install
   - npm run test-projects-install
