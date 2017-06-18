@@ -4,13 +4,13 @@ module.exports = [
     output: { filename: './out/main.js' },
     target: 'electron',
     module: {
-      loaders: [
+      rules: [
         {
           test: /.js$/,
           loader: 'babel-loader',
           exclude: /node_modules/,
-          query: {
-            presets: ['latest']
+          options: {
+            presets: [require('babel-preset-latest')]
           }
         }
       ]
@@ -24,13 +24,13 @@ module.exports = [
     output: { filename: './out/renderer.js' },
     target: 'electron-renderer',
     module: {
-      loaders: [
+      rules: [
         {
           test: /.js$/,
           loader: 'babel-loader',
           exclude: /node_modules/,
-          query: {
-            presets: ['latest']
+          options: {
+            presets: [require('babel-preset-latest')]
           }
         }
       ]
