@@ -1,7 +1,7 @@
-type LogLevel = "error" | "warn" | "info" | "verbose" | "debug" | "silly";
-type LevelOption = LogLevel | false;
+export type LogLevel = "error" | "warn" | "info" | "verbose" | "debug" | "silly";
+export type LevelOption = LogLevel | false;
 
-type IFormat = (msg: ILogMessage) => void;
+export type IFormat = (msg: ILogMessage) => void;
 
 export interface ILogMessage {
     data: any[];
@@ -9,13 +9,13 @@ export interface ILogMessage {
     level: LogLevel;
 }
 
-interface IConsoleTransport {
+export interface IConsoleTransport {
     (msg: ILogMessage): void;
     level: LevelOption;
     format: IFormat | string;
 }
 
-interface IFileTransport {
+export interface IFileTransport {
     (msg: ILogMessage): void;
     appName?: string;
     file?: string;
@@ -26,7 +26,7 @@ interface IFileTransport {
     findLogPath(appName: string): string;
 }
 
-interface ILogSTransport {
+export interface ILogSTransport {
     (msg: ILogMessage): void;
     client: object;
     depth: number;
@@ -50,11 +50,11 @@ export declare const transports: {
 
 // tslint:disable object-literal-sort-keys
 export default {
-  error,
-  warn,
-  info,
-  verbose,
-  debug,
-  silly,
-  transports,
+    error,
+    warn,
+    info,
+    verbose,
+    debug,
+    silly,
+    transports,
 };
