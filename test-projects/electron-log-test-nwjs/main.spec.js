@@ -6,7 +6,7 @@ const helper = require('../spec-helper');
 const APP_NAME = 'electron-log-test-nwjs';
 
 describe('nwjs test project', function() {
-  this.timeout(5000);
+  this.timeout(10000);
 
   it('should write one line to a log file', () => {
     return helper.run(APP_NAME).then((logs) => {
