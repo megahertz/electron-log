@@ -12,10 +12,10 @@ describe('webpack test project', function() {
     return helper.run(APP_NAME).then((logs) => {
       expect(logs.length).to.equal(3);
       expect(logs[0]).to.match(
-        /\[[\d-]{10} [\d:]{13}] \[warn] log from the main process/
+        /\[[\d-]{10} [\d:.]{12}] \[warn] log from the main process/
       );
       expect(logs[1]).to.match(
-        /\[[\d-]{10} [\d:]{13}] \[warn] log from a renderer process/
+        /\[[\d-]{10} [\d:.]{12}] \[warn] log from a renderer process/
       );
     });
   })
