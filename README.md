@@ -50,7 +50,7 @@ current platform.
 log.transports.file.level = false;
 log.transports.console.level = false;
 ```
-    
+
 #### Override transport:
 
 ```js
@@ -63,14 +63,14 @@ log.transports.console = function(msg) {
 ```
 Please be aware that if you override a transport function the default
 transport options (like level or format) will be undefined.
-    
+
 #### Console Transport
 
 ```js
 // Log level
 log.transports.console.level = 'warn';
 
-/** 
+/**
  * Set output format template. Available variables:
  * Main: {level}, {text}
  * Date: {y},{m},{d},{h},{i},{s},{ms}
@@ -100,6 +100,8 @@ log.transports.file.maxSize = 5 * 1024 * 1024;
 log.transports.file.file = __dirname + '/log.txt';
 
 // fs.createWriteStream options, must be set before first logging
+// you can find more information at
+// https://nodejs.org/api/fs.html#fs_fs_createwritestream_path_options
 log.transports.file.streamConfig = { flags: 'w' };
 
 // set existed file stream
@@ -152,7 +154,7 @@ inside the main process.
 **1.2.0**
 
  - #14 Use native console levels instead of console.log
- 
+
 **1.0.16**
 
  - Prefer to use package.json:productName instead of package.json:name

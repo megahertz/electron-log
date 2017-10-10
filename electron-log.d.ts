@@ -1,7 +1,10 @@
-export type LogLevel = "error" | "warn" | "info" | "verbose" | "debug" | "silly";
+export type LogLevel = "error" | "warn" | "info" | "verbose" | "debug" |
+  "silly";
 export type LevelOption = LogLevel | false;
 
 export type IFormat = (msg: ILogMessage) => void;
+export type FOpenFlags = "r" | "r+" | "rs+" | "w" | "wx" | "w+" | "wx+" |
+  "a" | "ax" | "a+" | "ax+";
 
 export interface ILogMessage {
     data: any[];
@@ -22,7 +25,14 @@ export interface IFileTransport {
     format: IFormat | string;
     level: LevelOption;
     maxSize: number;
-    streamConfig?: object;
+    streamConfig?: {
+      flags?: FOpenFlags;
+      encoding?: string;
+      fd?: number;
+      mode?: number;
+      autoClose?: boolean;
+      start?: number;
+    };
     findLogPath(appName: string): string;
 }
 
