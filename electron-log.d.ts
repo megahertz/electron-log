@@ -6,42 +6,60 @@ export type IFormat = (msg: ILogMessage) => void;
 export type FOpenFlags = "r" | "r+" | "rs+" | "w" | "wx" | "w+" | "wx+" |
   "a" | "ax" | "a+" | "ax+";
 
+declare interface ITransports {
+  console: IConsoleTransport;
+  file: IFileTransport;
+  logS: ILogSTransport;
+  rendererConsole: IConsoleTransport;
+}
+
+declare interface IElectronLog {
+  transports: ITransports;
+  error(...params: any[]): void;
+  warn(...params: any[]): void;
+  info(...params: any[]): void;
+  verbose(...params: any[]): void;
+  debug(...params: any[]): void;
+  silly(...params: any[]): void;
+  log(...params: any[]): void;
+}
+
 export interface ILogMessage {
-    data: any[];
-    date: Date;
-    level: LogLevel;
+  data: any[];
+  date: Date;
+  level: LogLevel;
 }
 
 export interface IConsoleTransport {
-    (msg: ILogMessage): void;
-    level: LevelOption;
-    format: IFormat | string;
+  (msg: ILogMessage): void;
+  level: LevelOption;
+  format: IFormat | string;
 }
 
 export interface IFileTransport {
-    (msg: ILogMessage): void;
-    appName?: string;
-    file?: string;
-    format: IFormat | string;
-    level: LevelOption;
-    maxSize: number;
-    streamConfig?: {
-      flags?: FOpenFlags;
-      encoding?: string;
-      fd?: number;
-      mode?: number;
-      autoClose?: boolean;
-      start?: number;
-    };
-    findLogPath(appName: string): string;
+  (msg: ILogMessage): void;
+  appName?: string;
+  file?: string;
+  format: IFormat | string;
+  level: LevelOption;
+  maxSize: number;
+  streamConfig?: {
+    flags?: FOpenFlags;
+    encoding?: string;
+    fd?: number;
+    mode?: number;
+    autoClose?: boolean;
+    start?: number;
+  };
+  findLogPath(appName: string): string;
 }
 
 export interface ILogSTransport {
-    (msg: ILogMessage): void;
-    client: object;
-    depth: number;
-    level: LevelOption;
-    url?: string;
+  (msg: ILogMessage): void;
+  client: object;
+  depth: number;
+  level: LevelOption;
+  url?: string;
 }
 
 export declare function error(...params: any[]): void;
@@ -50,21 +68,8 @@ export declare function info(...params: any[]): void;
 export declare function verbose(...params: any[]): void;
 export declare function debug(...params: any[]): void;
 export declare function silly(...params: any[]): void;
+export declare function log(...params: any[]): void;
+export declare const transports: ITransports;
 
-export declare const transports: {
-    console: IConsoleTransport;
-    file: IFileTransport;
-    logS: ILogSTransport;
-    rendererConsole: IConsoleTransport;
-};
-
-// tslint:disable object-literal-sort-keys
-export default {
-    error,
-    warn,
-    info,
-    verbose,
-    debug,
-    silly,
-    transports,
-};
+declare const _d: IElectronLog;
+export default _d;
