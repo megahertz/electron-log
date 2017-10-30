@@ -9,6 +9,8 @@ try {
   ipcRenderer = null;
 }
 
+var originalConsole = require('./lib/original-console');
+
 if (ipcRenderer) {
   module.exports = {
     error:   log.bind(null, 'error'),
@@ -29,7 +31,7 @@ if (ipcRenderer) {
       level = 'debug';
     }
 
-    console[level](text);
+    originalConsole[level](text);
   });
 }
 
