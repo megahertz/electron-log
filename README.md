@@ -28,6 +28,10 @@ var log = require('electron-log');
 
 log.info('Hello, log');
 ```
+
+If you would like to use electron-log in a renderer process only, you
+should require it in the main process too.
+
 ### Log levels
 
 electron-log supports the following log levels:
@@ -42,7 +46,7 @@ Please be aware that the file log level is 'warn' by default, so info
 and debug messages will be filtered. The file path is dependent on the
 current platform.
 
-
+Transport config is available only inside the main process.
 
 #### Disable default transport:
 
