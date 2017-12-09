@@ -73,7 +73,7 @@ log.transports.console.level = 'warn';
 /**
  * Set output format template. Available variables:
  * Main: {level}, {text}
- * Date: {y},{m},{d},{h},{i},{s},{ms}
+ * Date: {y},{m},{d},{h},{i},{s},{ms},{z}
  */
 log.transports.console.format = '{h}:{i}:{s}:{ms} {text}';
 
