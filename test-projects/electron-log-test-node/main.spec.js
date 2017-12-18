@@ -5,7 +5,8 @@ const helper = require('../spec-helper');
 
 const APP_NAME = 'electron-log-test-node';
 
-describe('node test project', () => {
+describe('node test project', function() {
+  this.timeout(6000)
   it('should write one line to a log file', () => {
     return helper.run(APP_NAME).then((logs) => {
       expect(logs.length).to.equal(2);
