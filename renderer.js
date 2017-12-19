@@ -31,7 +31,7 @@ if (ipcRenderer) {
       level = 'debug';
     }
 
-    originalConsole[level](text);
+    originalConsole[level].call(originalConsole.context, text);
   });
 }
 
