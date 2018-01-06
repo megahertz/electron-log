@@ -6,11 +6,13 @@ export type IFormat = (msg: ILogMessage) => void;
 export type FOpenFlags = "r" | "r+" | "rs+" | "w" | "wx" | "w+" | "wx+" |
   "a" | "ax" | "a+" | "ax+";
 
+export declare interface ITransport {
+  level: LevelOption;
+  format: IFormat | string;
+}
+
 declare interface ITransports {
-  console: IConsoleTransport;
-  file: IFileTransport;
-  logS: ILogSTransport;
-  rendererConsole: IConsoleTransport;
+  [key: string]: ITransport;
 }
 
 declare interface IElectronLog {
@@ -27,21 +29,16 @@ declare interface IElectronLog {
 export interface ILogMessage {
   data: any[];
   date: Date;
-  level: LogLevel;
 }
 
-export interface IConsoleTransport {
+export interface IConsoleTransport extends ITransport {
   (msg: ILogMessage): void;
-  level: LevelOption;
-  format: IFormat | string;
 }
 
-export interface IFileTransport {
+export interface IFileTransport extends ITransport {
   (msg: ILogMessage): void;
   appName?: string;
   file?: string;
-  format: IFormat | string;
-  level: LevelOption;
   maxSize: number;
   streamConfig?: {
     flags?: FOpenFlags;
@@ -54,11 +51,10 @@ export interface IFileTransport {
   findLogPath(appName: string): string;
 }
 
-export interface ILogSTransport {
+export interface ILogSTransport extends ITransport {
   (msg: ILogMessage): void;
   client: object;
   depth: number;
-  level: LevelOption;
   url?: string;
 }
 
