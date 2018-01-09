@@ -51,7 +51,7 @@ export interface IFileTransport {
     autoClose?: boolean;
     start?: number;
   };
-  findLogPath(appName: string): string;
+  findLogPath(appName?: string): string;
 }
 
 export interface ILogSTransport {
