@@ -6,42 +6,27 @@ export type IFormat = (msg: ILogMessage) => void;
 export type FOpenFlags = "r" | "r+" | "rs+" | "w" | "wx" | "w+" | "wx+" |
   "a" | "ax" | "a+" | "ax+";
 
-declare interface ITransports {
-  console: IConsoleTransport;
-  file: IFileTransport;
-  logS: ILogSTransport;
-  rendererConsole: IConsoleTransport;
-}
-
-declare interface IElectronLog {
-  transports: ITransports;
-  error(...params: any[]): void;
-  warn(...params: any[]): void;
-  info(...params: any[]): void;
-  verbose(...params: any[]): void;
-  debug(...params: any[]): void;
-  silly(...params: any[]): void;
-  log(...params: any[]): void;
-}
-
 export interface ILogMessage {
   data: any[];
   date: Date;
   level: LogLevel;
 }
 
-export interface IConsoleTransport {
+export declare interface ITransport {
   (msg: ILogMessage): void;
   level: LevelOption;
+}
+
+export interface IConsoleTransport extends ITransport {
+  (msg: ILogMessage): void;
   format: IFormat | string;
 }
 
-export interface IFileTransport {
+export interface IFileTransport extends ITransport {
   (msg: ILogMessage): void;
   appName?: string;
   file?: string;
   format: IFormat | string;
-  level: LevelOption;
   maxSize: number;
   streamConfig?: {
     flags?: FOpenFlags;
@@ -54,12 +39,30 @@ export interface IFileTransport {
   findLogPath(appName?: string): string;
 }
 
-export interface ILogSTransport {
+export interface ILogSTransport extends ITransport {
   (msg: ILogMessage): void;
   client: object;
   depth: number;
-  level: LevelOption;
   url?: string;
+}
+
+declare interface ITransports {
+  console: IConsoleTransport;
+  file: IFileTransport;
+  logS: ILogSTransport;
+  rendererConsole: IConsoleTransport;
+  [key: string]: ITransport;
+}
+
+declare interface IElectronLog {
+  transports: ITransports;
+  error(...params: any[]): void;
+  warn(...params: any[]): void;
+  info(...params: any[]): void;
+  verbose(...params: any[]): void;
+  debug(...params: any[]): void;
+  silly(...params: any[]): void;
+  log(...params: any[]): void;
 }
 
 export declare function error(...params: any[]): void;
