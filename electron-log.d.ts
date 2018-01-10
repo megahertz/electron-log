@@ -18,12 +18,10 @@ export declare interface ITransport {
 }
 
 export interface IConsoleTransport extends ITransport {
-  (msg: ILogMessage): void;
   format: IFormat | string;
 }
 
 export interface IFileTransport extends ITransport {
-  (msg: ILogMessage): void;
   appName?: string;
   file?: string;
   format: IFormat | string;
@@ -40,7 +38,6 @@ export interface IFileTransport extends ITransport {
 }
 
 export interface ILogSTransport extends ITransport {
-  (msg: ILogMessage): void;
   client: object;
   depth: number;
   url?: string;
