@@ -26,6 +26,7 @@ export interface IFileTransport extends ITransport {
   file?: string;
   format: IFormat | string;
   maxSize: number;
+  steam: any;
   streamConfig?: {
     flags?: FOpenFlags;
     encoding?: string;
