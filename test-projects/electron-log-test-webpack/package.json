@@ -19,6 +19,7 @@
     "babel-preset-latest": "*",
     "electron": "*",
     "electron-builder": "*",
-    "webpack": "*"
+    "webpack": "*",
+    "webpack-cli": "^3.0.8"
   }
 }
