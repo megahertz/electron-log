@@ -2,7 +2,7 @@ module.exports = [
   {
     mode: "development",
     entry: ['./src/main.js'],
-    output: { filename: './out/main.js' },
+    output: { filename: 'main.js' },
     target: 'electron-main',
     module: {
       rules: [
@@ -23,7 +23,7 @@ module.exports = [
   {
     mode: "development",
     entry: ['./src/renderer.js'],
-    output: { filename: './out/renderer.js' },
+    output: { filename: 'renderer.js' },
     target: 'electron-renderer',
     module: {
       rules: [
