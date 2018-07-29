@@ -30,8 +30,15 @@ if (ipcRenderer) {
     } else if (level === 'silly') {
       level = 'debug';
     }
-
-    originalConsole[level].call(originalConsole.context, text);
+    let msg = '';
+    let args = [];
+    if (Array.isArray(text)) {
+      msg = text.shift();
+      args = text;
+    } else {
+      msg = text;
+    }
+    originalConsole[level].call(originalConsole.context, msg, ...args);
   });
 }
 
