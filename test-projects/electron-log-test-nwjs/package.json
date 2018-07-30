@@ -8,6 +8,6 @@
     "start": "nw --enable-logging ."
   },
   "dependencies": {
-    "nw": ">=0.22"
+    "nw": "0.31"
   }
 }

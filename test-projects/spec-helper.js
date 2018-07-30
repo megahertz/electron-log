@@ -7,14 +7,14 @@ const exec = require('child_process').exec;
 module.exports = {
   runApplication(appName) {
     return new Promise((resolve, reject) => {
-      exec(
+      const app = exec(
         'npm start -- --test',
         { cwd: path.join(__dirname, appName) },
-        (error, stdout, stderr) => {
-          error ? reject(error) : resolve();
-          console.log(stdout + stderr);
-        }
+        (error) => error ? reject(error) : resolve()
       );
+
+      app.stdout.pipe(process.stdout);
+      app.stderr.pipe(process.stderr);
     });
   },
 
