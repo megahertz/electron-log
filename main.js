@@ -20,16 +20,18 @@ var transports = {
   rendererConsole: transportRendererConsole
 };
 
+var ELECTRON_LOG_LABEL = '';
+
 module.exports = {
   transports: transports,
-
-  error:   log.bind(null, transports, 'error'),
-  warn:    log.bind(null, transports, 'warn'),
-  info:    log.bind(null, transports, 'info'),
-  verbose: log.bind(null, transports, 'verbose'),
-  debug:   log.bind(null, transports, 'debug'),
-  silly:   log.bind(null, transports, 'silly'),
-  log:     log.bind(null, transports, 'info')
+  error:      log.bind(null, transports, 'error', getLabel),
+  warn:       log.bind(null, transports, 'warn', getLabel),
+  info:       log.bind(null, transports, 'info', getLabel),
+  verbose:    log.bind(null, transports, 'verbose', getLabel),
+  debug:      log.bind(null, transports, 'debug', getLabel),
+  silly:      log.bind(null, transports, 'silly', getLabel),
+  log:        log.bind(null, transports, 'info', getLabel),
+  setLabel:   (label) => { ELECTRON_LOG_LABEL = label; }
 };
 
 module.exports.default = module.exports;
@@ -42,9 +44,17 @@ if (electron && electron.ipcMain) {
   }
 }
 
-function onRendererLog(event, data) {
+function getLabel() {
+  return ELECTRON_LOG_LABEL;
+}
+
+function onRendererLog(event, data, label) {
+
+  function getRendererLabel() { return label; }
+
   if (Array.isArray(data)) {
     data.unshift(transports);
+    data.splice(2, 0, getRendererLabel);
     log.apply(null, data);
   }
 }

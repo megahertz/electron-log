@@ -10,16 +10,18 @@ try {
 }
 
 var originalConsole = require('./lib/original-console');
+var ELECTRON_LOG_LABEL = '';
 
 if (ipcRenderer) {
   module.exports = {
-    error:   log.bind(null, 'error'),
-    warn:    log.bind(null, 'warn'),
-    info:    log.bind(null, 'info'),
-    verbose: log.bind(null, 'verbose'),
-    debug:   log.bind(null, 'debug'),
-    silly:   log.bind(null, 'silly'),
-    log:     log.bind(null, 'info')
+    error:    log.bind(null, 'error'),
+    warn:     log.bind(null, 'warn'),
+    info:     log.bind(null, 'info'),
+    verbose:  log.bind(null, 'verbose'),
+    debug:    log.bind(null, 'debug'),
+    silly:    log.bind(null, 'silly'),
+    log:      log.bind(null, 'info'),
+    setLabel: (label) => { ELECTRON_LOG_LABEL = label; }
   };
 
   module.exports.default = module.exports;
@@ -40,6 +42,7 @@ if (ipcRenderer) {
 
 function log() {
   var data = Array.prototype.slice.call(arguments);
+  var label = ELECTRON_LOG_LABEL;
 
   data = data.map(function(obj) {
     if (obj instanceof Error) {
@@ -49,5 +52,5 @@ function log() {
     return obj;
   });
 
-  ipcRenderer.send('__ELECTRON_LOG__', data);
+  ipcRenderer.send('__ELECTRON_LOG__', data, label);
 }
