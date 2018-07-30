@@ -31,7 +31,8 @@ if (ipcRenderer) {
       level = 'debug';
     }
 
-    originalConsole[level].apply(originalConsole.context,
+    originalConsole[level].apply(
+      originalConsole.context,
       typeof data === 'string' ? [data] : data
     );
   });
