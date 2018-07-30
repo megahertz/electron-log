@@ -10,6 +10,7 @@ export interface ILogMessage {
   data: any[];
   date: Date;
   level: LogLevel;
+  label: string;
 }
 
 export declare interface ITransport {
@@ -61,6 +62,7 @@ declare interface IElectronLog {
   debug(...params: any[]): void;
   silly(...params: any[]): void;
   log(...params: any[]): void;
+  setLabel(n: string): void;
 }
 
 export declare function error(...params: any[]): void;
@@ -70,6 +72,7 @@ export declare function verbose(...params: any[]): void;
 export declare function debug(...params: any[]): void;
 export declare function silly(...params: any[]): void;
 export declare function log(...params: any[]): void;
+export declare function setLabel(n: string): void;
 export declare const transports: ITransports;
 
 declare const _d: IElectronLog;

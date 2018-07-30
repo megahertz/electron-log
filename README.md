@@ -38,6 +38,11 @@ electron-log supports the following log levels:
 
     error, warn, info, verbose, debug, silly
 
+### Set log label
+
+You can set a label for each logger via `log.setLabel('module1');`
+This will be accessible in the format function as `msg.label`
+
 ### Transport
 
 Transport is a simple function which requires an object which describes
@@ -64,7 +69,7 @@ var format = require('util');
 
 log.transports.console = function(msg) {
   var text = util.format.apply(util, msg.data);
-  console.log(`[${msg.date.toLocaleTimeString()} ${msg.level}] ${text}`);
+  console.log(`[${msg.date.toLocaleTimeString()} ${msg.level}] ${msg.label} ${text}`);
 };
 ```
 Please be aware that if you override a transport function the default
@@ -78,7 +83,7 @@ log.transports.console.level = 'warn';
 
 /**
  * Set output format template. Available variables:
- * Main: {level}, {text}
+ * Main: {level}, {label}, {text}
  * Date: {y},{m},{d},{h},{i},{s},{ms},{z}
  */
 log.transports.console.format = '{h}:{i}:{s}:{ms} {text}';
