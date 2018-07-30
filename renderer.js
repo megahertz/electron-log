@@ -24,21 +24,16 @@ if (ipcRenderer) {
 
   module.exports.default = module.exports;
 
-  ipcRenderer.on('__ELECTRON_LOG_RENDERER__', function(event, level, text) {
+  ipcRenderer.on('__ELECTRON_LOG_RENDERER__', function(event, level, data) {
     if (level === 'verbose') {
       level = 'log';
     } else if (level === 'silly') {
       level = 'debug';
     }
-    let msg = '';
-    let args = [];
-    if (Array.isArray(text)) {
-      msg = text.shift();
-      args = text;
-    } else {
-      msg = text;
-    }
-    originalConsole[level].call(originalConsole.context, msg, ...args);
+
+    originalConsole[level].apply(originalConsole.context,
+      typeof data === 'string' ? [data] : data
+    );
   });
 }
 
