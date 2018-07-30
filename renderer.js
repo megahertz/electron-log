@@ -24,14 +24,17 @@ if (ipcRenderer) {
 
   module.exports.default = module.exports;
 
-  ipcRenderer.on('__ELECTRON_LOG_RENDERER__', function(event, level, text) {
+  ipcRenderer.on('__ELECTRON_LOG_RENDERER__', function(event, level, data) {
     if (level === 'verbose') {
       level = 'log';
     } else if (level === 'silly') {
       level = 'debug';
     }
 
-    originalConsole[level].call(originalConsole.context, text);
+    originalConsole[level].apply(
+      originalConsole.context,
+      typeof data === 'string' ? [data] : data
+    );
   });
 }
 
