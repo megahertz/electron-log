@@ -1,16 +1,9 @@
-dist: trusty
 sudo: false
 language: node_js
+
 node_js:
   - "6"
   - "8"
   - "node"
-addons:
-  apt:
-    packages:
-      - xvfb
-install:
-  - npm install
-  - npm run test-projects-install
-  - export DISPLAY=':99.0'
-  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+
+script: xvfb-run npm test

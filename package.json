@@ -2,21 +2,16 @@
   "name": "electron-log",
   "version": "2.2.17",
   "description": "Just a very simple logging module for your Electron application",
-  "main": "./index.js",
+  "main": "index.js",
   "scripts": {
-    "test": "npm run jshint && npm run jscs && npm run tslint && npm run mocha && npm run test-projects",
-    "mocha": "mocha index.spec.js lib/{,**/}{,**/}*.spec.js",
-    "test-projects": "mocha test-projects/**/*.spec.js",
-    "test-projects-install": "node test-projects/install.js",
-    "jscs": "jscs .",
-    "jshint": "jshint --exclude ./node_modules,./test-projects . --verbose",
+    "lint": "eslint '**/*.js' --ignore-pattern '**/dist/*.js'",
+    "mocha": "mocha '**/*.spec.js' --exclude 'test-projects/**'",
+    "test": "npm run lint && npm run tslint && npm run mocha && npm run test-projects",
+    "test-projects": "mocha 'test-projects/**/*.spec.js'",
     "tslint": "tslint electron-log.d.ts"
   },
-  "typings": "./electron-log.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/megahertz/electron-log.git"
-  },
+  "typings": "electron-log.d.ts",
+  "repository": "megahertz/electron-log",
   "files": [
     "index.js",
     "main.js",
@@ -39,18 +34,22 @@
   ],
   "author": "Alexey Prokhorov",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/megahertz/electron-log/issues"
-  },
+  "bugs": "https://github.com/megahertz/electron-log/issues",
   "homepage": "https://github.com/megahertz/electron-log#readme",
   "devDependencies": {
+    "@babel/core": "*",
+    "@babel/preset-env": "*",
+    "babel-loader": "*",
     "chai": "*",
-    "jscs": "*",
-    "jshint": "*",
-    "jshint-reporter-jscs": "*",
+    "electron": "*",
+    "eslint": "*",
+    "eslint-config-airbnb-base": "*",
+    "eslint-plugin-import": "*",
     "mocha": "*",
-    "rewire": "*",
+    "nw": "0.31",
     "tslint": "*",
-    "typescript": "*"
+    "typescript": "*",
+    "webpack": "*",
+    "webpack-cli": "*"
   }
 }

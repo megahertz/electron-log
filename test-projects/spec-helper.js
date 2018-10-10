@@ -1,16 +1,16 @@
 'use strict';
 
-const fs   = require('fs');
-const path = require('path');
-const exec = require('child_process').exec;
+var fs   = require('fs');
+var path = require('path');
+var exec = require('child_process').exec;
 
 module.exports = {
-  runApplication(appName) {
-    return new Promise((resolve, reject) => {
-      const app = exec(
+  runApplication: function (appName) {
+    return new Promise(function (resolve, reject) {
+      var app = exec(
         'npm start -- --test',
         { cwd: path.join(__dirname, appName) },
-        (error) => error ? reject(error) : resolve()
+        function (error) { error ? reject(error) : resolve() }
       );
 
       app.stdout.pipe(process.stdout);
@@ -18,64 +18,69 @@ module.exports = {
     });
   },
 
-  readLog(appName) {
-    const logPath = path.join(getLogPath(appName), 'log.log');
-    return new Promise((resolve, reject) => {
-      fs.readFile(logPath, 'utf8', (error, data) => {
+  readLog: function (appName) {
+    var logPath = path.join(getLogPath(appName), 'log.log');
+    return new Promise(function (resolve, reject) {
+      fs.readFile(logPath, 'utf8', function (error, data) {
         if (error) return reject(error);
         resolve(data.split('\n'));
       });
     });
   },
 
-  removeLogDir(appName) {
-    const logDir = getLogPath(appName);
+  removeLogDir: function (appName) {
+    var logDir = getLogPath(appName);
     if (!logDir) {
       return Promise.reject('Could not get log path');
     }
 
-    return new Promise((resolve, reject) => {
-      const cmd = process.platform === 'win32' ? 'rd /s /q' : 'rm -r';
-      exec(`${cmd} ${logDir}`, (error, stdout, stderr) => {
+    return new Promise(function (resolve) {
+      var cmd = process.platform === 'win32' ? 'rd /s /q' : 'rm -rf';
+      exec(cmd + ' ' + logDir, function (error) {
         if (error) {
           console.warn(error.message);
         }
+
         resolve();
       });
     });
   },
 
-  run(appName) {
-    let logs;
+  run: function (appName) {
+    var logs;
+    var self = this;
+
     return Promise.resolve()
-      .then(() => this.removeLogDir(appName))
-      .then(() => this.runApplication(appName))
-      .then(() => this.readLog(appName))
-      .then(lines => logs = lines)
-      .then(() => this.removeLogDir(appName))
-      .then(() => logs);
+      .then(function () { return self.removeLogDir(appName) })
+      .then(function () { return self.runApplication(appName) })
+      .then(function () { return self.readLog(appName) })
+      .then(function (lines) { logs = lines })
+      .then(function () { return self.removeLogDir(appName) })
+      .then(function () { return logs });
   }
 };
 
 function getLogPath(appName) {
   if (!appName) return false;
 
-  const home = process.env.HOME;
+  var home = process.env.HOME;
 
-  switch(process.platform) {
+  appName = 'electron-log-test-' + appName;
+
+  switch (process.platform) {
     case 'linux': {
       if (!home) return false;
-      return `${home}/.config/${appName}`;
+      return path.join(home, '.config', appName);
     }
 
     case 'darwin': {
       if (!home) return false;
-      return `${home}/Library/Logs/${appName}`;
+      return path.join(home, 'Library/Logs', appName);
     }
 
     default: {
       if (!process.env.APPDATA) return false;
-      return `${process.env.APPDATA}\\${appName}`;
+      return path.join(process.env.APPDATA, appName);
     }
   }
 }

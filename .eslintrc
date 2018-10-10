@@ -1,0 +1,42 @@
+{
+  "extends": "airbnb-base/legacy",
+  "env": {
+    "es6": true,
+    "mocha": true,
+    "node": true
+  },
+  "rules": {
+    "consistent-return": 0,
+    "func-names": 0,
+    "global-require": 0,
+    "key-spacing": [2, { "beforeColon": false, "afterColon": true, "mode": "minimum" }],
+    "max-len": [2, { "code": 80 }],
+    "no-console": 0,
+    "no-continue": 0,
+    "no-multi-spaces": [2, {
+      "exceptions": {
+        "AssignmentExpression": true,
+        "AssignmentPattern": true,
+        "VariableDeclarator": true
+      }
+    }],
+    "no-param-reassign": 0,
+    "no-prototype-builtins": 0,
+    "no-restricted-syntax": 0,
+    "no-unused-expressions": 0,
+    "no-use-before-define": 0,
+    "prefer-promise-reject-errors": 0,
+    "semi": [2, "always", { "omitLastInOneLineBlock": true }],
+    "spaced-comment": [2, "always", {
+      "line": {
+        "markers": ["*package", "!", ",", "noinspection", "region", "endregion"]
+      },
+      "block": {
+        "balanced": true,
+        "markers": ["*package", "!", ","],
+        "exceptions": ["*"]
+      }
+    }],
+    "vars-on-top": 0
+  }
+}

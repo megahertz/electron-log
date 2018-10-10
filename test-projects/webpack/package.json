@@ -1,0 +1,11 @@
+{
+  "name": "electron-log-test-webpack",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./dist/main.js",
+  "scripts": {
+    "build": "../../node_modules/.bin/webpack",
+    "start": "npm run build && ../../node_modules/.bin/electron ."
+  },
+  "author": "Alexey Prokhorov"
+}

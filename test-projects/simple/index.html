@@ -7,8 +7,9 @@
 <body>
 
 <script>
-  const log = require('../..');
+  var log = require('../..');
 
+  log.transports.mainConsole.level = 'silly';
   log.warn('log from a renderer process');
 
   window.open('file://' + __dirname + '/index-second.html');

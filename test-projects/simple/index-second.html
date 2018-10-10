@@ -7,14 +7,13 @@
 <body>
 
 <script>
-  const remote = require('electron').remote;
-  const log    = require('../..');
-  const proc   = remote.process;
+  var electron = require('electron');
+  var log      = require('../..');
+  var proc     = electron.remote.process;
 
   log.warn('log from the second renderer process');
-
-  if (proc.argv.indexOf('--test') !== -1) {
-    proc.exit(0);
+  if (proc.argv.indexOf('--test') > -1) {
+    setImmediate(function () { proc.exit() });
   }
 </script>
 

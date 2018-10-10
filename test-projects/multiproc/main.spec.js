@@ -1,15 +1,14 @@
 'use strict';
 
-const expect = require('chai').expect;
-const helper = require('../spec-helper');
+var expect = require('chai').expect;
+var helper = require('../spec-helper');
 
-const APP_NAME = 'electron-log-test-simple';
-
-describe('simple test project', function() {
+describe('multiple process test project', function () {
   this.timeout(8000);
 
-  it('should write one line to a log file', () => {
-    return helper.run(APP_NAME).then((logs) => {
+  xit('should write 3 lines to a log file', function () {
+    return helper.run('multiproc').then(function (logs) {
+      console.log(logs);
       expect(logs.length).to.equal(4);
       expect(logs[0]).to.match(
         /\[[\d-]{10} [\d:.]{12}] \[warn] log from the main process/
@@ -21,5 +20,5 @@ describe('simple test project', function() {
         /\[[\d-]{10} [\d:.]{12}] \[warn] log from the second renderer process/
       );
     });
-  })
+  });
 });

@@ -1,17 +1,17 @@
 'use strict';
 
-const path          = require('path');
-const electron      = require('electron');
-const app           = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-const log           = require('../..');
+var path          = require('path');
+var electron      = require('electron');
+var app           = electron.app;
+var BrowserWindow = electron.BrowserWindow;
+var log           = require('../..');
 
-let win;
+var win;
 
 function createWindow() {
   win = new BrowserWindow({ width: 800, height: 600 });
   win.loadURL('file://' + path.join(__dirname, 'index.html'));
-  win.on('closed', () => win = null);
+  win.on('closed', function () { win = null });
 
   log.warn('log from the main process');
 }
@@ -19,13 +19,13 @@ function createWindow() {
 app.on('ready', createWindow);
 
 
-app.on('window-all-closed', () => {
+app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
-app.on('activate', () => {
+app.on('activate', function () {
   if (!win) {
     createWindow();
   }
