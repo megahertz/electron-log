@@ -9,6 +9,7 @@ var transportRendererConsole  = require('./lib/transports/renderer-console');
 
 module.exports = {
   hooks: [],
+  levels: ['error', 'warn', 'info', 'verbose', 'debug', 'silly'],
   variables: {
     processType: process.type
   }
@@ -22,7 +23,7 @@ module.exports.transports = {
   rendererConsole: transportRendererConsole(module.exports)
 };
 
-log.LEVELS.forEach(function (level) {
+module.exports.levels.forEach(function (level) {
   module.exports[level] = log.bind(null, module.exports, level);
 });
 
