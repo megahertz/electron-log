@@ -1,20 +1,32 @@
-export type LogLevel = "error" | "warn" | "info" | "verbose" | "debug" |
+export type ILogLevel = "error" | "warn" | "info" | "verbose" | "debug" |
   "silly";
-export type LevelOption = LogLevel | false;
+export type ILevelOption = ILogLevel | false;
+export type ILevels = Array<ILogLevel | string>;
 
 export type IFormat = (msg: ILogMessage) => void;
-export type FOpenFlags = "r" | "r+" | "rs+" | "w" | "wx" | "w+" | "wx+" |
+
+export type IFOpenFlags = "r" | "r+" | "rs+" | "w" | "wx" | "w+" | "wx+" |
   "a" | "ax" | "a+" | "ax+";
+
+export type IHook = (
+  msg: ILogMessage,
+  selectedTransports?: ITransports,
+) => ILogMessage | false;
+
+export interface IVariables {
+  [name: string]: any;
+}
 
 export interface ILogMessage {
   data: any[];
   date: Date;
-  level: LogLevel;
+  level: ILogLevel;
+  variables?: IVariables;
 }
 
 export declare interface ITransport {
   (msg: ILogMessage): void;
-  level: LevelOption;
+  level: ILevelOption;
 }
 
 export interface IConsoleTransport extends ITransport {
@@ -23,19 +35,20 @@ export interface IConsoleTransport extends ITransport {
 
 export interface IFileTransport extends ITransport {
   appName?: string;
+  bytesWritten: number;
   file?: string;
+  fileName: string;
   format: IFormat | string;
   maxSize: number;
-  stream: any;
-  streamConfig?: {
-    flags?: FOpenFlags;
-    encoding?: string;
-    fd?: number;
+  sync: boolean;
+  writeOptions?: {
+    flag?: IFOpenFlags;
     mode?: number;
-    autoClose?: boolean;
-    start?: number;
+    encoding?: string;
   };
-  findLogPath(appName?: string): string;
+  clear();
+  findLogPath(appName?: string, fileName?: string): string;
+  init();
 }
 
 export interface ILogSTransport extends ITransport {
@@ -48,12 +61,17 @@ declare interface ITransports {
   console: IConsoleTransport;
   file: IFileTransport;
   logS: ILogSTransport;
-  rendererConsole: IConsoleTransport;
+  mainConsole?: ITransport;
+  rendererConsole?: ITransport;
   [key: string]: ITransport;
 }
 
 declare interface IElectronLog {
   transports: ITransports;
+  hooks: IHook[];
+  levels: ILevels;
+  variables: IVariables;
+
   error(...params: any[]): void;
   warn(...params: any[]): void;
   info(...params: any[]): void;
@@ -63,6 +81,11 @@ declare interface IElectronLog {
   log(...params: any[]): void;
 }
 
+export declare const transports: ITransports;
+export declare const hooks: IHook[];
+export declare const levels: ILevels;
+export declare const variables: IVariables;
+
 export declare function error(...params: any[]): void;
 export declare function warn(...params: any[]): void;
 export declare function info(...params: any[]): void;
@@ -70,7 +93,6 @@ export declare function verbose(...params: any[]): void;
 export declare function debug(...params: any[]): void;
 export declare function silly(...params: any[]): void;
 export declare function log(...params: any[]): void;
-export declare const transports: ITransports;
 
 declare const _d: IElectronLog;
 export default _d;
