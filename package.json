@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint '**/*.js' --ignore-pattern '**/dist/*.js'",
-    "mocha": "mocha '**/*.spec.js' --exclude 'test-projects/**'",
+    "mocha": "mocha '**/*.spec.js' --exclude 'test-projects/**' --exclude 'node_modules/**'",
     "test": "npm run lint && npm run tslint && npm run mocha && npm run test-projects",
     "test-projects": "mocha 'test-projects/**/*.spec.js'",
     "tslint": "tslint electron-log.d.ts"
