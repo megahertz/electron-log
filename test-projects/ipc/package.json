@@ -1,5 +1,5 @@
 {
-  "name": "electron-log-test-multiproc",
+  "name": "electron-log-test-ipc",
   "version": "1.0.0",
   "private": true,
   "main": "main.js",

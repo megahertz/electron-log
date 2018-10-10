@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple test project</title>
+</head>
+<body>
+
+<script>
+  var electron = require('electron');
+  var log      = require('../..');
+  var proc     = electron.remote.process;
+
+  log.transports.mainConsole.level = 'silly';
+  log.transports.file.level = 0;
+  log.transports.console = function (msg) {
+    log.transports.file(msg);
+    afterConsole();
+  };
+  log.transports.console.level = false;
+
+  log.info({
+    name: 'Log object in renderer'
+  });
+
+  log.info(function functionInRenderer() {
+    return 1;
+  });
+
+  log.info(new Error('Error in renderer'));
+
+  var callCount = 0;
+  function afterConsole() {
+    callCount++;
+    if (callCount >= 3 && proc.argv.indexOf('--test') > -1) {
+      setImmediate(function () { proc.exit() });
+    }
+  }
+</script>
+
+</body>
+</html>

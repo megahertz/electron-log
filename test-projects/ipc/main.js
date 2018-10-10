@@ -14,20 +14,23 @@ function createWindow() {
   win.on('closed', function () { win = null });
 
   log.transports.rendererConsole.level = 'silly';
-  log.transports.console.format = '[{h}:{i}:{s}.{ms}] [{processType} ] {text}';
+  log.transports.file.level = 0;
+  log.transports.console = function (msg) {
+    log.transports.file(msg);
+  };
+  log.transports.console.level = false;
 
-
-  setTimeout(function () {
+  win.webContents.once('dom-ready', function () {
     log.info({
-      name: 'Test object'
+      name: 'Log object in main'
     });
 
-    log.info(function testFunction() {
+    log.info(function functionInMain() {
       return 1;
     });
 
-    log.info(new Error('Test error'));
-  }, 599);
+    log.info(new Error('Error in main'));
+  });
 }
 
 app.on('ready', createWindow);
