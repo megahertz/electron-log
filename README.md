@@ -7,7 +7,7 @@
 
 Just a simple logging module for your Electron or NW.js application.
 No dependencies. No complicated configuration. Just require and use.
-It can be used without Electron.
+Also, it can be used without Electron in any node
 
 By default it writes logs to the following locations:
 
@@ -24,13 +24,10 @@ Install with [npm](https://npmjs.org/package/electron-log):
 ## Usage
 
 ```js
-var log = require('electron-log');
+const log = require('electron-log');
 
 log.info('Hello, log');
 ```
-
-If you would like to use electron-log in a renderer process only, you
-should require it in the main process too.
 
 ### Log levels
 
@@ -40,100 +37,104 @@ electron-log supports the following log levels:
 
 ### Transport
 
-Transport is a simple function which requires an object which describes
-a message. By default, two transports are active: console and file.
+Transport is a simple function which does some work with log message.
+By default, two transports are active: console and file.
 
-**Please be aware that the file log level is 'warn' by default, so info
-and debug messages won't be written to a log file.**
+#### Console transport
 
-The file path is dependent on the current platform.
+Just prints a log message to application console (main process) or to
+DevTool console (renderer process).
 
-Transport config is available only inside the main process.
+##### Options
 
-#### Disable default transport:
+- **[format](doc/format.md)**, default
+  ``'[{h}:{i}:{s}.{ms}] [{level}] {text}'``
+- **level**, default 'silly'
+
+#### File transport
+
+The file transport writes log messages to a file.
+
+##### Options
+
+- **appName** determines a location of log file, something like
+  `~/.config/<app name>/log.log` depending on OS. By default
+  electron-log reads this value from `name` or `productName` value in
+  `package.json`. In most cases you should keep default value.
+
+- **file** - The full log file path. I can recommend to change this
+  value only if you strongly understand what are you doing. If set,
+  `appName` and `fileName` options are ignored.
+
+- **fileName**, default 'log.log'
+- **[format](doc/format.md)**, default
+  ``'[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}'``
+- **level**, default 'silly'
+- **maxSize** of log file in bytes, 1048576 (1mb) by default. When a
+  log file exceeds this limit, it will be moved to log.old.log file
+  and the current file will be cleared. You can set it to `0` to disable
+  this feature.
+- **sync** allows to write a log file synchronously. Default to false.
+- **writeOptions**
+    - **[flag](https://nodejs.org/api/fs.html#fs_file_system_flags)**,
+      default 'a'
+    - **mode**, default 0666
+    - **encoding**, default 'utf8'
+
+##### Methods
+
+- **clear()** - Clear the current log file
+- **findLogPath()** - Return full path of the current log file
+- **init()** - In most cases, you don't need to call it manually. Try
+  to call only if you change `appName`, `file` or `fileName` property,
+  but it has no effect.
+
+#### Renderer console transport
+
+When logging inside main process, it shows log in DevTools console too.
+This transport can impact on performance, so it's disabled by default
+for packaged application.
+
+#### Main console transport
+
+When logging inside renderer process, it shows log in application
+console too. This transport can impact on performance, so it's disabled
+by default for packaged application.
+
+#### Disable a transport
+
+Just set level property to false, for example:
 
 ```js
 log.transports.file.level = false;
 log.transports.console.level = false;
 ```
 
-#### Override transport:
+#### [Override/add a custom transport](doc/extend.md#transport)
 
-```js
-var format = require('util');
+Transport is just a function `(msg: IMessage) => void`, so you can
+easily override/add your own transport.
+[More info.](doc/extend.md#transport)
 
-log.transports.console = function(msg) {
-  var text = util.format.apply(util, msg.data);
-  console.log(`[${msg.date.toLocaleTimeString()} ${msg.level}] ${text}`);
-};
-```
-Please be aware that if you override a transport function the default
-transport options (like level or format) will be undefined.
+### [Hooks](doc/extend.md#hooks)
 
-#### Console Transport
+In some situations, you may want to get more control over logging. Hook
+is a function which is called on each logging.
 
-```js
-// Log level
-log.transports.console.level = 'warn';
+`(msg: IMessage, transports: ITransports) => IMessage`
 
-/**
- * Set output format template. Available variables:
- * Main: {level}, {text}
- * Date: {y},{m},{d},{h},{i},{s},{ms},{z}
- */
-log.transports.console.format = '{h}:{i}:{s}:{ms} {text}';
-
-// Set a function which formats output
-log.transports.console.format = (msg) => util.format.apply(util, msg.data);
-```
-
-#### Renderer Console transport
-Show logs in Chromium DevTools Console. It has the same options as
-console transport.
-
-#### File transport
-
-```js
-// Same as for console transport
-log.transports.file.level = 'warn';
-log.transports.file.format = '{h}:{i}:{s}:{ms} {text}';
-
-// Set approximate maximum log size in bytes. When it exceeds,
-// the archived log will be saved as the log.old.log file
-log.transports.file.maxSize = 5 * 1024 * 1024;
-
-// Write to this file, must be set before first logging
-log.transports.file.file = __dirname + '/log.txt';
-
-// fs.createWriteStream options, must be set before first logging
-// you can find more information at
-// https://nodejs.org/api/fs.html#fs_fs_createwritestream_path_options
-log.transports.file.streamConfig = { flags: 'w' };
-
-// set existed file stream
-log.transports.file.stream = fs.createWriteStream('log.txt');
-```
-
-By default, file transport reads a productName or name property from
-package.json to determine a log path like
-`~/.config/<app name>/log.log`. If you have no package.json or you want
-to specify another path, just set the appName property:
-
-```js
-log.transports.file.appName = 'test';
-```
-This value should be set before the first log method call.
-
-## Renderer process
-
-Since version 2.0.0 this package works differently in main and renderer
-processes. When it's included in a renderer process it sends logs to
-the main process through IPC. There are no API changes, you can still
-require the package by the same way both in main and renderer processes,
-but please be aware that transport configuration is available only
-inside the main process.
+[More info.](doc/extend.md#hooks)
 
 ## Change Log
+
+**3.0.0-beta**
+ - Now IPC is used only for some transports, which are disabled for a
+   packaged application. So now electron-log works using almost the same
+   way in main and renderer processes. The reason - IPC is pretty slow
+   and can freeze an application when there are a lot of calls.
+ - File transport doesn't use stream.Writable anymore.
+ - New feature: hooks.
+ - New feature: log file clearing.
 
 **2.1.0**
  - Add Renderer Console transport
