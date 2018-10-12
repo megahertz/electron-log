@@ -13,7 +13,7 @@
 
   log.warn('log from the second renderer process');
   if (proc.argv.indexOf('--test') > -1) {
-    setImmediate(function () { proc.exit() });
+    setTimeout(function () { proc.exit() }, 50);
   }
 </script>
 

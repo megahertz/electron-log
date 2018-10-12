@@ -8,5 +8,5 @@ var proc = electron.remote.process;
 log.warn('log from a renderer process');
 
 if (proc.argv.indexOf('--test') !== -1) {
-  setImmediate(function () { proc.exit() });
+  setTimeout(function () { proc.exit() }, 50);
 }

@@ -33,7 +33,7 @@
   function afterConsole() {
     callCount++;
     if (callCount >= 3 && proc.argv.indexOf('--test') > -1) {
-      setImmediate(function () { proc.exit() });
+      setTimeout(function () { proc.exit() }, 50);
     }
   }
 </script>
