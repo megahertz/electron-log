@@ -112,7 +112,7 @@ log.transports.console.level = false;
 
 #### [Override/add a custom transport](doc/extend.md#transport)
 
-Transport is just a function `(msg: IMessage) => void`, so you can
+Transport is just a function `(msg: ILogMessage) => void`, so you can
 easily override/add your own transport.
 [More info.](doc/extend.md#transport)
 
@@ -121,7 +121,7 @@ easily override/add your own transport.
 In some situations, you may want to get more control over logging. Hook
 is a function which is called on each logging.
 
-`(msg: IMessage, transports: ITransports) => IMessage`
+`(msg: ILogMessage, transports: ITransports) => ILogMessage`
 
 [More info.](doc/extend.md#hooks)
 
