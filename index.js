@@ -41,6 +41,8 @@ function isDev() {
   if (!electron) return false;
 
   // based on sindresorhus/electron-is-dev
-  var app = electron.app || electron.remote.app;
+  var app = electron.app || (electron.remote && electron.remote.app);
+  if (!app) return false;
+
   module.exports = !app.isPackaged || process.env.ELECTRON_IS_DEV === '1';
 }
