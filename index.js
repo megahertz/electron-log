@@ -6,17 +6,11 @@ var transportFile             = require('./lib/transports/file');
 var transportLogS             = require('./lib/transports/log-s');
 var transportMainConsole      = require('./lib/transports/main-console');
 var transportRendererConsole  = require('./lib/transports/renderer-console');
-
-var electron;
-try {
-  electron = require('electron');
-} catch (e) {
-  electron = null;
-}
+var utils                     = require('./lib/utils');
 
 module.exports = {
   hooks: [],
-  isDev: isDev(),
+  isDev: utils.isDev(),
   levels: ['error', 'warn', 'info', 'verbose', 'debug', 'silly'],
   variables: {
     processType: process.type
@@ -36,13 +30,3 @@ module.exports.levels.forEach(function (level) {
 });
 
 module.exports.default = module.exports;
-
-function isDev() {
-  if (!electron) return false;
-
-  // based on sindresorhus/electron-is-dev
-  var app = electron.app || (electron.remote && electron.remote.app);
-  if (!app) return false;
-
-  module.exports = !app.isPackaged || process.env.ELECTRON_IS_DEV === '1';
-}
