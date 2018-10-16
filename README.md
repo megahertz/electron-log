@@ -124,6 +124,24 @@ log.transports.file.appName = 'test';
 ```
 This value should be set before the first log method call.
 
+### Named loggers
+It is possible to create named loggers. These will prepend each log message with their name.
+Named loggers are available in both main and renderer process and will be cached.
+
+```js
+var log = require('electron-log');
+var myLogger = log.createNamedLogger('MyLogger');
+
+myLogger.info('Hello, log');
+// Logs something like: '10:30:21:123 [info] MyLogger: some message'
+``
+
+The created logger will inherit the `transports` options but you can change them
+for each logger individually.
+
+**Note:** If you change the default `transports` options globally you should do
+it before creating a named logger.
+
 ## Renderer process
 
 Since version 2.0.0 this package works differently in main and renderer
