@@ -11,16 +11,11 @@ try {
 
 var originalConsole = require('./lib/original-console');
 
+var namedLoggers = {};
+
 if (ipcRenderer) {
-  module.exports = {
-    error:   log.bind(null, 'error'),
-    warn:    log.bind(null, 'warn'),
-    info:    log.bind(null, 'info'),
-    verbose: log.bind(null, 'verbose'),
-    debug:   log.bind(null, 'debug'),
-    silly:   log.bind(null, 'silly'),
-    log:     log.bind(null, 'info')
-  };
+  module.exports = createLogFunctions;
+  module.exports.createNamedLogger = createNamedLogger;
 
   module.exports.default = module.exports;
 
@@ -36,6 +31,26 @@ if (ipcRenderer) {
       typeof data === 'string' ? [data] : data
     );
   });
+}
+
+function createLogFunctions(prependMessage) {
+  return {
+    error:    log.bind(null, 'error', prependMessage),
+    warn:     log.bind(null, 'warn', prependMessage),
+    info:     log.bind(null, 'info', prependMessage),
+    verbose:  log.bind(null, 'verbose', prependMessage),
+    debug:    log.bind(null, 'debug', prependMessage),
+    silly:    log.bind(null, 'silly', prependMessage),
+    log:      log.bind(null, 'info', prependMessage)
+  }
+}
+
+function createNamedLogger(name) {
+  if (!namedLoggers[name]) {
+    namedLoggers[name] = createLogFunctions(transports, name + ':');
+  }
+
+  return namedLoggers[name];
 }
 
 function log() {

@@ -20,19 +20,29 @@ var transports = {
   rendererConsole: transportRendererConsole
 };
 
-module.exports = {
-  transports: transports,
+var namedLoggers = {};
 
-  error:   log.bind(null, transports, 'error'),
-  warn:    log.bind(null, transports, 'warn'),
-  info:    log.bind(null, transports, 'info'),
-  verbose: log.bind(null, transports, 'verbose'),
-  debug:   log.bind(null, transports, 'debug'),
-  silly:   log.bind(null, transports, 'silly'),
-  log:     log.bind(null, transports, 'info')
-};
+module.exports = Object.assign(
+  {
+    transports: transports,
+    createNamedLogger: createNamedLogger
+  },
+  createLogFunctions(transports, '')
+);
 
 module.exports.default = module.exports;
+
+function createLogFunctions(transports, prependMessage) {
+  return {
+    error:    log.bind(null, transports, 'error', prependMessage),
+    warn:     log.bind(null, transports, 'warn', prependMessage),
+    info:     log.bind(null, transports, 'info', prependMessage),
+    verbose:  log.bind(null, transports, 'verbose', prependMessage),
+    debug:    log.bind(null, transports, 'debug', prependMessage),
+    silly:    log.bind(null, transports, 'silly', prependMessage),
+    log:      log.bind(null, transports, 'info', prependMessage)
+  }
+}
 
 if (electron && electron.ipcMain) {
   electron.ipcMain.on('__ELECTRON_LOG__', onRendererLog);
@@ -47,4 +57,12 @@ function onRendererLog(event, data) {
     data.unshift(transports);
     log.apply(null, data);
   }
+}
+
+function createNamedLogger(name) {
+  if (!namedLoggers[name]) {
+    namedLoggers[name] = createLogFunctions(transports, name + ':');
+  }
+
+  return namedLoggers[name];
 }
