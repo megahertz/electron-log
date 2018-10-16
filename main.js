@@ -61,7 +61,7 @@ function onRendererLog(event, data) {
 
 function createNamedLogger(name) {
   if (!namedLoggers[name]) {
-    namedLoggers[name] = createLogFunctions(transports, name + ':');
+    namedLoggers[name] = createLogFunctions(Object.assign({}, transports), name + ':');
   }
 
   return namedLoggers[name];

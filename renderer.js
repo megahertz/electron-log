@@ -47,7 +47,7 @@ function createLogFunctions(prependMessage) {
 
 function createNamedLogger(name) {
   if (!namedLoggers[name]) {
-    namedLoggers[name] = createLogFunctions(transports, name + ':');
+    namedLoggers[name] = createLogFunctions(name + ':');
   }
 
   return namedLoggers[name];
