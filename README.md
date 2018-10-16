@@ -78,7 +78,7 @@ log.transports.console.level = 'warn';
 
 /**
  * Set output format template. Available variables:
- * Main: {level}, {text}
+ * Main: {level}, {text} {context}
  * Date: {y},{m},{d},{h},{i},{s},{ms},{z}
  */
 log.transports.console.format = '{h}:{i}:{s}:{ms} {text}';
@@ -96,7 +96,7 @@ console transport.
 ```js
 // Same as for console transport
 log.transports.file.level = 'warn';
-log.transports.file.format = '{h}:{i}:{s}:{ms} {text}';
+log.transports.file.format = '{h}:{i}:{s}:{ms} in {context} {text}';
 
 // Set approximate maximum log size in bytes. When it exceeds,
 // the archived log will be saved as the log.old.log file
@@ -123,6 +123,13 @@ to specify another path, just set the appName property:
 log.transports.file.appName = 'test';
 ```
 This value should be set before the first log method call.
+
+### Context-aware logging
+By default each log entry includes the current context. The context is defined by 
+[electron's `process.type` property](https://electronjs.org/docs/api/process#processtype).
+In other contexts (e.g. a worker script) you can set a different value.
+**Note:** Pay attention when changing this value inside the main or renderer process
+of electron, because it could caused undefined behaviour.
 
 ## Renderer process
 
