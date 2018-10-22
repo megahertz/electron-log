@@ -101,6 +101,15 @@ When logging inside renderer process, it shows log in application
 console too. This transport can impact on performance, so it's disabled
 by default for packaged application.
 
+#### Remote transport
+
+Sends a JSON POST request with ILogMessage in the body to the specified url.
+
+##### Options
+
+- **level**, default false
+- **url**
+
 #### Disable a transport
 
 Just set level property to false, for example:
@@ -135,6 +144,7 @@ is a function which is called on each logging.
  - File transport doesn't use stream.Writable anymore.
  - New feature: hooks.
  - New feature: log file clearing.
+ - log-s transport is renamed to remote.
 
 **2.1.0**
  - Add Renderer Console transport

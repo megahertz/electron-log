@@ -3,7 +3,7 @@
 var log                       = require('./lib/log');
 var transportConsole          = require('./lib/transports/console');
 var transportFile             = require('./lib/transports/file');
-var transportLogS             = require('./lib/transports/log-s');
+var transportRemote           = require('./lib/transports/remote');
 var transportMainConsole      = require('./lib/transports/main-console');
 var transportRendererConsole  = require('./lib/transports/renderer-console');
 var utils                     = require('./lib/utils');
@@ -20,7 +20,7 @@ module.exports = {
 module.exports.transports = {
   console: transportConsole(module.exports),
   file: transportFile(module.exports),
-  logS: transportLogS(module.exports),
+  remote: transportRemote(module.exports),
   mainConsole: transportMainConsole(module.exports),
   rendererConsole: transportRendererConsole(module.exports)
 };

@@ -3,7 +3,7 @@
 var expect = require('chai').expect;
 var helper = require('../spec-helper');
 
-describe('multiple process test project', function () {
+describe('ipc test project', function () {
   this.timeout(8000);
 
   it('should write 3 lines to a log file', function () {

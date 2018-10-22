@@ -51,7 +51,7 @@ export interface IFileTransport extends ITransport {
   init();
 }
 
-export interface ILogSTransport extends ITransport {
+export interface IRemoteTransport extends ITransport {
   client: object;
   depth: number;
   url?: string;
@@ -60,8 +60,8 @@ export interface ILogSTransport extends ITransport {
 declare interface ITransports {
   console: IConsoleTransport;
   file: IFileTransport;
-  logS: ILogSTransport;
   mainConsole?: ITransport;
+  remote: IRemoteTransport;
   rendererConsole?: ITransport;
   [key: string]: ITransport;
 }
