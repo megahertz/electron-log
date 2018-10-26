@@ -74,7 +74,7 @@ The file transport writes log messages to a file.
   log file exceeds this limit, it will be moved to log.old.log file
   and the current file will be cleared. You can set it to `0` to disable
   this feature.
-- **sync** allows to write a log file synchronously. Default to false.
+- **sync** Whether to write a log file synchronously. Default to true.
 - **writeOptions**
     - **[flag](https://nodejs.org/api/fs.html#fs_file_system_flags)**,
       default 'a'
