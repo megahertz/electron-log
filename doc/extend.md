@@ -20,25 +20,24 @@ transport options (like level or format) will be undefined.
 ## Hooks
 
 In some situations, you may want to get more control over logging. Hook
-is a function which is called on each logging.
+is a function which is called on each transport call.
 
-`(msg: ILogMessage, transports: ITransports) => ILogMessage`
+`(msg: ILogMessage, transport: ITransport) => ILogMessage`
 
-transports is a simple object `{ [name: string]: ITransport }` like
-`log.transports`, but it contains only transports which will be used
-for the current message. You can modify it to enable/disable some
-transports.
-
-Hook function return source or modified message. If hook function
-returns false, the current message will not be logged.
+Hook function return original or modified message. If the hook function
+returns false, the current transport will be skipped.
 
 In this example the file transport is disabled for all messages which
 contain 'password' phrase:
 
 ```js
-log.hooks.push((msg, transports) => {
+log.hooks.push((msg, transport) => {
+  if (transport !== log.transports.file) {
+    return msg;
+  }
+
   if (msg.data[0].includes('password')) {
-    delete transports.file;
+    return false;
   }
 
   return msg;

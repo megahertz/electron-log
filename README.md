@@ -128,9 +128,9 @@ easily override/add your own transport.
 ### [Hooks](doc/extend.md#hooks)
 
 In some situations, you may want to get more control over logging. Hook
-is a function which is called on each logging.
+is a function which is called on each transport call.
 
-`(msg: ILogMessage, transports: ITransports) => ILogMessage`
+`(msg: ILogMessage, transport: ITransport) => ILogMessage`
 
 [More info.](doc/extend.md#hooks)
 
