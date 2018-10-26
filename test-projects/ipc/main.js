@@ -14,7 +14,7 @@ function createWindow() {
   win.on('closed', function () { win = null });
 
   log.transports.rendererConsole.level = 'silly';
-  log.transports.file.level = 0;
+  log.transports.file.level = false;
   log.transports.console = function (msg) {
     log.transports.file(msg);
   };

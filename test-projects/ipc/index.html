@@ -12,9 +12,10 @@
   var proc     = electron.remote.process;
 
   log.transports.mainConsole.level = 'silly';
-  log.transports.file.level = 0;
+  log.transports.file.level = false;
   log.transports.console = function (msg) {
     log.transports.file(msg);
+    console.log('MSG', msg);
     afterConsole();
   };
   log.transports.console.level = false;
@@ -33,7 +34,7 @@
   function afterConsole() {
     callCount++;
     if (callCount >= 3 && proc.argv.indexOf('--test') > -1) {
-      setTimeout(function () { proc.exit() }, 50);
+      setTimeout(function () { proc.exit() }, 100);
     }
   }
 </script>
