@@ -7,12 +7,12 @@
 
 Just a simple logging module for your Electron or NW.js application.
 No dependencies. No complicated configuration. Just require and use.
-Also, it can be used without Electron in any node
+Also, it can be used without Electron in any node.js application.
 
 By default it writes logs to the following locations:
 
  * **on Linux:** `~/.config/<app name>/log.log`
- * **on OS X:** `~/Library/Logs/<app name>/log.log`
+ * **on macOS:** `~/Library/Logs/<app name>/log.log`
  * **on Windows:** `%USERPROFILE%\AppData\Roaming\<app name>\log.log`
 
 ## Installation
@@ -27,6 +27,7 @@ Install with [npm](https://npmjs.org/package/electron-log):
 const log = require('electron-log');
 
 log.info('Hello, log');
+log.warn('Some problem appears');
 ```
 
 ### Log levels
@@ -39,6 +40,12 @@ electron-log supports the following log levels:
 
 Transport is a simple function which does some work with log message.
 By default, two transports are active: console and file.
+
+You can set transport options or use methods using:
+
+`log.transports.console.format = '{h}:{i}:{s} {text}';`
+
+`log.transports.file.clear();`
 
 #### Console transport
 
