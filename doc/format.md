@@ -23,8 +23,8 @@ z           | Timezone offset
 Also, you can use your own values:
 
 ```js
-log.variables.label = 'dev'
-log.transports.console.format = ``'[{h}:{i}:{s}.{ms}] [{label}] {text}'``
+log.variables.label = 'dev';
+log.transports.console.format = '[{h}:{i}:{s}.{ms}] [{label}] {text}';
 ```
 
 ## Function
