@@ -50,12 +50,13 @@ You can set transport options or use methods using:
 #### Console transport
 
 Just prints a log message to application console (main process) or to
-DevTool console (renderer process).
+DevTools console (renderer process).
 
 ##### Options
 
 - **[format](doc/format.md)**, default
-  ``'[{h}:{i}:{s}.{ms}] [{level}] {text}'``
+  `'%c{h}:{i}:{s}.{ms}%c › {text}'` (main),
+  `'{h}:{i}:{s}.{ms} › {text}'` (renderer)
 - **level**, default 'silly'
 
 #### File transport
@@ -131,6 +132,25 @@ log.transports.console.level = false;
 Transport is just a function `(msg: ILogMessage) => void`, so you can
 easily override/add your own transport.
 [More info.](doc/extend.md#transport)
+
+### Colors
+
+Colors can be used for both main and DevTools console.
+
+`log.info('%cRed text. %cGreen text', 'color: red', 'color: green')`
+
+Available colors:
+ - initial (reset to default color)
+ - black
+ - red
+ - green
+ - yellow
+ - blue
+ - magenta
+ - cyan
+ - white
+ 
+For DevTools console you can use other CSS properties.
 
 ### [Hooks](doc/extend.md#hooks)
 

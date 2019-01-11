@@ -49,6 +49,7 @@ log.hooks.push((msg, transport) => {
  - data: any[] Arguments passed to log function
  - date: Date
  - level: 'error' | 'warn' | 'info' | 'verbose' | 'debug' | 'silly'
+ - styles: string[] strings like 'color: red' 
  - variables?: { [name: string]: any } When log message is created,
    values from log.variables are saved here (to make it possible to
    pass message between different processes)

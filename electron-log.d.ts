@@ -21,6 +21,7 @@ export interface ILogMessage {
   data: any[];
   date: Date;
   level: ILogLevel;
+  styles: string[];
   variables?: IVariables;
 }
 
