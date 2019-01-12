@@ -15,6 +15,10 @@ By default it writes logs to the following locations:
  * **on macOS:** `~/Library/Logs/<app name>/log.log`
  * **on Windows:** `%USERPROFILE%\AppData\Roaming\<app name>\log.log`
 
+Documentation on this page is for v3.0.0 beta version, which will be released
+in January. Documentation for v2.2.17 is
+[here](https://github.com/megahertz/electron-log/tree/v2.2.17).
+
 ## Installation
 
 Install with [npm](https://npmjs.org/package/electron-log):
