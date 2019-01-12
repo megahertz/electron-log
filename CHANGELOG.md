@@ -8,6 +8,8 @@
  - File transport doesn't use stream.Writable anymore.
  - New feature: hooks.
  - New feature: log file clearing.
+ - New feature: colors support.
+ - Changed default format option for console transport.
  - log-s transport is renamed to remote.
 
 **2.1.0**
