@@ -20,6 +20,10 @@ By default it writes logs to the following locations:
 Install with [npm](https://npmjs.org/package/electron-log):
 
     npm install electron-log
+    
+Install v3 beta version:
+
+    npm install electron-log@beta
 
 ## Usage
 
