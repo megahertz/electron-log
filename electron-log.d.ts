@@ -36,6 +36,7 @@ export interface IConsoleTransport extends ITransport {
 
 export interface IFileTransport extends ITransport {
   appName?: string;
+  archiveLog: (oldLogPath: string) => void;
   bytesWritten: number;
   file?: string;
   fileName: string;
