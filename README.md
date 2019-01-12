@@ -140,7 +140,7 @@ Colors can be used for both main and DevTools console.
 `log.info('%cRed text. %cGreen text', 'color: red', 'color: green')`
 
 Available colors:
- - initial (reset to default color)
+ - unset (reset to default color)
  - black
  - red
  - green
