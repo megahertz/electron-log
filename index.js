@@ -1,5 +1,6 @@
 'use strict';
 
+var catchErrors               = require('./lib/catchErrors');
 var log                       = require('./lib/log');
 var transportConsole          = require('./lib/transports/console');
 var transportFile             = require('./lib/transports/file');
@@ -9,6 +10,14 @@ var transportRendererConsole  = require('./lib/transports/rendererConsole');
 var utils                     = require('./lib/utils');
 
 module.exports = {
+  catchErrors: function callCatchErrors(options) {
+    var opts = Object.assign({}, {
+      log: module.exports.error,
+      showDialog: process.type === 'browser'
+    }, options || {});
+
+    catchErrors(opts);
+  },
   hooks: [],
   isDev: utils.isDev(),
   levels: ['error', 'warn', 'info', 'verbose', 'debug', 'silly'],

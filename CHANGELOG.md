@@ -9,6 +9,7 @@
  - New feature: hooks.
  - New feature: log file clearing.
  - New feature: colors support.
+ - New feature: errors catching.
  - Changed default format option for console transport.
  - log-s transport is renamed to remote.
 

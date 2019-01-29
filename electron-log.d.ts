@@ -68,11 +68,18 @@ declare interface ITransports {
   [key: string]: ITransport;
 }
 
+declare interface ICatchErrorsOptions {
+  showDialog?: boolean;
+  onError?(error: Error): void;
+}
+
 declare interface IElectronLog {
   transports: ITransports;
   hooks: IHook[];
   levels: ILevels;
   variables: IVariables;
+
+  catchErrors(options?: ICatchErrorsOptions): void;
 
   error(...params: any[]): void;
   warn(...params: any[]): void;
@@ -87,6 +94,8 @@ export declare const transports: ITransports;
 export declare const hooks: IHook[];
 export declare const levels: ILevels;
 export declare const variables: IVariables;
+
+export declare function catchErrors(options?: ICatchErrorsOptions): void;
 
 export declare function error(...params: any[]): void;
 export declare function warn(...params: any[]): void;
