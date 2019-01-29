@@ -79,7 +79,7 @@ declare interface IElectronLog {
   levels: ILevels;
   variables: IVariables;
 
-  catchErrors(options?: ICatchErrorsOptions): void;
+  catchErrors(options?: ICatchErrorsOptions): void | false;
 
   error(...params: any[]): void;
   warn(...params: any[]): void;
@@ -95,7 +95,9 @@ export declare const hooks: IHook[];
 export declare const levels: ILevels;
 export declare const variables: IVariables;
 
-export declare function catchErrors(options?: ICatchErrorsOptions): void;
+export declare function catchErrors(
+    options?: ICatchErrorsOptions,
+): void | false;
 
 export declare function error(...params: any[]): void;
 export declare function warn(...params: any[]): void;

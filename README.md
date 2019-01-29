@@ -150,7 +150,8 @@ electron-log can catch and log unhandled errors/rejected promises:
 
 - **showDialog**, default true for the main process. Set it to false to prevent
   showing a default electron error dialog
-- **onError**, (error) => void, default null - attach a custom error handler
+- **onError**, (error) => void | false, default null - attach a custom
+  error handler. If the handler returns false, this error will not be processed.
 
 ### [Hooks](doc/extend.md#hooks)
 
