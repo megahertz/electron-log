@@ -4,8 +4,8 @@ var log                       = require('./lib/log');
 var transportConsole          = require('./lib/transports/console');
 var transportFile             = require('./lib/transports/file');
 var transportRemote           = require('./lib/transports/remote');
-var transportMainConsole      = require('./lib/transports/main-console');
-var transportRendererConsole  = require('./lib/transports/renderer-console');
+var transportMainConsole      = require('./lib/transports/mainConsole');
+var transportRendererConsole  = require('./lib/transports/rendererConsole');
 var utils                     = require('./lib/utils');
 
 module.exports = {
