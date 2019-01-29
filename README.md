@@ -17,7 +17,8 @@ By default it writes logs to the following locations:
 
 Documentation on this page is for v3.0.0 beta version, which will be released
 in January. Documentation for v2.2.17 is
-[here](https://github.com/megahertz/electron-log/tree/v2.2.17).
+[here](https://github.com/megahertz/electron-log/tree/v2.2.17) and 
+[here is a migration guide](doc/migrate-v3.md).
 
 ## Installation
 
@@ -47,7 +48,10 @@ electron-log supports the following log levels:
 ### Transport
 
 Transport is a simple function which does some work with log message.
-By default, two transports are active: console and file.
+By default, two transports are active: console and file. 
+
+If you change some transport options, make sure you apply the changes both in
+main and renderer processes.
 
 You can set transport options or use methods using:
 
