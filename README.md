@@ -15,20 +15,11 @@ By default it writes logs to the following locations:
  * **on macOS:** `~/Library/Logs/<app name>/log.log`
  * **on Windows:** `%USERPROFILE%\AppData\Roaming\<app name>\log.log`
 
-Documentation on this page is for v3.0.0 beta version, which will be released
-in January. Documentation for v2.2.17 is
-[here](https://github.com/megahertz/electron-log/tree/v2.2.17) and 
-[here is a migration guide](doc/migrate-v3.md).
-
 ## Installation
 
 Install with [npm](https://npmjs.org/package/electron-log):
 
     npm install electron-log
-    
-Install v3 beta version:
-
-    npm install electron-log@beta
 
 ## Usage
 
@@ -38,6 +29,12 @@ const log = require('electron-log');
 log.info('Hello, log');
 log.warn('Some problem appears');
 ```
+
+### electron-log v2.x
+
+Documentation for 
+[v2.x is here](https://github.com/megahertz/electron-log/tree/v2.2.17).
+Read [the migration guide](doc/migrate-v3.md) to update to v3.x
 
 ### Log levels
 

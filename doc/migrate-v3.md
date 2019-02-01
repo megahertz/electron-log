@@ -1,5 +1,7 @@
 # Migration from v2 to v3
 
+`npm install electron-log@latest`
+
 In v3 each process is configured separately. So if you change some options, you
 should apply the changed both in main and renderer processes.
 
