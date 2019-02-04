@@ -1,7 +1,6 @@
 {
     "extends": "tslint:all",
     "rules": {
-        //"completed-docs": false,
         "file-name-casing": false,
         "member-ordering": false,
         "no-any": false,
