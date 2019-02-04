@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "strictNullChecks": true
+  },
+  "include": [
+    "./electron-log.d.ts"
+  ]
+}

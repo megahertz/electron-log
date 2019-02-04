@@ -1,3 +1,11 @@
 {
-    "extends": "tslint:recommended"
+    "extends": "tslint:all",
+    "rules": {
+        //"completed-docs": false,
+        "file-name-casing": false,
+        "member-ordering": false,
+        "no-any": false,
+        "only-arrow-functions": false,
+        "prefer-method-signature": false
+    }
 }
