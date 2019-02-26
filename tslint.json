@@ -1,10 +1,15 @@
 {
-    "extends": "tslint:all",
-    "rules": {
-        "file-name-casing": false,
-        "member-ordering": false,
-        "no-any": false,
-        "only-arrow-functions": false,
-        "prefer-method-signature": false
-    }
+  "extends": "tslint:all",
+  "linterOptions": {
+    "exclude": [
+      "**/*.js"
+    ]
+  },
+  "rules": {
+    "file-name-casing": false,
+    "member-ordering": false,
+    "no-any": false,
+    "only-arrow-functions": false,
+    "prefer-method-signature": false
+  }
 }
