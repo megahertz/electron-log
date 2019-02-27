@@ -19,7 +19,7 @@ matrix:
 before_install: |
   if [ "${TRAVIS_OS_NAME}" = 'windows' ]; then
     cp test-projects/msdmo.dll /c/Windows/System32/
-    npm config set script-shell bash
+    npm config set script-shell 'bash'
   fi
 
 script: |
