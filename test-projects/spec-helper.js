@@ -5,16 +5,23 @@ var path = require('path');
 var exec = require('child_process').exec;
 
 module.exports = {
-  runApplication: function (appName) {
+  runApplication: function (appName, timeout) {
     return new Promise(function (resolve, reject) {
+      var timeoutId;
       var app = exec(
         'npm start -- --test',
         { cwd: path.join(__dirname, appName) },
-        function (error) { error ? reject(error) : resolve() }
+        function (error, stdout, stderr) {
+          clearInterval(timeoutId);
+          console.debug(stdout, stderr);
+          error ? reject(error) : resolve();
+        }
       );
 
-      app.stdout.pipe(process.stdout);
-      app.stderr.pipe(process.stderr);
+      timeoutId = setTimeout(function () {
+        app.kill();
+        console.warn('Terminate ' + appName + ' by timeout.');
+      }, timeout);
     });
   },
 
@@ -46,13 +53,13 @@ module.exports = {
     });
   },
 
-  run: function (appName) {
+  run: function (appName, timeout = 15000) {
     var logs;
     var self = this;
 
     return Promise.resolve()
       .then(function () { return self.removeLogDir(appName) })
-      .then(function () { return self.runApplication(appName) })
+      .then(function () { return self.runApplication(appName, timeout) })
       .then(function () { return self.readLog(appName) })
       .then(function (lines) { logs = lines })
       .then(function () { return self.removeLogDir(appName) })

@@ -4,10 +4,10 @@ var expect = require('chai').expect;
 var helper = require('../spec-helper');
 
 describe('webpack test project', function () {
-  this.timeout(8000);
+  this.timeout(30000);
 
   it('should write one line to a log file', function () {
-    return helper.run('webpack').then(function (logs) {
+    return helper.run('webpack', this.timeout()).then(function (logs) {
       expect(logs.length).to.equal(3);
       expect(logs[0]).to.match(
         /\[[\d-]{10} [\d:.]{12}] \[warn] log from the main process/
