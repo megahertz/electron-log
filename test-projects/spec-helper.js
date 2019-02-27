@@ -13,7 +13,13 @@ module.exports = {
         { cwd: path.join(__dirname, appName) },
         function (error, stdout, stderr) {
           clearInterval(timeoutId);
-          console.debug(stdout, stderr);
+
+          if (console.debug) {
+            console.debug(stdout, stderr);
+          } else {
+            console.log(stdout, stderr);
+          }
+
           error ? reject(error) : resolve();
         }
       );
