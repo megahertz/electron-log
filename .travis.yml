@@ -1,9 +1,6 @@
 language: node_js
 
-node_js:
-  - "node"
-  - "8"
-  - "6"
+node_js: "node"
 
 os:
   - linux
@@ -12,13 +9,8 @@ os:
 
 matrix:
   include:
-    - os: osx
-      node_js: "node"
-    - os: windows
-      node_js: "node"
-  exclude:
-    - os: osx
-    - os: windows
+    - node_js: "8"
+    - node_js: "6"
   allow_failures:
     - os: osx
     - os: windows
