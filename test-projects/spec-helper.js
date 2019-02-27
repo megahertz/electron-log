@@ -12,7 +12,7 @@ module.exports = {
         'npm start -- --test',
         { cwd: path.join(__dirname, appName) },
         function (error, stdout, stderr) {
-          clearInterval(timeoutId);
+          clearTimeout(timeoutId);
 
           if (console.debug) {
             console.debug(stdout, stderr);
