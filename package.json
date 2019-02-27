@@ -46,7 +46,7 @@
     "eslint-config-airbnb-base": "*",
     "eslint-plugin-import": "*",
     "mocha": "*",
-    "nw": "0.31",
+    "nw": "0.36.2",
     "tslint": "*",
     "typescript": "*",
     "webpack": "*",

@@ -5,6 +5,6 @@
   "main": "index.html",
   "chromium-args": "--enable-logging=stderr",
   "scripts": {
-    "start": "../../node_modules/.bin/nw --enable-logging ."
+    "start": "../../node_modules/.bin/nw ."
   }
 }

@@ -8,26 +8,43 @@ module.exports = {
   runApplication: function (appName, timeout) {
     return new Promise(function (resolve, reject) {
       var timeoutId;
-      var app = exec(
-        'npm start -- --test',
-        { cwd: path.join(__dirname, appName) },
-        function (error, stdout, stderr) {
-          clearTimeout(timeoutId);
+      var isFinished = false;
+      var output = [];
 
-          if (console.debug) {
-            console.debug(stdout, stderr);
-          } else {
-            console.log(stdout, stderr);
-          }
-
-          error ? reject(error) : resolve();
-        }
-      );
+      var cwd = path.join(__dirname, appName);
+      var app = exec('npm start -- --test', { cwd: cwd }, done);
+      collectOutput(app.stdout);
+      collectOutput(app.stderr);
 
       timeoutId = setTimeout(function () {
-        app.kill();
-        console.warn('Terminate ' + appName + ' by timeout.');
-      }, timeout);
+        done(new Error(
+          'Terminate ' + appName + ' by timeout (' + (timeout / 1000) + 's)'
+        ));
+        app.kill('SIGKILL');
+      }, timeout - 100);
+
+      function done(error) {
+        if (isFinished) return;
+
+        isFinished = true;
+        clearTimeout(timeoutId);
+
+        var outputText = output
+          .join('\n')
+          .replace(/^Fontconfig.*$/mg, '')
+          .replace(/^\n/mg, '');
+        if (console.debug) {
+          console.debug(outputText);
+        } else {
+          console.log(outputText);
+        }
+
+        error ? reject(error) : resolve();
+      }
+
+      function collectOutput(pipe) {
+        pipe.on('data', function (chunk) { output.push(chunk.toString()) });
+      }
     });
   },
 

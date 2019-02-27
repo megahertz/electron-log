@@ -28,7 +28,8 @@ module.exports = [
       alias: {
         'electron-log': path.resolve('../..')
       }
-    }
+    },
+    stats: 'minimal'
   },
   {
     mode: 'development',
@@ -51,6 +52,7 @@ module.exports = [
       alias: {
         'electron-log': path.resolve('../..')
       }
-    }
+    },
+    stats: 'minimal'
   }
 ];
