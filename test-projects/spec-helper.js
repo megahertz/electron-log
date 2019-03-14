@@ -32,6 +32,7 @@ module.exports = {
         var outputText = output
           .join('\n')
           .replace(/^Fontconfig.*$/mg, '')
+          .replace(/^.*Desktop Identity.*$/mg, '')
           .replace(/^\n/mg, '');
         if (console.debug) {
           console.debug(outputText);
