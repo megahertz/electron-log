@@ -12,7 +12,10 @@ module.exports = {
       var output = [];
 
       var cwd = path.join(__dirname, appName);
-      var app = exec('npm start -- --test', { cwd: cwd }, done);
+      var app = exec('npm start -- --test', {
+        cwd: cwd,
+        env: Object.assign({}, process.env, { FORCE_STYLES: true })
+      }, done);
       collectOutput(app.stdout);
       collectOutput(app.stderr);
 

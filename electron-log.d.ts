@@ -58,6 +58,11 @@ export interface IConsoleTransport extends ITransport {
    * String template of function for message serialization
    */
   format: IFormat | string;
+
+  /**
+   * Use styles even if TTY isn't attached
+   */
+  forceStyles: boolean;
 }
 
 export interface IFileTransport extends ITransport {
