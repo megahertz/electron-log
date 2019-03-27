@@ -38,4 +38,6 @@ module.exports.levels.forEach(function (level) {
   module.exports[level] = log.bind(null, module.exports, level);
 });
 
+module.exports.log = log.bind(null, module.exports, 'info');
+
 module.exports.default = module.exports;
