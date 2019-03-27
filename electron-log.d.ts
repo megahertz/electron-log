@@ -216,6 +216,13 @@ declare interface ICatchErrorsOptions {
   onError?(error: Error): void;
 }
 
+declare interface ICatchErrorsResult {
+  /**
+   * Stop catching errors
+   */
+  stop(): void;
+}
+
 declare interface IElectronLog {
   /**
    * Transport instances
@@ -240,7 +247,7 @@ declare interface IElectronLog {
   /**
    * Catch and log unhandled errors/rejected promises
    */
-  catchErrors(options?: ICatchErrorsOptions): void | false;
+  catchErrors(options?: ICatchErrorsOptions): ICatchErrorsResult;
 
   /**
    * Log an error message
@@ -303,7 +310,7 @@ export declare const variables: IVariables;
  */
 export declare function catchErrors(
     options?: ICatchErrorsOptions,
-): void | false;
+): ICatchErrorsResult;
 
 /**
  * Log an error message
