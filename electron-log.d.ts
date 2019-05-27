@@ -223,7 +223,7 @@ declare interface ICatchErrorsResult {
   stop(): void;
 }
 
-declare interface IElectronLog {
+export declare interface IElectronLog {
   /**
    * Transport instances
    */
