@@ -9,7 +9,11 @@ var log           = require('../..');
 var win;
 
 function createWindow() {
-  win = new BrowserWindow({ width: 800, height: 600 });
+  win = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: { nodeIntegration: true }
+  });
   win.loadURL('file://' + path.join(__dirname, 'index.html'));
   win.on('closed', function () { win = null });
 
