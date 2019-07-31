@@ -42,7 +42,7 @@
     "babel-loader": "*",
     "chai": "*",
     "electron": "*",
-    "eslint": "*",
+    "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "*",
     "eslint-plugin-import": "*",
     "mocha": "*",
