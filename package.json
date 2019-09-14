@@ -43,7 +43,7 @@
     "chai": "*",
     "electron": "*",
     "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "*",
+    "eslint-config-airbnb-base": "^13.2.0",
     "eslint-plugin-import": "*",
     "mocha": "*",
     "nw": "0.36.2",
