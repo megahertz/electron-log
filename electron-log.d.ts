@@ -10,7 +10,7 @@ export type IFOpenFlags = "r" | "r+" | "rs+" | "w" | "wx" | "w+" | "wx+" |
 
 export type IHook = (
   msg: ILogMessage,
-  selectedTransports?: ITransports,
+  selectedTransport?: ITransport,
 ) => ILogMessage | false;
 
 export interface IVariables {
