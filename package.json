@@ -8,7 +8,9 @@
     "mocha": "mocha '**/*.spec.js' --exclude 'test-projects/**' --exclude 'node_modules/**'",
     "test": "npm run lint && npm run tslint && npm run mocha && npm run test-projects",
     "test-projects": "mocha 'test-projects/**/*.spec.js'",
-    "tslint": "tslint -p . -t verbose electron-log.d.ts"
+    "tslint": "tslint -p . -t verbose electron-log.d.ts",
+    "postversion": "git push && git push --tags",
+    "prepack": "npm run test"
   },
   "typings": "electron-log.d.ts",
   "repository": "megahertz/electron-log",
