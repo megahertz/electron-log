@@ -23,7 +23,7 @@ before_install: |
 
 script: |
   if [ "${TRAVIS_OS_NAME}" = 'linux' ]; then
-    xvfb-run npm test:full
+    xvfb-run npm run test:full
   else
     npm test:full
   fi
