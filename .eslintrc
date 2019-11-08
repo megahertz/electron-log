@@ -2,7 +2,7 @@
   "extends": "airbnb-base/legacy",
   "env": {
     "es6": true,
-    "mocha": true,
+    "jasmine": true,
     "node": true
   },
   "rules": {

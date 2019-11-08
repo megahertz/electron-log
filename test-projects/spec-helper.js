@@ -80,7 +80,9 @@ module.exports = {
     });
   },
 
-  run: function (appName, timeout = 15000) {
+  run: function (appName, timeout) {
+    timeout = timeout || 15000;
+
     var logs;
     var self = this;
 
