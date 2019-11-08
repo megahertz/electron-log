@@ -16,10 +16,8 @@
   "repository": "megahertz/electron-log",
   "files": [
     "index.js",
-    "main.js",
-    "renderer.js",
-    "lib/**/*.js",
-    "!lib/**/*.spec.js",
+    "lib/*",
+    "!__specs__",
     "electron-log.d.ts"
   ],
   "keywords": [
