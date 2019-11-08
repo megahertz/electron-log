@@ -58,6 +58,6 @@ describe('format', function () {
     });
 
     var text = format.format(message, '{text}');
-    expect(text).toBe('{ value: [Getter: \'test\'] }');
+    expect(text).toMatch(/\{ value: \[Getter/);
   });
 });
