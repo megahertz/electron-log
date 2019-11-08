@@ -25,5 +25,5 @@ script: |
   if [ "${TRAVIS_OS_NAME}" = 'linux' ]; then
     xvfb-run npm run test:full
   else
-    npm test:full
+    npm run test:full
   fi
