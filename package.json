@@ -2,23 +2,21 @@
   "name": "electron-log",
   "version": "3.0.9",
   "description": "Just a very simple logging module for your Electron application",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "lint": "eslint '**/*.js' --ignore-pattern '**/dist/*.js'",
-    "test": "humile -i 'test-projects/**' -i 'node_modules/**'",
+    "test": "humile 'src/**/*spec.js'",
     "test:full": "npm run test && npm run lint && npm run tslint && npm run test:projects",
     "test:projects": "humile 'test-projects/**/*.spec.js' -R list",
-    "tslint": "tslint -p . -t verbose electron-log.d.ts",
+    "tslint": "tslint -p . -t verbose src/electron-log.d.ts",
     "postversion": "npm run test:full && git push && git push --tags",
     "prepack": "npm run test:full"
   },
-  "typings": "electron-log.d.ts",
+  "typings": "src/electron-log.d.ts",
   "repository": "megahertz/electron-log",
   "files": [
-    "index.js",
-    "lib/*",
-    "!__specs__",
-    "electron-log.d.ts"
+    "src/*",
+    "!__specs__"
   ],
   "keywords": [
     "electron",

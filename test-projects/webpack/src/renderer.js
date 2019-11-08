@@ -1,7 +1,7 @@
 'use strict';
 
 var electron = require('electron');
-var log      = require('electron-log');
+var log      = require('src/electron-log');
 
 var proc = electron.remote.process;
 

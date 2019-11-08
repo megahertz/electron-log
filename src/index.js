@@ -1,13 +1,13 @@
 'use strict';
 
-var catchErrors               = require('./lib/catchErrors');
-var log                       = require('./lib/log');
-var transportConsole          = require('./lib/transports/console');
-var transportFile             = require('./lib/transports/file');
-var transportRemote           = require('./lib/transports/remote');
-var transportMainConsole      = require('./lib/transports/mainConsole');
-var transportRendererConsole  = require('./lib/transports/rendererConsole');
-var utils                     = require('./lib/utils');
+var catchErrors               = require('./catchErrors');
+var log                       = require('./log');
+var transportConsole          = require('./transports/console');
+var transportFile             = require('./transports/file');
+var transportRemote           = require('./transports/remote');
+var transportMainConsole      = require('./transports/mainConsole');
+var transportRendererConsole  = require('./transports/rendererConsole');
+var utils                     = require('./utils');
 
 module.exports = {
   catchErrors: function callCatchErrors(options) {
