@@ -1,15 +1,14 @@
 'use strict';
 
-var expect = require('chai').expect;
 var helper = require('../spec-helper');
 
-describe('nwjs test project', function () {
-  this.timeout(20000);
+var TIMEOUT = 20000;
 
-  it('should write one line to a log file', function () {
-    return helper.run('nwjs', this.timeout()).then(function (logs) {
-      expect(logs.length).to.equal(2);
-      expect(logs[0]).to.match(/\[[\d-]{10} [\d:.]{12}] \[warn] Log from nw/);
+describe('nwjs', function () {
+  it('nwjs: writes one line to a log file', function () {
+    return helper.run('nwjs', TIMEOUT).then(function (logs) {
+      expect(logs.length).toBe(2);
+      expect(logs[0]).toMatch(/\[[\d-]{10} [\d:.]{12}] \[warn] Log from nw/);
     });
-  });
+  }, TIMEOUT);
 });
