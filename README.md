@@ -24,7 +24,7 @@ Install with [npm](https://npmjs.org/package/electron-log):
 ## Usage
 
 ```js
-const log = require('electron-log');
+const log = require('src/electron-log');
 
 log.info('Hello, log');
 log.warn('Some problem appears');

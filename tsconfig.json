@@ -4,6 +4,6 @@
     "strictNullChecks": true
   },
   "include": [
-    "./electron-log.d.ts"
+    "./src/electron-log.d.ts"
   ]
 }
