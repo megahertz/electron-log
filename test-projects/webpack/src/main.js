@@ -1,7 +1,7 @@
 'use strict';
 
 var electron = require('electron');
-var log      = require('src/electron-log');
+var log      = require('electron-log');
 var path     = require('path');
 
 var app = electron.app;
