@@ -17,7 +17,7 @@ function createWindow() {
   win.loadURL('file://' + path.join(__dirname, 'index.html'));
   win.on('closed', function () { win = null });
 
-  log.transports.rendererConsole.level = 'silly';
+  log.transports.ipc.level = 'silly';
   log.transports.file.level = false;
   log.transports.console = function (msg) {
     log.transports.file(msg);

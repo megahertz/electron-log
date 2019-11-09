@@ -11,7 +11,7 @@
   var log      = require('../..');
   var proc     = electron.remote.process;
 
-  log.transports.mainConsole.level = 'silly';
+  log.transports.ipc.level = 'silly';
   log.transports.file.level = false;
   log.transports.console = function (msg) {
     log.transports.file(msg);

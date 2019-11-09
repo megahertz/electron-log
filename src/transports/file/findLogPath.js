@@ -1,10 +1,10 @@
 'use strict';
 
-var fs         = require('fs');
-var path       = require('path');
-var os         = require('os');
-var utils      = require('../../utils');
-var getAppName = require('./getAppName');
+var fs          = require('fs');
+var path        = require('path');
+var os          = require('os');
+var electronApi = require('../../electronApi');
+var getAppName  = require('./getAppName');
 
 module.exports = findLogPath;
 
@@ -18,7 +18,7 @@ var nodeVersion = Number(process.version.match(/^v(\d+\.\d+)/)[1]);
  */
 function findLogPath(appName, fileName) {
   fileName = fileName || 'log.log';
-  var userData = appName ? null : utils.getUserData();
+  var userData = appName ? null : electronApi.getUserData();
   appName = appName || getAppName();
 
   var homeDir = os.homedir ? os.homedir() : process.env.HOME;
