@@ -24,7 +24,6 @@ function format(msg, formatter, electronLog, removeStyles) {
     return formatter(msg, electronLog);
   }
 
-  var date = new Date(msg.date || Date.now());
   var variables = msg.variables;
   var result = formatter;
 
@@ -33,9 +32,19 @@ function format(msg, formatter, electronLog, removeStyles) {
     result = result.replace('{' + i + '}', variables[i]);
   }
 
-  result = result
+  result = formatDate(result, new Date(msg.date || Date.now()))
     .replace('{level}', msg.level)
-    .replace('{text}', stringifyArray(msg.data))
+    .replace('{text}', stringifyArray(msg.data));
+
+  if (removeStyles) {
+    result = result.replace(/%c/g, '');
+  }
+
+  return result;
+}
+
+function formatDate(template, date) {
+  return template
     .replace('{y}', String(date.getFullYear()))
     .replace('{m}', pad(date.getMonth() + 1))
     .replace('{d}', pad(date.getDate()))
@@ -43,13 +52,8 @@ function format(msg, formatter, electronLog, removeStyles) {
     .replace('{i}', pad(date.getMinutes()))
     .replace('{s}', pad(date.getSeconds()))
     .replace('{ms}', pad(date.getMilliseconds(), 3))
-    .replace('{z}', formatTimeZone(date.getTimezoneOffset()));
-
-  if (removeStyles) {
-    result = result.replace(/%c/g, '');
-  }
-
-  return result;
+    .replace('{z}', formatTimeZone(date.getTimezoneOffset()))
+    .replace('{iso}', date.toISOString());
 }
 
 function stringifyArray(data) {
