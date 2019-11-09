@@ -2,14 +2,14 @@
 
 /** @name process.resourcesPath */
 
-var fs   = require('fs');
-var path = require('path');
-var utils = require('../../utils');
+var fs          = require('fs');
+var path        = require('path');
+var electronApi = require('../../electronApi');
 
 module.exports = getAppName;
 
 function getAppName() {
-  var name = utils.getElectronAppName();
+  var name = electronApi.getName();
   if (name) {
     return name;
   }

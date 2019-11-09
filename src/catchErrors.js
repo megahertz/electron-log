@@ -4,7 +4,7 @@
  * Some ideas from sindresorhus/electron-unhandled
  */
 
-var utils = require('./utils');
+var electronApi = require('./electronApi');
 
 var isAttached = false;
 
@@ -34,7 +34,7 @@ module.exports = function catchErrors(options) {
 
       if (options.showDialog && e.name.indexOf('UnhandledRejection') < 0) {
         var type = process.type || 'main';
-        utils.showErrorBox(
+        electronApi.showErrorBox(
           'A JavaScript error occurred in the ' + type + ' process',
           e.stack
         );

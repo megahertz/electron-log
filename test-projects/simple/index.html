@@ -9,7 +9,7 @@
 <script>
   var log = require('../..');
 
-  log.transports.mainConsole.level = 'silly';
+  log.transports.ipc.level = 'silly';
   log.warn('log from a renderer process');
 
   window.open('file://' + __dirname + '/index-second.html');
