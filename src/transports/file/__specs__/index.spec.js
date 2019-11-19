@@ -72,6 +72,24 @@ describe('File transport', function () {
     expect(file.path).toMatch('main.log');
   });
 
+  it('should create a file if the path is UNC', function () {
+    if (process.platform !== 'win32') {
+      return;
+    }
+
+    var transport = createTransport({
+      resolvePath: function (vars) {
+        return '\\\\?\\' + path.join(vars.libraryDefaultDir, vars.fileName);
+      }
+    });
+
+    transport(TEST_MESSAGE);
+
+    expect(TestLogReader.fromApp('humile').format()).toEqual([
+      'main.log: test'
+    ]);
+  });
+
   describe('should provide deprecated members until v5: ', function () {
     beforeAll(function () {
       this.noDeprecationBackup = process.noDeprecation;
