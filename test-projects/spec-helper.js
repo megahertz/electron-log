@@ -43,7 +43,7 @@ module.exports = {
       var cwd = path.join(__dirname, appName);
       var app = exec('npm start -- --test', {
         cwd: cwd,
-        env: Object.assign({}, process.env, { FORCE_STYLES: true })
+        env: Object.assign({}, process.env, { FORCE_STYLES: true }),
       }, done);
       collectOutput(app.stdout);
       collectOutput(app.stderr);
@@ -67,6 +67,7 @@ module.exports = {
           .replace(/^.*Desktop Identity.*$/mg, '')
           .replace(/^\n/mg, '');
 
+        // eslint-disable-next-line no-console
         console.debug ? console.debug(outputText) : console.log(outputText);
 
         error ? reject(error) : resolve();
@@ -76,5 +77,5 @@ module.exports = {
         pipe.on('data', function (chunk) { output.push(chunk.toString()) });
       }
     });
-  }
+  },
 };

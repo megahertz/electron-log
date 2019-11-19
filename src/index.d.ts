@@ -1,12 +1,12 @@
-export type ILogLevel = "error" | "warn" | "info" | "verbose" | "debug" |
-  "silly";
+export type ILogLevel = 'error' | 'warn' | 'info' | 'verbose' | 'debug' |
+  'silly';
 export type ILevelOption = ILogLevel | false;
 export type ILevels = Array<ILogLevel | string>;
 
 export type IFormat = (message: ILogMessage) => void;
 
-export type IFOpenFlags = "r" | "r+" | "rs+" | "w" | "wx" | "w+" | "wx+" |
-  "a" | "ax" | "a+" | "ax+";
+export type IFOpenFlags = 'r' | 'r+' | 'rs+' | 'w' | 'wx' | 'w+' | 'wx+' |
+  'a' | 'ax' | 'a+' | 'ax+';
 
 export type IHook = (
   message: ILogMessage,
@@ -34,7 +34,7 @@ export interface ILogMessage {
   level: ILogLevel;
 
   /**
-   * CSS like strings, eg ["color: red"]
+   * CSS like strings, eg ['color: red']
    */
   styles: string[];
 
@@ -72,48 +72,48 @@ export interface IPathVariables {
    * $XDG_CONFIG_HOME or ~/.config on Linux
    * ~/Library/Application Support on macOS
    */
-  appData: string;
+  readonly appData: string;
 
   /**
    * Application name from productName or name of package.json
    */
-  appName: string;
+  readonly appName: string;
 
   /**
    * Application version from package.json
    */
-  appVersion: string;
+  readonly appVersion: string;
 
   /**
    * app.getPath('logs'). May be unavailable in old versions
    */
-  electronDefaultDir?: string;
+  readonly electronDefaultDir?: string;
 
   /**
    * Name of the log file without path
    */
-  fileName?: string;
+  readonly fileName?: string;
 
   /**
    * User's home directory
    */
-  home: string;
+  readonly home: string;
 
   /**
    * userData + /logs/ + fileName
    */
-  libraryDefaultDir: string;
+  readonly libraryDefaultDir: string;
 
   /**
    * OS temporary path
    */
-  tempDir: string;
+  readonly tempDir: string;
 
   /**
    * The directory for storing your app's configuration files, which by default
    * it is the appData directory appended with your app's name.
    */
-  userData: string;
+  readonly userData: string;
 }
 
 export interface IWriteOptions {
@@ -158,7 +158,7 @@ export interface ILogFile {
    * Emitted when the user is requesting to change the zoom level using the mouse
    * wheel.
    */
-  on(event: "error", listener: (error: Error, file: this) => void): this;
+  on(event: 'error', listener: (error: Error, file: this) => void): this;
 }
 
 export interface IFileTransport extends ITransport {
@@ -408,7 +408,7 @@ export declare const variables: IVariables;
  * Catch and log unhandled errors/rejected promises
  */
 export declare function catchErrors(
-    options?: ICatchErrorsOptions,
+  options?: ICatchErrorsOptions,
 ): ICatchErrorsResult;
 
 /**

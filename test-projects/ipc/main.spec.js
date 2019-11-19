@@ -12,16 +12,16 @@ describe('test:projects', function () {
         [
           'main.log: function functionInRenderer() {',
           '    return 1;',
-          '  }'
+          '  }',
         ].join('\n'),
         jasmine.stringMatching('main.log: Error: Error in renderer\n    at'),
         'renderer.log: { name: \'Log object in main\' }',
         [
           'renderer.log: function functionInMain() {',
           '      return 1;',
-          '    }'
+          '    }',
         ].join('\n'),
-        jasmine.stringMatching('renderer.log: Error: Error in main\n    at')
+        jasmine.stringMatching('renderer.log: Error: Error in main\n    at'),
       ]);
     });
   }, TIMEOUT);

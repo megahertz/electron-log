@@ -1,17 +1,17 @@
 'use strict';
 
-var http  = require('http');
+var http = require('http');
 var https = require('https');
-var url   = require('url');
+var url = require('url');
 
 module.exports = remoteTransportFactory;
 
 function remoteTransportFactory() {
-  transport.client         = { name: 'electron-application' };
-  transport.depth          = 6;
-  transport.level          = false;
+  transport.client = { name: 'electron-application' };
+  transport.depth = 6;
+  transport.level = false;
   transport.requestOptions = {};
-  transport.url            = null;
+  transport.url = null;
 
   return transport;
 }
@@ -25,7 +25,7 @@ function transport(msg) {
     date: msg.date.getTime(),
     level: msg.level,
     styles: msg.styles,
-    variables: msg.variables
+    variables: msg.variables,
   }, transport.depth + 1);
 
   post(transport.url, data);
@@ -44,8 +44,8 @@ function post(serverUrl, data) {
     method:   'POST',
     headers:  {
       'Content-Length': body.length,
-      'Content-Type':   'application/json'
-    }
+      'Content-Type':   'application/json',
+    },
   };
 
   Object.assign(options, transport.requestOptions);

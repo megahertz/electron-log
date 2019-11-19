@@ -10,7 +10,7 @@ describe('test:projects', function () {
       expect(logReader.format()).toEqual([
         'main.log: log from the main process',
         'renderer.log: log from a renderer process',
-        'second.log: log from the second renderer process'
+        'second.log: log from the second renderer process',
       ]);
     });
   }, TIMEOUT);

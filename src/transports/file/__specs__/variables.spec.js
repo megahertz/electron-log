@@ -65,7 +65,7 @@ describe('transports/file/variables', function () {
         home: os.homedir(),
         libraryDefaultDir: path.join(appData, 'humile/logs'),
         temp: os.tmpdir(),
-        userData: path.join(appData, 'humile')
+        userData: path.join(appData, 'humile'),
       });
     });
 
@@ -80,7 +80,7 @@ describe('transports/file/variables', function () {
         home: os.homedir(),
         libraryDefaultDir: path.join(os.homedir(), 'Library/Logs/humile'),
         temp: os.tmpdir(),
-        userData: path.join(appData, 'humile')
+        userData: path.join(appData, 'humile'),
       });
     });
 
@@ -95,7 +95,7 @@ describe('transports/file/variables', function () {
         home: os.homedir(),
         libraryDefaultDir: path.join(appData, 'humile', 'logs'),
         temp: os.tmpdir(),
-        userData: path.join(appData, 'humile')
+        userData: path.join(appData, 'humile'),
       });
     });
   });

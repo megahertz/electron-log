@@ -6,6 +6,7 @@
 
 var electron;
 try {
+  // eslint-disable-next-line global-require
   electron = require('electron');
 } catch (e) {
   electron = null;
@@ -20,7 +21,7 @@ module.exports = {
   loadRemoteModule: loadRemoteModule,
   onIpc: onIpc,
   sendIpc: sendIpc,
-  showErrorBox: showErrorBox
+  showErrorBox: showErrorBox,
 };
 
 function getApp() {

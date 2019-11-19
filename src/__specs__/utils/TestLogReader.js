@@ -74,7 +74,7 @@ TestLogReader.prototype.loadFile = function (filePath) {
           date: matches[1],
           fileName: fileName,
           level: matches[2],
-          text: matches[3]
+          text: matches[3],
         });
       }
 

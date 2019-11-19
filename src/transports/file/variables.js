@@ -10,7 +10,7 @@ module.exports = {
   getLibraryDefaultDir: getLibraryDefaultDir,
   getNameAndVersion: getNameAndVersion,
   getPathVariables: getPathVariables,
-  getUserData: getUserData
+  getUserData: getUserData,
 };
 
 function getAppData(platform) {
@@ -85,7 +85,7 @@ function getPathVariables(platform) {
     home: getHome(),
     libraryDefaultDir: getLibraryDefaultDir(platform, appName),
     temp: electronApi.getPath('temp') || os.tmpdir(),
-    userData: getUserData(platform, appName)
+    userData: getUserData(platform, appName),
   };
 }
 

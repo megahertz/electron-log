@@ -6,7 +6,7 @@ module.exports = {
   format: format,
   formatTimeZone: formatTimeZone,
   pad: pad,
-  stringifyObject: stringifyObject
+  stringifyObject: stringifyObject,
 };
 
 /**

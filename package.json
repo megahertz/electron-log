@@ -4,15 +4,14 @@
   "description": "Just a very simple logging module for your Electron application",
   "main": "src/index.js",
   "scripts": {
-    "lint": "eslint '**/*.js' --ignore-pattern '**/dist/*.js'",
+    "lint": "eslint '**/*.js' --ignore-pattern '**/dist/*.js' && tsc --noEmit",
     "test": "humile 'src/**/*spec.js'",
-    "test:full": "npm run test && npm run lint && npm run tslint && npm run test:projects",
+    "test:full": "npm run test && npm run lint && npm run test:projects",
     "test:projects": "humile 'test-projects/**/*.spec.js' -R list",
-    "tslint": "tslint -p . -t verbose src/electron-log.d.ts",
     "postversion": "npm run test:full && git push && git push --tags",
     "prepack": "npm run test:full"
   },
-  "typings": "src/electron-log.d.ts",
+  "typings": "src/index.d.ts",
   "repository": "megahertz/electron-log",
   "files": [
     "src/*",
@@ -44,7 +43,6 @@
     "eslint-plugin-import": "^2.18.2",
     "humile": "*",
     "nw": "0.42.3",
-    "tslint": "*",
     "typescript": "*",
     "webpack": "*",
     "webpack-cli": "*"

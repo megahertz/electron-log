@@ -18,7 +18,7 @@ function log(electronLog, level) {
       date: new Date(),
       level: level,
       variables: electronLog.variables,
-      styles: data.styles
+      styles: data.styles,
     });
 
     if (msg) {

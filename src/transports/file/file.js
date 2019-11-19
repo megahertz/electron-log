@@ -11,7 +11,7 @@ var nodeVersion = Number(process.version.match(/^v(\d+\.\d+)/)[1]);
 module.exports = {
   File: File,
   FileRegistry: FileRegistry,
-  NullFile: NullFile
+  NullFile: NullFile,
 };
 
 /**
@@ -59,11 +59,11 @@ function File(filePath, writeOptions, writeAsync) {
   this.writeOptions = writeOptions || {
     flag: 'a',
     mode: 438, // 0666
-    encoding: 'utf8'
+    encoding: 'utf8',
   };
 
   Object.defineProperty(this, 'size', {
-    get: this.getSize.bind(this)
+    get: this.getSize.bind(this),
   });
 }
 

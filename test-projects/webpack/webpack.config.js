@@ -1,7 +1,7 @@
 'use strict';
 
 var presetEnv = require('@babel/preset-env');
-var path      = require('path');
+var path = require('path');
 
 module.exports = [
   {
@@ -16,20 +16,20 @@ module.exports = [
           loader: 'babel-loader',
           exclude: /node_modules/,
           options: {
-            presets: [presetEnv]
-          }
-        }
-      ]
+            presets: [presetEnv],
+          },
+        },
+      ],
     },
     node: {
-      __dirname: false
+      __dirname: false,
     },
     resolve: {
       alias: {
-        'electron-log': path.resolve('../..')
-      }
+        'electron-log': path.resolve('../..'),
+      },
     },
-    stats: 'minimal'
+    stats: 'minimal',
   },
   {
     mode: 'development',
@@ -43,16 +43,16 @@ module.exports = [
           loader: 'babel-loader',
           exclude: /node_modules/,
           options: {
-            presets: [presetEnv]
-          }
-        }
-      ]
+            presets: [presetEnv],
+          },
+        },
+      ],
     },
     resolve: {
       alias: {
-        'electron-log': path.resolve('../..')
-      }
+        'electron-log': path.resolve('../..'),
+      },
     },
-    stats: 'minimal'
-  }
+    stats: 'minimal',
+  },
 ];

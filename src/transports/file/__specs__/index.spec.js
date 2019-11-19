@@ -22,7 +22,7 @@ describe('File transport', function () {
     transport(TEST_MESSAGE);
 
     expect(TestLogReader.fromApp('humile').format()).toEqual([
-      'main.log: test'
+      'main.log: test',
     ]);
   });
 
@@ -32,13 +32,13 @@ describe('File transport', function () {
 
     transport(TEST_MESSAGE);
     expect(TestLogReader.fromApp('humile').format()).toEqual([
-      'main.log: test'
+      'main.log: test',
     ]);
 
     transport(createMessage('test2'));
     expect(TestLogReader.fromApp('humile').format().sort()).toEqual([
       'main.log: test2',
-      'main.old.log: test'
+      'main.old.log: test',
     ]);
   });
 
@@ -48,13 +48,13 @@ describe('File transport', function () {
     try {
       var logFilePath = path.join(tmpDir.path, 'mylog.txt');
       var transport = createTransport({
-        resolvePath: function () { return logFilePath }
+        resolvePath: function () { return logFilePath },
       });
 
       transport(TEST_MESSAGE);
 
       expect(TestLogReader.fromFile(logFilePath).format()).toEqual([
-        'mylog.txt: test'
+        'mylog.txt: test',
       ]);
     } finally {
       tmpDir.remove();
@@ -80,13 +80,13 @@ describe('File transport', function () {
     var transport = createTransport({
       resolvePath: function (vars) {
         return '\\\\?\\' + path.join(vars.libraryDefaultDir, vars.fileName);
-      }
+      },
     });
 
     transport(TEST_MESSAGE);
 
     expect(TestLogReader.fromApp('humile').format()).toEqual([
-      'main.log: test'
+      'main.log: test',
     ]);
   });
 
@@ -113,7 +113,7 @@ describe('File transport', function () {
       transport(TEST_MESSAGE);
 
       expect(TestLogReader.fromApp('humile').format()).toEqual([
-        'changed.log: test'
+        'changed.log: test',
       ]);
     });
 
@@ -165,8 +165,9 @@ describe('File transport', function () {
 function createTransport(options) {
   var electronLog = {
     transports: {
-      console: console.log
-    }
+      // eslint-disable-next-line no-console
+      console: console.log,
+    },
   };
   var transport = fileTransportFactory(electronLog, new FileRegistry());
 
@@ -180,6 +181,6 @@ function createMessage(data, level) {
     data: Array.isArray(data) ? data : [data],
     date: new Date(),
     level: level || 'info',
-    variables: {}
+    variables: {},
   };
 }
