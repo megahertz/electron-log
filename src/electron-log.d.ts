@@ -3,13 +3,13 @@ export type ILogLevel = "error" | "warn" | "info" | "verbose" | "debug" |
 export type ILevelOption = ILogLevel | false;
 export type ILevels = Array<ILogLevel | string>;
 
-export type IFormat = (msg: ILogMessage) => void;
+export type IFormat = (message: ILogMessage) => void;
 
 export type IFOpenFlags = "r" | "r+" | "rs+" | "w" | "wx" | "w+" | "wx+" |
   "a" | "ax" | "a+" | "ax+";
 
 export type IHook = (
-  msg: ILogMessage,
+  message: ILogMessage,
   selectedTransport?: ITransport,
 ) => ILogMessage | false;
 
@@ -45,7 +45,7 @@ export interface ILogMessage {
 }
 
 export declare interface ITransport {
-  (msg: ILogMessage): void;
+  (message: ILogMessage): void;
 
   /**
    * Messages with level lower than will be dropped
@@ -65,12 +65,109 @@ export interface IConsoleTransport extends ITransport {
   forceStyles: boolean;
 }
 
+export interface IPathVariables {
+  /**
+   * Per-user application data directory, which by default points to:
+   * %APPDATA% on Windows
+   * $XDG_CONFIG_HOME or ~/.config on Linux
+   * ~/Library/Application Support on macOS
+   */
+  appData: string;
+
+  /**
+   * Application name from productName or name of package.json
+   */
+  appName: string;
+
+  /**
+   * Application version from package.json
+   */
+  appVersion: string;
+
+  /**
+   * app.getPath('logs'). May be unavailable in old versions
+   */
+  electronDefaultDir?: string;
+
+  /**
+   * Name of the log file without path
+   */
+  fileName?: string;
+
+  /**
+   * User's home directory
+   */
+  home: string;
+
+  /**
+   * userData + /logs/ + fileName
+   */
+  libraryDefaultDir: string;
+
+  /**
+   * OS temporary path
+   */
+  tempDir: string;
+
+  /**
+   * The directory for storing your app's configuration files, which by default
+   * it is the appData directory appended with your app's name.
+   */
+  userData: string;
+}
+
+export interface IWriteOptions {
+  /**
+   * Default 'a'
+   */
+  flag?: IFOpenFlags;
+
+  /**
+   * Default 0666
+   */
+  mode?: number;
+
+  /**
+   * Default 'utf8'
+   */
+  encoding?: string;
+}
+
+export interface ILogFile {
+  /**
+   * Full log file path
+   */
+  readonly path: string;
+
+  /**
+   * How many bytes were written since transport initialization
+   */
+  readonly bytesWritten: number;
+
+  /**
+   * Current file size
+   */
+  readonly size: number;
+
+  /**
+   * Clear the log file
+   */
+  clear(): boolean;
+
+  /**
+   * Emitted when the user is requesting to change the zoom level using the mouse
+   * wheel.
+   */
+  on(event: "error", listener: (error: Error, file: this) => void): this;
+}
+
 export interface IFileTransport extends ITransport {
   /**
    * Determines a location of log file, something like
    * ~/.config/<app name>/log.log depending on OS. By default electron-log
    * reads this value from name or productName value in package.json. In most
    * cases you should keep a default value
+   * @deprecated
    */
   appName?: string;
 
@@ -82,7 +179,8 @@ export interface IFileTransport extends ITransport {
   archiveLog: (oldLogPath: string) => void;
 
   /**
-   * How much bytes were written since transport initialization
+   * How many bytes were written since transport initialization
+   * @deprecated
    */
   bytesWritten: number;
 
@@ -90,11 +188,12 @@ export interface IFileTransport extends ITransport {
    * The full log file path. I can recommend to change this value only if
    * you strongly understand what are you doing. If set, appName and fileName
    * options are ignored
+   * @deprecated
    */
   file?: string;
 
   /**
-   * Filename without path, log.log by default
+   * Filename without path, main.log (or renderer.log) by default
    */
   fileName: string;
 
@@ -104,11 +203,23 @@ export interface IFileTransport extends ITransport {
   format: IFormat | string;
 
   /**
+   * Return the current log file instance
+   * You only need to provide message argument if you defile log path inside
+   * resolvePath callback depending on a message.
+   */
+  getFile(message?: Partial<ILogMessage>): ILogFile;
+
+  /**
    * Maximum size of log file in bytes, 1048576 (1mb) by default. When a log
    * file exceeds this limit, it will be moved to log.old.log file and the
    * current file will be cleared. You can set it to 0 to disable rotation
    */
   maxSize: number;
+
+  /**
+   * Allow to change log file path dynamically
+   */
+  resolvePath: (variables: IPathVariables, message?: ILogMessage) => string;
 
   /**
    * Whether to write a log file synchronously. Default to true
@@ -118,36 +229,24 @@ export interface IFileTransport extends ITransport {
   /**
    * Options used when writing a file
    */
-  writeOptions?: {
-    /**
-     * Default 'a'
-     */
-    flag?: IFOpenFlags;
-
-    /**
-     * Default 0666
-     */
-    mode?: number;
-
-    /**
-     * Default 'utf8'
-     */
-    encoding?: string;
-  };
+  writeOptions?: IWriteOptions;
 
   /**
    * Clear the current log file
+   * @deprecated
    */
   clear(): void;
 
   /**
    * Return full path of the current log file
+   * @deprecated
    */
   findLogPath(appName?: string, fileName?: string): string;
 
   /**
    * In most cases, you don't need to call it manually. Try to call only if
    * you change appName, file or fileName property, but it has no effect.
+   * @deprecated
    */
   init(): void;
 }

@@ -1,7 +1,7 @@
 'use strict';
 
 var format = require('../format');
-var electronApi  = require('../electronApi');
+var electronApi = require('../electronApi');
 
 var IPC_EVENT = '__ELECTRON_LOG_TRANSPORT_IPC__';
 
