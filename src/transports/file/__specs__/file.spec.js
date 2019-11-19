@@ -133,7 +133,7 @@ describe('transports/file/file', function () {
         var registry = new file.FileRegistry();
 
         registry.on('error', function (e) {
-          expect(e.message).toMatch('argument must be of type string');
+          expect(e.message).toMatch('string');
           done();
         });
 
