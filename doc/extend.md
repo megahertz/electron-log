@@ -2,7 +2,7 @@
 
 ## Transport
 
-Transport is just a function `(msg: ILogMessage) => void`, so you can
+Transport is just a function `(msg: LogMessage) => void`, so you can
 easily override/add your own transport.
 
 ```js
@@ -22,7 +22,7 @@ transport options (like level or format) will be undefined.
 In some situations, you may want to get more control over logging. Hook
 is a function which is called on each transport call.
 
-`(msg: ILogMessage, transport: ITransport) => ILogMessage`
+`(msg: LogMessage, transport: Transport) => LogMessage`
 
 Hook function return original or modified message. If the hook function
 returns false, the current transport will be skipped.
@@ -44,7 +44,7 @@ log.hooks.push((msg, transport) => {
 });
 ```
 
-## ILogMessage
+## LogMessage
 
  - data: any[] Arguments passed to log function
  - date: Date

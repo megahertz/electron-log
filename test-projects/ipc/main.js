@@ -21,7 +21,7 @@ function createWindow() {
   log.transports.ipc.level = 'silly';
   log.transports.file.level = false;
 
-  electronApi.onIpc('__ELECTRON_LOG_TRANSPORT_IPC__', function (_, message) {
+  electronApi.onIpc(log.transports.ipc.eventId, function (_, message) {
     log.transports.file(message);
   });
 
