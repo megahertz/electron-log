@@ -2,7 +2,7 @@
 
 var os = require('os');
 var path = require('path');
-var TestLogReader = require('../../../__specs__/TestLogReader');
+var TestLogReader = require('../../../__specs__/utils/TestLogReader');
 var FileRegistry = require('../file').FileRegistry;
 var fileTransportFactory = require('../index');
 var makeTmpDir = require('./makeTmpDir');
