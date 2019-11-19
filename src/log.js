@@ -1,48 +1,44 @@
 'use strict';
 
-log.compareLevels = compareLevels;
-module.exports = log;
+module.exports = {
+  compareLevels: compareLevels,
+  log: log,
+  runTransport: runTransport,
+};
 
 function log(electronLog, level) {
-  var transports = filterTransportsByLevel(electronLog, level);
+  var transports = electronLog.transports;
+
+  var payload = splitBodyAndStyle(Array.prototype.slice.call(arguments, 2));
+  var message = {
+    data: payload.messages,
+    date: new Date(),
+    level: level,
+    variables: electronLog.variables,
+    styles: payload.styles,
+  };
 
   for (var i in transports) {
-    if (!transports.hasOwnProperty(i) || typeof transports[i] !== 'function') {
-      continue;
-    }
-
-    var data = splitMessagesAndStyles(Array.prototype.slice.call(arguments, 2));
-
-    var msg = runHooks(electronLog.hooks, transports[i], {
-      data: data.messages,
-      date: new Date(),
-      level: level,
-      variables: electronLog.variables,
-      styles: data.styles,
-    });
-
-    if (msg) {
-      transports[i](msg);
+    if (transports.hasOwnProperty(i)) {
+      runTransport(transports[i], message, electronLog);
     }
   }
 }
 
-function filterTransportsByLevel(electronLog, level) {
-  var transports = electronLog.transports;
-  var levels = electronLog.levels;
-
-  var filtered = {};
-
-  for (var i in transports) {
-    if (!transports.hasOwnProperty(i)) continue;
-    if (!transports[i]) continue;
-    if (transports[i].level === false) continue;
-    if (!compareLevels(levels, transports[i].level, level)) continue;
-
-    filtered[i] = transports[i];
+function runTransport(transport, message, electronLog) {
+  if (typeof transport !== 'function' || transport.level === false) {
+    return;
   }
 
-  return filtered;
+  if (!compareLevels(electronLog.levels, transport.level, message.level)) {
+    return;
+  }
+
+  message = runHooks(electronLog.hooks, transport, message);
+
+  if (message) {
+    transport(message);
+  }
 }
 
 function compareLevels(levels, passLevel, checkLevel) {
@@ -55,21 +51,21 @@ function compareLevels(levels, passLevel, checkLevel) {
   return check <= pass;
 }
 
-function runHooks(hooks, transport, msg) {
+function runHooks(hooks, transport, message) {
   if (!hooks || !hooks.length) {
-    return msg;
+    return message;
   }
 
   // eslint-disable-next-line no-plusplus
   for (var i = 0; i < hooks.length; i++) {
-    msg = hooks[i](msg, transport);
-    if (!msg) break;
+    message = hooks[i](message, transport);
+    if (!message) break;
   }
 
-  return msg;
+  return message;
 }
 
-function splitMessagesAndStyles(messages) {
+function splitBodyAndStyle(messages) {
   var styles = [];
 
   messages = messages.filter(function (el) {

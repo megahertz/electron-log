@@ -5,6 +5,7 @@ var electron = require('electron');
 var app = electron.app;
 var BrowserWindow = electron.BrowserWindow;
 var log = require('../..');
+var electronApi = require('../../src/electronApi');
 
 var win;
 
@@ -19,10 +20,10 @@ function createWindow() {
 
   log.transports.ipc.level = 'silly';
   log.transports.file.level = false;
-  log.transports.console = function (msg) {
-    log.transports.file(msg);
-  };
-  log.transports.console.level = false;
+
+  electronApi.onIpc('__ELECTRON_LOG_TRANSPORT_IPC__', function (_, message) {
+    log.transports.file(message);
+  });
 
   win.webContents.once('dom-ready', function () {
     log.info({

@@ -8,16 +8,19 @@
 
 <script>
   var electron = require('electron');
-  var log      = require('../..');
-  var proc     = electron.remote.process;
+  var log = require('../..');
+  var electronApi = require('../../src/electronApi');
+
+  var proc = electron.remote.process;
 
   log.transports.ipc.level = 'silly';
   log.transports.file.level = false;
-  log.transports.console = function (msg) {
-    log.transports.file(msg);
-    console.log('MSG', msg);
-    afterConsole();
-  };
+
+  electronApi.onIpc('__ELECTRON_LOG_TRANSPORT_IPC__', function (_, message) {
+    log.transports.file(message);
+    increaseIpcCallCount();
+  });
+
   log.transports.console.level = false;
 
   log.info({
@@ -31,7 +34,7 @@
   log.info(new Error('Error in renderer'));
 
   var callCount = 0;
-  function afterConsole() {
+  function increaseIpcCallCount() {
     callCount++;
     if (callCount >= 3 && proc.argv.indexOf('--test') > -1) {
       setTimeout(function () { proc.exit() }, 100);

@@ -2,7 +2,7 @@
 
 var catchErrors = require('./catchErrors');
 var electronApi = require('./electronApi');
-var log = require('./log');
+var log = require('./log').log;
 var transportConsole = require('./transports/console');
 var transportFile = require('./transports/file');
 var transportIpc = require('./transports/ipc');
