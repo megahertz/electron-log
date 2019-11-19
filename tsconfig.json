@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "noImplicitAny": true,
-    "strictNullChecks": true
+    "lib": ["esnext"],
+    "strict": true,
+    "noImplicitReturns": true
   },
   "include": [
-    "./src/electron-log.d.ts"
+    "./src/__specs__/index.d.test.ts"
   ]
 }

@@ -1,6 +1,6 @@
 'use strict';
 
-var util   = require('util');
+var util = require('util');
 var format = require('../format');
 
 describe('format', function () {
@@ -8,7 +8,7 @@ describe('format', function () {
     level: 'info',
     data: ['test'],
     date: new Date(2000, 0, 1, 1, 1, 1),
-    variables: { myVar: 'myVarValue' }
+    variables: { myVar: 'myVarValue' },
   };
 
   it('should call formatter if it\'s a function', function () {
@@ -53,8 +53,8 @@ describe('format', function () {
       data: [{
         get value() {
           return 'test';
-        }
-      }]
+        },
+      }],
     });
 
     var text = format.format(message, '{text}');

@@ -8,7 +8,7 @@ describe('test:projects', function () {
     return helper.run('node', TIMEOUT).then(function (logReader) {
       expect(logReader.format()).toEqual([
         'main.log: node debug',
-        'main.log: node warn'
+        'main.log: node warn',
       ]);
     });
   }, TIMEOUT);

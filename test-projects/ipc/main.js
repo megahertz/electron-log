@@ -1,10 +1,10 @@
 'use strict';
 
-var path          = require('path');
-var electron      = require('electron');
-var app           = electron.app;
+var path = require('path');
+var electron = require('electron');
+var app = electron.app;
 var BrowserWindow = electron.BrowserWindow;
-var log           = require('../..');
+var log = require('../..');
 
 var win;
 
@@ -12,7 +12,7 @@ function createWindow() {
   win = new BrowserWindow({
     width: 800,
     height: 600,
-    webPreferences: { nodeIntegration: true }
+    webPreferences: { nodeIntegration: true },
   });
   win.loadURL('file://' + path.join(__dirname, 'index.html'));
   win.on('closed', function () { win = null });
@@ -26,7 +26,7 @@ function createWindow() {
 
   win.webContents.once('dom-ready', function () {
     log.info({
-      name: 'Log object in main'
+      name: 'Log object in main',
     });
 
     log.info(function functionInMain() {

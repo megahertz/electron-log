@@ -1,8 +1,8 @@
 'use strict';
 
 var electron = require('electron');
-var log      = require('electron-log');
-var path     = require('path');
+var log = require('electron-log');
+var path = require('path');
 
 var app = electron.app;
 
@@ -12,7 +12,7 @@ function createWindow() {
   win = new electron.BrowserWindow({
     width: 800,
     height: 600,
-    webPreferences: { nodeIntegration: true }
+    webPreferences: { nodeIntegration: true },
   });
   win.loadURL('file://' + path.join(__dirname, '../index.html'));
   win.on('closed', function () { win = null });

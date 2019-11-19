@@ -1,6 +1,6 @@
 'use strict';
 
-/* eslint-disable no-multi-spaces */
+/* eslint-disable no-multi-spaces, no-console */
 
 var format = require('../format');
 
@@ -12,7 +12,7 @@ var original = {
   verbose: console.verbose,
   debug:   console.debug,
   silly:   console.silly,
-  log:     console.log
+  log:     console.log,
 };
 
 module.exports = consoleTransportFactory;

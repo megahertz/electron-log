@@ -8,7 +8,7 @@ var IPC_EVENT = '__ELECTRON_LOG_TRANSPORT_IPC__';
 module.exports = ipcTransportFactory;
 
 function ipcTransportFactory(electronLog) {
-  transport.level  = electronLog.isDev ? 'silly' : false;
+  transport.level = electronLog.isDev ? 'silly' : false;
   transport.format = '[{h}:{i}:{s}.{ms}] {text}';
 
   electronApi.onIpc(IPC_EVENT, function (event, msg) {

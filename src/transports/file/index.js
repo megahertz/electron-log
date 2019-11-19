@@ -21,6 +21,7 @@ function fileTransportFactory(electronLog, customRegistry) {
     logConsole('Can\'t write to ' + file, e);
   });
 
+  /* eslint-disable no-multi-spaces */
   transport.archiveLog   = archiveLog;
   transport.fileName     = fileName;
   transport.format       = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}';
@@ -32,7 +33,7 @@ function fileTransportFactory(electronLog, customRegistry) {
   transport.writeOptions = {
     flag: 'a',
     mode: 438, // 0666
-    encoding: 'utf8'
+    encoding: 'utf8',
   };
 
   initDeprecated();
@@ -73,13 +74,13 @@ function fileTransportFactory(electronLog, customRegistry) {
     electronLog.transports.console({
       data: data,
       date: new Date(),
-      level: 'warn'
+      level: 'warn',
     });
   }
 
   function getFile(msg) {
     var vars = Object.assign({}, pathVariables, {
-      fileName: transport.fileName
+      fileName: transport.fileName,
     });
 
     var filePath = transport.resolvePath(vars, msg);
@@ -99,17 +100,17 @@ function fileTransportFactory(electronLog, customRegistry) {
 
     Object.defineProperties(transport, {
       bytesWritten: {
-        get: util.deprecate(getBytesWritten, 'bytesWritten' + isDeprecatedProp)
+        get: util.deprecate(getBytesWritten, 'bytesWritten' + isDeprecatedProp),
       },
 
       file: {
         get: util.deprecate(getLogFile, 'file' + isDeprecatedProp),
-        set: util.deprecate(setLogFile, 'file' + isDeprecatedProp)
+        set: util.deprecate(setLogFile, 'file' + isDeprecatedProp),
       },
 
       fileSize: {
-        get: util.deprecate(getFileSize, 'file' + isDeprecatedProp)
-      }
+        get: util.deprecate(getFileSize, 'file' + isDeprecatedProp),
+      },
     });
 
     transport.clear = util.deprecate(clear, 'clear()' + isDeprecatedText);

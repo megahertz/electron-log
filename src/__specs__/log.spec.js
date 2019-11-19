@@ -70,8 +70,8 @@ function mockElectronLog() {
     journal: [],
     levels: ['error', 'warn', 'info', 'verbose', 'debug', 'silly'],
     transports: {
-      variable: function (msg) { electronLog.journal.push(msg) }
-    }
+      variable: function (msg) { electronLog.journal.push(msg) },
+    },
   };
 
   electronLog.transports.variable.level = 'silly';

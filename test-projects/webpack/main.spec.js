@@ -9,7 +9,7 @@ describe('test:projects', function () {
     return helper.run('webpack', TIMEOUT).then(function (logReader) {
       expect(logReader.format()).toEqual([
         'main.log: log from the main process',
-        'renderer.log: log from a renderer process'
+        'renderer.log: log from a renderer process',
       ]);
     });
   }, TIMEOUT);

@@ -19,6 +19,6 @@ function makeTmpDir(createFolderOnInit) {
     path: dirPath,
     remove: function () {
       rmDir(this.path);
-    }
+    },
   };
 }

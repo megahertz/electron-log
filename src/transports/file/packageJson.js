@@ -1,11 +1,13 @@
 'use strict';
 
+/* eslint-disable consistent-return */
+
 var fs = require('fs');
 var path = require('path');
 
 module.exports = {
   readPackageJson: readPackageJson,
-  tryReadJsonAt: tryReadJsonAt
+  tryReadJsonAt: tryReadJsonAt,
 };
 
 /**
@@ -39,7 +41,7 @@ function tryReadJsonAt(searchPath) {
     if (json.productName || json.name) {
       return {
         name: name,
-        version: json.version
+        version: json.version,
       };
     }
   } catch (e) {

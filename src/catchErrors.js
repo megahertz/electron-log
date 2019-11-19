@@ -40,6 +40,7 @@ module.exports = function catchErrors(options) {
         );
       }
     } catch (logError) {
+      // eslint-disable-next-line no-console
       console.error(e);
     }
   }
