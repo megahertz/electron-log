@@ -1,24 +1,24 @@
 declare namespace ElectronLog {
-  export type LogLevel = 'error' | 'warn' | 'info' | 'verbose' | 'debug' |
+  type LogLevel = 'error' | 'warn' | 'info' | 'verbose' | 'debug' |
     'silly';
-  export type LevelOption = LogLevel | false;
-  export type Levels = Array<LogLevel | string>;
+  type LevelOption = LogLevel | false;
+  type Levels = Array<LogLevel | string>;
 
-  export type Format = (message: LogMessage) => void;
+  type Format = (message: LogMessage) => void;
 
-  export type FopenFlags = 'r' | 'r+' | 'rs+' | 'w' | 'wx' | 'w+' | 'wx+' |
+  type FopenFlags = 'r' | 'r+' | 'rs+' | 'w' | 'wx' | 'w+' | 'wx+' |
     'a' | 'ax' | 'a+' | 'ax+';
 
-  export type Hook = (
+  type Hook = (
     message: LogMessage,
     selectedTransport?: Transport,
   ) => LogMessage | false;
 
-  export interface Variables {
+  interface Variables {
     [name: string]: any;
   }
 
-  export interface LogMessage {
+  interface LogMessage {
     /**
      * Any arguments passed to a log function
      */
@@ -45,7 +45,7 @@ declare namespace ElectronLog {
     variables?: Variables;
   }
 
-  export interface Transport {
+  interface Transport {
     (message: LogMessage): void;
 
     /**
@@ -54,7 +54,7 @@ declare namespace ElectronLog {
     level: LevelOption;
   }
 
-  export interface ConsoleTransport extends Transport {
+  interface ConsoleTransport extends Transport {
     /**
      * String template of function for message serialization
      */
@@ -66,7 +66,7 @@ declare namespace ElectronLog {
     forceStyles: boolean;
   }
 
-  export interface PathVariables {
+  interface PathVariables {
     /**
      * Per-user application data directory, which by default points to:
      * %APPDATA% on Windows
@@ -117,7 +117,7 @@ declare namespace ElectronLog {
     readonly userData: string;
   }
 
-  export interface WriteOptions {
+  interface WriteOptions {
     /**
      * Default 'a'
      */
@@ -134,7 +134,7 @@ declare namespace ElectronLog {
     encoding?: string;
   }
 
-  export interface LogFile {
+  interface LogFile {
     /**
      * Full log file path
      */
@@ -161,7 +161,7 @@ declare namespace ElectronLog {
     on (event: 'error', listener: (error: Error, file: this) => void): this;
   }
 
-  export interface FileTransport extends Transport {
+  interface FileTransport extends Transport {
     /**
      * Determines a location of log file, something like
      * ~/.config/<app name>/log.log depending on OS. By default electron-log
@@ -251,7 +251,7 @@ declare namespace ElectronLog {
     init (): void;
   }
 
-  export interface RemoteTransport extends Transport {
+  interface RemoteTransport extends Transport {
     /**
      * Client information which will be sent in each request together with
      * a message body
@@ -269,7 +269,7 @@ declare namespace ElectronLog {
     url: string;
   }
 
-  export interface Transports {
+  interface Transports {
     /**
      * Writes logs to console
      */
@@ -295,7 +295,7 @@ declare namespace ElectronLog {
     [key: string]: Transport | null;
   }
 
-  export interface CatchErrorsOptions {
+  interface CatchErrorsOptions {
     /**
      * Default true for the main process. Set it to false to prevent showing a
      * default electron error dialog
@@ -309,14 +309,14 @@ declare namespace ElectronLog {
     onError? (error: Error): void;
   }
 
-  export interface CatchErrorsResult {
+  interface CatchErrorsResult {
     /**
      * Stop catching errors
      */
     stop (): void;
   }
 
-  export interface ElectronLog {
+  interface ElectronLog {
     /**
      * Transport instances
      */
