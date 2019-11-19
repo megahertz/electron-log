@@ -1,6 +1,7 @@
 'use strict';
 
 var fs = require('fs');
+var os = require('os');
 var path = require('path');
 var file = require('../file');
 var makeTmpDir = require('./makeTmpDir');
@@ -68,7 +69,7 @@ describe('transports/file/file', function () {
 
         testFile.writeLine('test');
 
-        expect(fs.readFileSync(testFile.path, 'utf8')).toBe('test\n');
+        expect(fs.readFileSync(testFile.path, 'utf8')).toBe('test' + os.EOL);
       });
 
       it('should increase bytesWritten', function () {
@@ -77,7 +78,7 @@ describe('transports/file/file', function () {
 
         testFile.writeLine('test');
 
-        expect(testFile.bytesWritten).toBe(5);
+        expect(testFile.bytesWritten).toBe(4 + os.EOL.length);
       });
 
       it('should emit error if dir not exists', function (done) {
@@ -85,7 +86,7 @@ describe('transports/file/file', function () {
         var testFile = new file.File(path.join(tmpDir.path, 'test.txt'));
 
         testFile.on('error', function (error) {
-          expect(error.message).toMatch('Couldn\'t write to ' + testFile.path);
+          expect(error.message).toMatch('Couldn\'t write to ');
           done();
         });
 
