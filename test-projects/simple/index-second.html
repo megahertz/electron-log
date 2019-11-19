@@ -11,6 +11,7 @@
   var log      = require('../..');
   var proc     = electron.remote.process;
 
+  log.transports.file.fileName = 'second.log';
   log.warn('log from the second renderer process');
   if (proc.argv.indexOf('--test') > -1) {
     setTimeout(function () { proc.exit() }, 50);

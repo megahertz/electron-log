@@ -13,7 +13,8 @@ try {
 
 module.exports = {
   getName: getName,
-  getUserData: getUserData,
+  getPath: getPath,
+  getVersion: getVersion,
   isDev: isDev,
   isElectron: isElectron,
   loadRemoteModule: loadRemoteModule,
@@ -49,6 +50,17 @@ function getElectronModule(name) {
   return null;
 }
 
+function getPath(name) {
+  var app = getApp();
+  if (!app) return null;
+
+  try {
+    return app.getPath(name);
+  } catch (e) {
+    return null;
+  }
+}
+
 function getRemote() {
   if (electron && electron.remote) {
     return electron.remote;
@@ -57,11 +69,11 @@ function getRemote() {
   return null;
 }
 
-function getUserData() {
+function getVersion() {
   var app = getApp();
   if (!app) return null;
 
-  return app.getPath('userData');
+  return 'version' in app ? app.version : app.getVersion();
 }
 
 function isDev() {

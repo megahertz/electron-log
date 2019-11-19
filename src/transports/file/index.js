@@ -1,23 +1,33 @@
 'use strict';
 
-var fs          = require('fs');
-var EOL         = require('os').EOL;
-var path        = require('path');
-var format      = require('../../format');
-var findLogPath = require('./findLogPath');
+var fs = require('fs');
+var path = require('path');
+var util = require('util');
+var format = require('../../format');
+var FileRegistry = require('./file').FileRegistry;
+var variables = require('./variables');
 
 module.exports = fileTransportFactory;
 
-function fileTransportFactory(electronLog) {
-  transport.appName      = null;
+// Shared between multiple file transport instances
+var globalRegistry = new FileRegistry();
+
+function fileTransportFactory(electronLog, customRegistry) {
+  var pathVariables = variables.getPathVariables(process.platform);
+  var fileName = process.type === 'renderer' ? 'renderer.log' : 'main.log';
+
+  var registry = customRegistry || globalRegistry;
+  registry.on('error', function (e, file) {
+    logConsole('Can\'t write to ' + file, e);
+  });
+
   transport.archiveLog   = archiveLog;
-  transport.bytesWritten = 0;
-  transport.file         = null;
-  transport.fileName     = 'log.log';
-  transport.fileSize     = null;
+  transport.fileName     = fileName;
   transport.format       = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}';
+  transport.getFile      = getFile;
   transport.level        = 'silly';
   transport.maxSize      = 1024 * 1024;
+  transport.resolvePath  = resolvePath;
   transport.sync         = true;
   transport.writeOptions = {
     flag: 'a',
@@ -25,95 +35,32 @@ function fileTransportFactory(electronLog) {
     encoding: 'utf8'
   };
 
-  transport.clear       = clear;
-  transport.findLogPath = findCurrentLogPath.bind(null, transport);
-  transport.init        = init;
+  initDeprecated();
 
   return transport;
 
   function transport(msg) {
-    if (!transport.file || transport.fileSize === null) {
-      init(transport);
-    }
+    var file = getFile(msg);
 
     var needLogRotation = transport.maxSize > 0
-      && transport.fileSize + transport.bytesWritten > transport.maxSize;
+      && file.size > transport.maxSize;
 
     if (needLogRotation) {
-      transport.archiveLog(transport.file);
-      init(transport);
+      transport.archiveLog(file);
+      file.reset();
     }
 
-    var text = format.format(msg, transport.format, electronLog, true);
-    write(text + EOL, transport);
-  }
-
-  function init(transp) {
-    transp = transp || transport;
-
-    transp.file = findCurrentLogPath(transp);
-
-    if (!transp.file) {
-      transp.level = false;
-      logConsole('Could not set a log file');
-      return;
-    }
-
-    try {
-      transp.fileSize = fs.statSync(transp.file).size;
-    } catch (e) {
-      transp.fileSize = 0;
-    }
-
-    transp.bytesWritten = 0;
-  }
-
-  function write(text, transp) {
-    if (transp.sync) {
-      try {
-        fs.writeFileSync(transp.file, text, transp.writeOptions);
-        incCounter(text, transp);
-      } catch (e) {
-        logConsole('Couldn\'t write to ' + transp.file, e);
-      }
-    } else {
-      fs.writeFile(transp.file, text, transp.writeOptions, function (e) {
-        if (e) {
-          logConsole('Couldn\'t write to ' + transp.file, e);
-        } else {
-          incCounter(text, transp);
-        }
-      });
-    }
-  }
-
-  function incCounter(text, transp) {
-    transp.bytesWritten += Buffer.byteLength(
-      text,
-      transp.writeOptions.encoding
-    );
+    file.writeLine(format.format(msg, transport.format, electronLog, true));
   }
 
   function archiveLog(file) {
+    file = file.toString();
     var info = path.parse(file);
     try {
       fs.renameSync(file, path.join(info.dir, info.name + '.old' + info.ext));
     } catch (e) {
       logConsole('Could not rotate log', e);
     }
-  }
-
-  function clear() {
-    try {
-      fs.unlinkSync(transport.file);
-    } catch (e) {
-      logConsole('Could not clear log', e);
-    }
-  }
-
-  function findCurrentLogPath(transp) {
-    return transp.file
-      || findLogPath(transp.appName, transp.fileName);
   }
 
   function logConsole(message, error) {
@@ -128,5 +75,72 @@ function fileTransportFactory(electronLog) {
       date: new Date(),
       level: 'warn'
     });
+  }
+
+  function getFile(msg) {
+    var vars = Object.assign({}, pathVariables, {
+      fileName: transport.fileName
+    });
+
+    var filePath = transport.resolvePath(vars, msg);
+    return registry.provide(filePath, transport.writeOptions, !transport.sync);
+  }
+
+  /**
+   * @param {IPathVariables} vars
+   */
+  function resolvePath(vars) {
+    return path.join(vars.libraryDefaultDir, vars.fileName);
+  }
+
+  function initDeprecated() {
+    var isDeprecatedText = ' is deprecated and will be removed in v5.';
+    var isDeprecatedProp = ' property' + isDeprecatedText;
+
+    Object.defineProperties(transport, {
+      bytesWritten: {
+        get: util.deprecate(getBytesWritten, 'bytesWritten' + isDeprecatedProp)
+      },
+
+      file: {
+        get: util.deprecate(getLogFile, 'file' + isDeprecatedProp),
+        set: util.deprecate(setLogFile, 'file' + isDeprecatedProp)
+      },
+
+      fileSize: {
+        get: util.deprecate(getFileSize, 'file' + isDeprecatedProp)
+      }
+    });
+
+    transport.clear = util.deprecate(clear, 'clear()' + isDeprecatedText);
+    transport.findLogPath = util.deprecate(
+      getLogFile,
+      'findLogPath()' + isDeprecatedText
+    );
+    transport.init = util.deprecate(init, 'init()' + isDeprecatedText);
+
+    function getBytesWritten() {
+      return getFile().bytesWritten;
+    }
+
+    function getLogFile() {
+      return getFile().path;
+    }
+
+    function setLogFile(filePath) {
+      transport.resolvePath = function () {
+        return filePath;
+      };
+    }
+
+    function getFileSize() {
+      return getFile().size;
+    }
+
+    function clear() {
+      getFile().clear();
+    }
+
+    function init() {}
   }
 }

@@ -1,57 +1,167 @@
 'use strict';
 
-var fs                 = require('fs');
-var os                 = require('os');
-var path               = require('path');
-var factory            = require('../index');
-var getExpectedLogPath = require('./findLogPath.spec').getExpectedLogPath;
+var os = require('os');
+var path = require('path');
+var TestLogReader = require('../../../__specs__/TestLogReader');
+var FileRegistry = require('../file').FileRegistry;
+var fileTransportFactory = require('../index');
+var makeTmpDir = require('./makeTmpDir');
 
-describe('file transport', function () {
-  var tmpId = 'electron-log-' + Math.random().toString(36).substring(2, 15);
-  var logFile = path.join(os.tmpdir(), tmpId + '.log');
-  var olgLogFile = path.join(os.tmpdir(), tmpId + '.old.log');
+
+describe('File transport', function () {
+  var TEST_MESSAGE = createMessage('test');
+  var TEST_MESSAGE_SIZE = 37 + os.EOL.length;
 
   afterEach(function () {
+    TestLogReader.removeDefaultLogDir('humile');
+  });
+
+  it('should create a file on first write', function () {
+    var transport = createTransport();
+
+    transport(TEST_MESSAGE);
+
+    expect(TestLogReader.fromApp('humile').format()).toEqual([
+      'main.log: test'
+    ]);
+  });
+
+  it('should archive an old log', function () {
+    var transport = createTransport();
+    transport.maxSize = 20;
+
+    transport(TEST_MESSAGE);
+    expect(TestLogReader.fromApp('humile').format()).toEqual([
+      'main.log: test'
+    ]);
+
+    transport(createMessage('test2'));
+    expect(TestLogReader.fromApp('humile').format().sort()).toEqual([
+      'main.log: test2',
+      'main.old.log: test'
+    ]);
+  });
+
+  it('should allow to change file location', function () {
+    var tmpDir = makeTmpDir(false);
+
     try {
-      fs.unlinkSync(logFile);
-      fs.unlinkSync(olgLogFile);
-      fs.unlinkSync(getExpectedLogPath('el-test2'));
-    } catch (e) {
-      // Just skip, after some test file doesn't exist
+      var logFilePath = path.join(tmpDir.path, 'mylog.txt');
+      var transport = createTransport({
+        resolvePath: function () { return logFilePath }
+      });
+
+      transport(TEST_MESSAGE);
+
+      expect(TestLogReader.fromFile(logFilePath).format()).toEqual([
+        'mylog.txt: test'
+      ]);
+    } finally {
+      tmpDir.remove();
     }
   });
 
-  it('should archive old log', function () {
-    var windowsOverhead = process.platform === 'win32' ? 1 : 0;
-    var electronLog = {};
-    var msg = {
-      data: ['test log'],
-      date: new Date(),
-      level: 'info',
-      variables: electronLog.variables
-    };
-    var transport = factory(electronLog);
-    transport.maxSize = 20;
-    transport.file = logFile;
-    transport.sync = true;
+  it('should provide access to the current file', function () {
+    var transport = createTransport();
 
-    transport(msg);
-    expect(transport.bytesWritten).toBe(42 + windowsOverhead);
-    expect(fs.existsSync(olgLogFile)).toBe(false);
+    transport(TEST_MESSAGE);
+    var file = transport.getFile();
 
-    msg.data = ['test log 2'];
-    transport(msg);
-    expect(transport.bytesWritten).toBe(44 + windowsOverhead);
-    expect(fs.existsSync(olgLogFile)).toBe(true);
-    expect(fs.statSync(logFile).size).toBe(44 + windowsOverhead);
-    expect(fs.statSync(olgLogFile).size).toBe(42 + windowsOverhead);
+    expect(file.bytesWritten).toEqual(TEST_MESSAGE_SIZE);
+    expect(file.size).toEqual(TEST_MESSAGE_SIZE);
+    expect(file.path).toMatch('main.log');
   });
 
-  it('should return valid log path depending on OS', function () {
-    var electronLog = {};
-    var transport = factory(electronLog);
-    transport.appName = 'el-test2';
+  describe('should provide deprecated members until v5: ', function () {
+    beforeAll(function () {
+      this.noDeprecationBackup = process.noDeprecation;
+      process.noDeprecation = true;
+    });
 
-    expect(transport.findLogPath()).toBe(getExpectedLogPath('el-test2'));
+    afterAll(function () {
+      process.noDeprecation = this.noDeprecationBackup;
+    });
+
+    it('file', function () {
+      var transport = createTransport();
+      var defaultPath = TestLogReader.getDefaultLogDir('humile');
+
+      expect(transport.file).toEqual(
+        path.join(defaultPath, 'main.log')
+      );
+
+      transport.file = path.join(defaultPath, 'changed.log');
+
+      transport(TEST_MESSAGE);
+
+      expect(TestLogReader.fromApp('humile').format()).toEqual([
+        'changed.log: test'
+      ]);
+    });
+
+    it('fileSize', function () {
+      var transport = createTransport();
+
+      transport(TEST_MESSAGE);
+
+      expect(transport.fileSize).toBe(TEST_MESSAGE_SIZE);
+    });
+
+    it('bytesWritten', function () {
+      var transport = createTransport();
+
+      transport(TEST_MESSAGE);
+
+      expect(transport.bytesWritten).toBe(TEST_MESSAGE_SIZE);
+    });
+
+    it('clear()', function () {
+      var transport = createTransport();
+
+      transport(TEST_MESSAGE);
+
+      transport.clear();
+
+      expect(transport.bytesWritten).toBe(0);
+      expect(TestLogReader.fromApp('humile').format()).toEqual([]);
+    });
+
+    it('findLogPath()', function () {
+      var transport = createTransport();
+      var defaultPath = TestLogReader.getDefaultLogDir('humile');
+
+      expect(transport.findLogPath()).toEqual(
+        path.join(defaultPath, 'main.log')
+      );
+    });
+
+    it('init()', function () {
+      var transport = createTransport();
+
+      // just do nothing
+      expect(transport.init()).toBe(undefined);
+    });
   });
 });
+
+function createTransport(options) {
+  var electronLog = {
+    transports: {
+      console: console.log
+    }
+  };
+  var transport = fileTransportFactory(electronLog, new FileRegistry());
+
+  Object.assign(transport, options || {});
+
+  return transport;
+}
+
+function createMessage(data, level) {
+  return {
+    data: Array.isArray(data) ? data : [data],
+    date: new Date(),
+    level: level || 'info',
+    variables: {}
+  };
+}
