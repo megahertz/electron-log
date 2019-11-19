@@ -3,6 +3,7 @@
 var fs = require('fs');
 var os = require('os');
 var path = require('path');
+var rmDir = require('./fsHelpers').rmDir;
 
 module.exports = TestLogReader;
 
@@ -102,24 +103,3 @@ TestLogReader.prototype.removeLogDir = function () {
     this.constructor.removeDefaultLogDir(this.appName);
   }
 };
-
-/**
- * For running tests using old node version
- * @param {string} dirPath
- */
-function rmDir(dirPath) {
-  if (!fs.existsSync(dirPath)) {
-    return;
-  }
-
-  fs.readdirSync(dirPath).forEach(function (file) {
-    var curPath = path.join(dirPath, file);
-    if (fs.lstatSync(curPath).isDirectory()) {
-      rmDir(curPath);
-    } else {
-      fs.unlinkSync(curPath);
-    }
-  });
-
-  fs.rmdirSync(dirPath);
-}

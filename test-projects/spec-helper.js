@@ -1,7 +1,7 @@
 'use strict';
 
 var path = require('path');
-var TestLogReader = require('../src/__specs__/TestLogReader');
+var TestLogReader = require('../src/__specs__/utils/TestLogReader');
 var exec = require('child_process').exec;
 
 module.exports = {

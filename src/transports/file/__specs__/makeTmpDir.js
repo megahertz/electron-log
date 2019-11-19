@@ -3,6 +3,7 @@
 var fs = require('fs');
 var os = require('os');
 var path = require('path');
+var rmDir = require('../../../__specs__/utils/fsHelpers').rmDir;
 
 module.exports = makeTmpDir;
 
@@ -17,7 +18,7 @@ function makeTmpDir(createFolderOnInit) {
   return {
     path: dirPath,
     remove: function () {
-      fs.rmdirSync(this.path, { recursive: true });
+      rmDir(this.path);
     }
   };
 }
