@@ -8,34 +8,41 @@ var transportFile = require('./transports/file');
 var transportIpc = require('./transports/ipc');
 var transportRemote = require('./transports/remote');
 
-module.exports = {
-  catchErrors: function callCatchErrors(options) {
-    var opts = Object.assign({}, {
-      log: module.exports.error,
-      showDialog: process.type === 'browser',
-    }, options || {});
-
-    catchErrors(opts);
-  },
-  hooks: [],
-  isDev: electronApi.isDev(),
-  levels: ['error', 'warn', 'info', 'verbose', 'debug', 'silly'],
-  variables: {
-    processType: process.type,
-  },
-};
-
-module.exports.transports = {
-  console: transportConsole(module.exports),
-  file: transportFile(module.exports),
-  remote: transportRemote(module.exports),
-  ipc: transportIpc(module.exports),
-};
-
-module.exports.levels.forEach(function (level) {
-  module.exports[level] = log.bind(null, module.exports, level);
-});
-
-module.exports.log = log.bind(null, module.exports, 'info');
-
+module.exports = create('default');
 module.exports.default = module.exports;
+
+function create(logId) {
+  var instance = {
+    catchErrors: function callCatchErrors(options) {
+      var opts = Object.assign({}, {
+        log: instance.error,
+        showDialog: process.type === 'browser',
+      }, options || {});
+
+      catchErrors(opts);
+    },
+    create: create,
+    hooks: [],
+    isDev: electronApi.isDev(),
+    levels: ['error', 'warn', 'info', 'verbose', 'debug', 'silly'],
+    logId: logId,
+    variables: {
+      processType: process.type,
+    },
+  };
+
+  instance.transports = {
+    console: transportConsole(instance),
+    file: transportFile(instance),
+    remote: transportRemote(instance),
+    ipc: transportIpc(instance),
+  };
+
+  instance.levels.forEach(function (level) {
+    instance[level] = log.bind(null, instance, level);
+  });
+
+  instance.log = log.bind(null, instance, 'info');
+
+  return instance;
+}

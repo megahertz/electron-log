@@ -98,7 +98,7 @@ by default for packaged application.
 
 #### Remote transport
 
-Sends a JSON POST request with ILogMessage in the body to the specified url.
+Sends a JSON POST request with LogMessage in the body to the specified url.
 
 ##### Options
 
@@ -116,7 +116,7 @@ log.transports.console.level = false;
 
 #### [Override/add a custom transport](doc/extend.md#transport)
 
-Transport is just a function `(msg: ILogMessage) => void`, so you can
+Transport is just a function `(msg: LogMessage) => void`, so you can
 easily override/add your own transport.
 [More info.](doc/extend.md#transport)
 
@@ -157,7 +157,7 @@ electron-log can catch and log unhandled errors/rejected promises:
 In some situations, you may want to get more control over logging. Hook
 is a function which is called on each transport call.
 
-`(msg: ILogMessage, transport: ITransport) => ILogMessage`
+`(msg: LogMessage, transport: Transport) => LogMessage`
 
 [More info.](doc/extend.md#hooks)
 

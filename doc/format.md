@@ -29,7 +29,7 @@ log.transports.console.format = '[{h}:{i}:{s}.{ms}] [{label}] {text}';
 
 ## Function
 
-(msg: [ILogMessage](extend.md#ilogmessage)) => string
+(msg: [LogMessage](extend.md#ilogmessage)) => string
 
 ```js
 log.transports.console.format = m => util.format.apply(util, m.data);
