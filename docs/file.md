@@ -89,6 +89,17 @@ The variables argument is just object of
 [PathVariables type](../src/index.d.ts#L69) which contains several
 predefined values. Feel free to choice the most suitable for your application.
   
+Electron has built-in method to get logs path `app.getPath('logs')`. But it
+seems not stable in the current version. There is a chance that default path on
+some platforms might be changed later. But if you would like to use default
+Electron path, just use the following resolver:
+
+```js
+function resolvePath(variables) {
+  return path.join(variables.electronDefaultDir, variables.fileName);
+}
+```
+  
 #### `sync` {boolean}
  
 Default: `true` 
