@@ -169,6 +169,7 @@ const electronLog = require('electron-log');
 const log = electronLog.create('anotherInstance');
 ````
 
-## License
+## Related
 
-Licensed under MIT.
+ - [electron-cfg](https://github.com/megahertz/electron-cfg) - Just a simple
+   solution for storing settings for an Electron application.
