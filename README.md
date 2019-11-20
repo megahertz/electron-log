@@ -159,6 +159,16 @@ is a function which is called on each transport call.
 
 [More info.](docs/extend.md#hooks)
 
+### Multiple logger instances
+
+You can create multiple logger instances with different settings:
+
+```js
+const electronLog = require('electron-log');
+
+const log = electronLog.create('anotherInstance');
+````
+
 ## License
 
 Licensed under MIT.
