@@ -48,13 +48,13 @@ Sometimes logging very complex object can produce a huge POST body. To reduce
 request size set depth option to exclude nested objects which are deeper than
 `depth`.
 
-#### `level`, {LogLevel | false}
+#### `level` {LogLevel | false}
 
 Default: `false`
 
 Filter log messages which can be send via the transport.
 
-#### `requestOptions`, {module:http.RequestOptions}
+#### `requestOptions` {module:http.RequestOptions}
 
 Default: `{}`
 

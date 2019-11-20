@@ -66,12 +66,12 @@ DevTools console (renderer process).
 
 ##### Options
 
-- **[format](docs/format.md)**, default
-  `'%c{h}:{i}:{s}.{ms}%c › {text}'` (main),
-  `'{h}:{i}:{s}.{ms} › {text}'` (renderer)
-- **level**, default 'silly'
-- **forceStyles**, use styles in the main process even if TTY isn't attached,
-  default false
+ - **[format](docs/format.md)**, default
+   `'%c{h}:{i}:{s}.{ms}%c › {text}'` (main),
+   `'{h}:{i}:{s}.{ms} › {text}'` (renderer)
+ - **level**, default 'silly'
+ - **forceStyles**, use styles in the main process even if TTY isn't attached,
+   default false
 
 #### File transport
 
@@ -79,11 +79,11 @@ The file transport writes log messages to a file.
 
 ##### Options
 
-- **fileName**, default 'main.log' or 'renderer.log'
-- **[format](docs/format.md)**, default
-  `'[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}'`
-- **level**, default 'silly'
-- **maxSize** of log file in bytes, 1048576 (1mb) by default.
+ - **fileName**, default 'main.log' or 'renderer.log'
+ - **[format](docs/format.md)**, default
+   `'[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}'`
+ - **level**, default 'silly'
+ - **maxSize** of log file in bytes, 1048576 (1mb) by default.
 
 [Read more about file transport](docs/file.md).
 
@@ -94,7 +94,7 @@ it's disabled by default for packaged application.
 
 ##### Options
 
-- **level**, default 'silly'
+ - **level**, default 'silly'
 
 #### Remote transport
 
@@ -102,8 +102,8 @@ Sends a JSON POST request with `LogMessage` in the body to the specified url.
 
 ##### Options
 
-- **level**, default false
-- **url**, remote endpoint
+ - **level**, default false
+ - **url**, remote endpoint
 
 [Read more about remote transport](docs/remote.md).
 
@@ -120,7 +120,7 @@ log.transports.console.level = false;
 
 Transport is just a function `(msg: LogMessage) => void`, so you can
 easily override/add your own transport.
-[More info.](docs/extend.md#transport)
+[More info](docs/extend.md#transport).
 
 ### Colors
 
@@ -149,10 +149,10 @@ electron-log can catch and log unhandled errors/rejected promises:
 
 ##### Options
 
-- **showDialog**, default true for the main process. Set it to false to prevent
-  showing a default electron error dialog
-- **onError**, `(error) => void | false`, default null - attach a custom
-  error handler. If the handler returns false, this error will not be processed.
+ - **showDialog**, default true for the main process. Set it to false to prevent
+   showing a default electron error dialog
+ - **onError**, `(error) => void | false`, default null - attach a custom
+   error handler. If the handler returns false, this error will not be processed.
 
 ### [Hooks](docs/extend.md#hooks)
 
@@ -161,7 +161,7 @@ is a function which is called on each transport call.
 
 `(message: LogMessage, transport: Transport) => LogMessage`
 
-[More info.](docs/extend.md#hooks)
+[More info](docs/extend.md#hooks).
 
 ### Multiple logger instances
 
@@ -175,5 +175,5 @@ const log = electronLog.create('anotherInstance');
 
 ## Related
 
- - [electron-cfg](https://github.com/megahertz/electron-cfg) - Just a simple
-   solution for storing settings for an Electron application.
+ - [electron-cfg](https://github.com/megahertz/electron-cfg) -
+   Settings manager for your Electron application.

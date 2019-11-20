@@ -53,3 +53,5 @@ log.hooks.push((message, transport) => {
  - variables?: { [name: string]: any } When log message is created,
    values from log.variables are saved here (to make it possible to
    pass message between different processes)
+   
+See more details in [the type definition](../src/index.d.ts#L21) 

@@ -13,7 +13,7 @@ If you would like to upgrade to the latest version, check
 `npm install electron-log@latest`
 
 If you just use electron-log with default configuration you only need to know
-that default log file path was changed.
+that a default log file path was changed.
 
 ### File transport
 
@@ -27,6 +27,8 @@ that default log file path was changed.
    %USERPROFILE%\\AppData\\Roaming\\{app name}\\**log.log** →
    
    %USERPROFILE%\\AppData\\Roaming\\{app name}\\**logs\{process type}.log**
+   
+   If you need to keep old file paths, you can override `file.resolvePath` 
    
  - `file.fileName` is now `main.log` and `renderer.log` depending on process
    type
@@ -43,7 +45,8 @@ that default log file path was changed.
    - new method `file.getFile()` was added. It allows to manipulate the current
      log file.
    
- - The following file transport options and methods are deprecated:
+ - The following file transport options and methods are deprecated and will be
+   removed in v5:
  
    - `file.file`, use `file.resolvePath` instead
    - `file.bytesWritten`, use `file.getFile().bytesWritten` instead
