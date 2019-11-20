@@ -11,9 +11,9 @@ Also, it can be used without Electron in any node.js application.
 
 By default it writes logs to the following locations:
 
- * **on Linux:** `~/.config/<app name>/log.log`
- * **on macOS:** `~/Library/Logs/<app name>/log.log`
- * **on Windows:** `%USERPROFILE%\AppData\Roaming\<app name>\log.log`
+ - **on Linux:** `~/.config/{app name}/logs/{process type}.log`
+ - **on macOS:** `~/Library/Logs/{app name}/{process type}.log`
+ - **on Windows:** `%USERPROFILE%\AppData\Roaming\{app name}\{process type}.log`
 
 ## Installation
 
@@ -24,17 +24,16 @@ Install with [npm](https://npmjs.org/package/electron-log):
 ## Usage
 
 ```js
-const log = require('src/electron-log');
+const log = require('electron-log');
 
 log.info('Hello, log');
 log.warn('Some problem appears');
 ```
 
-### electron-log v2.x
+### electron-log v2.x, v3.x
 
-Documentation for 
-[v2.x is here](https://github.com/megahertz/electron-log/tree/v2.2.17).
-Read [the migration guide](doc/migrate-v3.md) to update to v3.x
+Read [the migration guide](docs/migration.md) and [the changelog](CHANGELOG.md)
+if you would like to upgrade to the latest version.
 
 ### Log levels
 
@@ -47,14 +46,14 @@ electron-log supports the following log levels:
 Transport is a simple function which does some work with log message.
 By default, two transports are active: console and file. 
 
-If you change some transport options, make sure you apply the changes both in
-main and renderer processes.
+**If you change some transport options, make sure you apply the changes both in
+main and renderer processes.**
 
 You can set transport options or use methods using:
 
 `log.transports.console.format = '{h}:{i}:{s} {text}';`
 
-`log.transports.file.clear();`
+`log.transports.file.getFile();`
 
 #### Console transport
 
@@ -63,7 +62,7 @@ DevTools console (renderer process).
 
 ##### Options
 
-- **[format](doc/format.md)**, default
+- **[format](docs/format.md)**, default
   `'%c{h}:{i}:{s}.{ms}%c › {text}'` (main),
   `'{h}:{i}:{s}.{ms} › {text}'` (renderer)
 - **level**, default 'silly'
@@ -76,34 +75,33 @@ The file transport writes log messages to a file.
 
 ##### Options
 
-- **fileName**, default 'log.log'
-- **[format](doc/format.md)**, default
+- **fileName**, default 'main.log' or 'renderer.log'
+- **[format](docs/format.md)**, default
   `'[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}'`
 - **level**, default 'silly'
 - **maxSize** of log file in bytes, 1048576 (1mb) by default.
 
-[Detailed description](doc/file.md) of file transport options and methods.
+[Read more about file transport](docs/file.md).
 
-#### Renderer console transport
+#### IPC transport
+When logging inside renderer process, it also shows log in application
+console and vice versa. This transport can impact on performance, so
+it's disabled by default for packaged application.
 
-When logging inside main process, it shows log in DevTools console too.
-This transport can impact on performance, so it's disabled by default
-for packaged application.
+##### Options
 
-#### Main console transport
-
-When logging inside renderer process, it shows log in application
-console too. This transport can impact on performance, so it's disabled
-by default for packaged application.
+- **level**, default 'silly'
 
 #### Remote transport
 
-Sends a JSON POST request with LogMessage in the body to the specified url.
+Sends a JSON POST request with `LogMessage` in the body to the specified url.
 
 ##### Options
 
 - **level**, default false
-- **url**
+- **url**, remote endpoint
+
+[Read more about remote transport](docs/remote.md).
 
 #### Disable a transport
 
@@ -114,11 +112,11 @@ log.transports.file.level = false;
 log.transports.console.level = false;
 ```
 
-#### [Override/add a custom transport](doc/extend.md#transport)
+#### [Override/add a custom transport](docs/extend.md#transport)
 
 Transport is just a function `(msg: LogMessage) => void`, so you can
 easily override/add your own transport.
-[More info.](doc/extend.md#transport)
+[More info.](docs/extend.md#transport)
 
 ### Colors
 
@@ -143,23 +141,23 @@ For DevTools console you can use other CSS properties.
 
 electron-log can catch and log unhandled errors/rejected promises:
 
-`log.catchErrors(options = {})`;
+`log.catchErrors(options?)`;
 
 ##### Options
 
 - **showDialog**, default true for the main process. Set it to false to prevent
   showing a default electron error dialog
-- **onError**, (error) => void | false, default null - attach a custom
+- **onError**, `(error) => void | false`, default null - attach a custom
   error handler. If the handler returns false, this error will not be processed.
 
-### [Hooks](doc/extend.md#hooks)
+### [Hooks](docs/extend.md#hooks)
 
 In some situations, you may want to get more control over logging. Hook
 is a function which is called on each transport call.
 
-`(msg: LogMessage, transport: Transport) => LogMessage`
+`(message: LogMessage, transport: Transport) => LogMessage`
 
-[More info.](doc/extend.md#hooks)
+[More info.](docs/extend.md#hooks)
 
 ## License
 
