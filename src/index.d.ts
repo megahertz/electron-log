@@ -101,7 +101,8 @@ declare namespace ElectronLog {
     readonly home: string;
 
     /**
-     * userData + /logs/ + fileName
+     * userData + /logs/ + fileName on Linux and Windows
+     * ~/Library/Logs/ + appName + / + fileName on macOS
      */
     readonly libraryDefaultDir: string;
 
@@ -204,7 +205,7 @@ declare namespace ElectronLog {
 
     /**
      * Return the current log file instance
-     * You only need to provide message argument if you defile log path inside
+     * You only need to provide message argument if you define log path inside
      * resolvePath callback depending on a message.
      */
     getFile (message?: Partial<LogMessage>): LogFile;

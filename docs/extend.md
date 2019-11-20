@@ -8,9 +8,9 @@ easily override/add your own transport.
 ```js
 const format = require('util');
 
-log.transports.console = (msg) => {
-  const text = util.format.apply(util, msg.data);
-  console.log(`[${msg.date.toLocaleTimeString()} ${msg.level}] ${text}`);
+log.transports.console = (message) => {
+  const text = util.format.apply(util, message.data);
+  console.log(`[${message.date.toLocaleTimeString()} ${message.level}] ${text}`);
 };
 ```
 
@@ -31,16 +31,16 @@ In this example the file transport is disabled for all messages which
 contain 'password' phrase:
 
 ```js
-log.hooks.push((msg, transport) => {
+log.hooks.push((message, transport) => {
   if (transport !== log.transports.file) {
-    return msg;
+    return message;
   }
 
-  if (msg.data[0].includes('password')) {
+  if (message.data[0].includes('password')) {
     return false;
   }
 
-  return msg;
+  return message;
 });
 ```
 
