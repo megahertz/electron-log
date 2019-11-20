@@ -34,9 +34,6 @@
   "bugs": "https://github.com/megahertz/electron-log/issues",
   "homepage": "https://github.com/megahertz/electron-log#readme",
   "devDependencies": {
-    "@babel/core": "*",
-    "@babel/preset-env": "*",
-    "babel-loader": "*",
     "electron": "*",
     "eslint": "^6.6.0",
     "eslint-config-airbnb-base": "^13.2.0",
