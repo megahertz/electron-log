@@ -19,7 +19,7 @@ function log(electronLog, level) {
   };
 
   for (var i in transports) {
-    if (transports.hasOwnProperty(i)) {
+    if (Object.prototype.hasOwnProperty.call(transports, i)) {
       runTransport(transports[i], message, electronLog);
     }
   }

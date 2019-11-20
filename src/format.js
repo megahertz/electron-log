@@ -28,7 +28,7 @@ function format(msg, formatter, electronLog, removeStyles) {
   var result = formatter;
 
   for (var i in variables) {
-    if (!variables.hasOwnProperty(i)) continue;
+    if (!Object.prototype.hasOwnProperty.call(variables, i)) continue;
     result = result.replace('{' + i + '}', variables[i]);
   }
 
