@@ -78,6 +78,10 @@ function jsonDepth(json, depth) {
   }
 
   if (typeof json === 'object') {
+    if (json instanceof Error) {
+      return json.stack || json.constructor.name + ': ' + json.message;
+    }
+
     if (typeof json.toJSON === 'function') {
       json = json.toJSON();
     }
