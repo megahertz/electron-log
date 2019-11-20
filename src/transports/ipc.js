@@ -9,7 +9,6 @@ module.exports = ipcTransportFactory;
 function ipcTransportFactory(electronLog) {
   transport.eventId = '__ELECTRON_LOG_IPC_' + electronLog.logId + '__';
   transport.level = electronLog.isDev ? 'silly' : false;
-  transport.format = '[{h}:{i}:{s}.{ms}] {text}';
 
   electronApi.onIpc(transport.eventId, function (_, message) {
     log.runTransport(
