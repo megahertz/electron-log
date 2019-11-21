@@ -26,7 +26,7 @@ that a default log file path was changed.
    
    %USERPROFILE%\\AppData\\Roaming\\{app name}\\**log.log** →
    
-   %USERPROFILE%\\AppData\\Roaming\\{app name}\\**logs\{process type}.log**
+   %USERPROFILE%\\AppData\\Roaming\\{app name}\\**logs\\{process type}.log**
    
    If you need to keep old file paths, you can override `file.resolvePath` 
    
