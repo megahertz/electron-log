@@ -158,11 +158,10 @@ function sendIpc(channel, message) {
 }
 
 function sendIpcToMain(channel, message) {
-  if (!electron || !electron.ipcRenderer) {
-    return;
+  var ipc = getIpc();
+  if (ipc) {
+    ipc.send(channel, message);
   }
-
-  electron.ipcRenderer.send(channel, message);
 }
 
 function sendIpcToRenderer(channel, message) {
