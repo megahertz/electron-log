@@ -3,7 +3,7 @@
 var fs = require('fs');
 var path = require('path');
 var util = require('util');
-var format = require('../../format');
+var transform = require('../../transform');
 var FileRegistry = require('./file').FileRegistry;
 var variables = require('./variables');
 
@@ -40,8 +40,8 @@ function fileTransportFactory(electronLog, customRegistry) {
 
   return transport;
 
-  function transport(msg) {
-    var file = getFile(msg);
+  function transport(message) {
+    var file = getFile(message);
 
     var needLogRotation = transport.maxSize > 0
       && file.size > transport.maxSize;
@@ -51,7 +51,13 @@ function fileTransportFactory(electronLog, customRegistry) {
       file.reset();
     }
 
-    file.writeLine(format.format(msg, transport.format, electronLog, true));
+    var content = transform.transform(message, [
+      transform.removeStyles,
+      transform.customFormatterFactory(transport.format),
+      transform.toString,
+    ]);
+
+    file.writeLine(content);
   }
 
   function archiveLog(file) {

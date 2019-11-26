@@ -10,18 +10,18 @@ describe('test:projects', function () {
       expect(logReader.format()).toEqual([
         'main.log: { name: \'Log object in renderer\' }',
         [
-          'main.log: function functionInRenderer() {',
+          'main.log: [function] function functionInRenderer() {',
           '    return 1;',
           '  }',
         ].join('\n'),
-        jasmine.stringMatching('main.log: Error: Error in renderer\n    at'),
+        jasmine.stringMatching('main.log: {\n'),
         'renderer.log: { name: \'Log object in main\' }',
         [
-          'renderer.log: function functionInMain() {',
+          'renderer.log: [function] function functionInMain() {',
           '      return 1;',
           '    }',
         ].join('\n'),
-        jasmine.stringMatching('renderer.log: Error: Error in main\n    at'),
+        jasmine.stringMatching('renderer.log: {\n'),
       ]);
     });
   }, TIMEOUT);

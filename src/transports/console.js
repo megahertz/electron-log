@@ -2,7 +2,7 @@
 
 /* eslint-disable no-multi-spaces, no-console */
 
-var format = require('../format');
+var transform = require('../transform');
 
 var original = {
   context: console,
@@ -17,48 +17,49 @@ var original = {
 
 module.exports = consoleTransportFactory;
 
-function consoleTransportFactory(electronLog) {
+var separator = process.platform === 'win32' ? '>' : '›';
+var DEFAULT_FORMAT = {
+  browser: '%c{h}:{i}:{s}.{ms}%c ' + separator + ' {text}',
+  renderer: '{h}:{i}:{s}.{ms} › {text}',
+};
+
+function consoleTransportFactory() {
   transport.level  = 'silly';
   transport.forceStyles = Boolean(process.env.FORCE_STYLES);
-
-  if (process.type === 'renderer') {
-    transport.format = '{h}:{i}:{s}.{ms} › {text}';
-  } else {
-    var separator = process.platform === 'win32' ? '>' : '›';
-    transport.format = '%c{h}:{i}:{s}.{ms}%c ' + separator + ' {text}';
-  }
+  transport.format = DEFAULT_FORMAT[process.type] || DEFAULT_FORMAT.browser;
 
   return transport;
 
-  function transport(msg) {
-    var text = format.format(msg, transport.format, electronLog);
-
+  function transport(message) {
     if (process.type === 'renderer') {
-      consoleLog(msg.level, [text].concat(msg.styles));
+      var content = transform.transform(message, [
+        transform.customFormatterFactory(transport.format),
+      ]);
+      consoleLog(message.level, content);
       return;
     }
 
-    var styles = msg.styles || [];
+    var useStyles = transport.forceStyles || canUseStyles(message.level);
 
-    if (transport.format.substr && transport.format.substr(0, 2) === '%c') {
-      styles = ['color:' + levelToStyle(msg.level), 'color:unset']
-        .concat(styles);
-    }
+    var styledContent = transform.transform(message, [
+      addTemplateColorFactory(transport.format),
+      transform.customFormatterFactory(transport.format),
+      useStyles ? transform.applyAnsiStyles : transform.removeStyles,
+      transform.toJSON,
+    ]);
 
-    if (transport.forceStyles || canUseStyles(msg.level)) {
-      consoleLog(msg.level, [applyAnsiStyles(text, styles)]);
-    } else {
-      consoleLog(msg.level, [text.replace(/%c/g, '')]);
-    }
+    consoleLog(message.level, styledContent);
   }
 }
 
-function applyAnsiStyles(text, styles) {
-  styles.forEach(function (style) {
-    text = text.replace('%c', cssToAnsi(style));
-  });
+function addTemplateColorFactory(format) {
+  return function addTemplateColors(data, message) {
+    if (format !== DEFAULT_FORMAT.browser) {
+      return data;
+    }
 
-  return text + '\x1b[0m';
+    return ['color:' + levelToStyle(message.level), 'color:unset'].concat(data);
+  };
 }
 
 function canUseStyles(level) {
@@ -75,28 +76,11 @@ function consoleLog(level, args) {
   }
 }
 
-function cssToAnsi(style) {
-  var color = style.replace(/color:\s*(\w+).*/, '$1').toLowerCase();
-
-  switch (color) {
-    case 'unset':   return '\x1b[0m';
-    case 'black':   return '\x1b[30m';
-    case 'red':     return '\x1b[31m';
-    case 'green':   return '\x1b[32m';
-    case 'yellow':  return '\x1b[33m';
-    case 'blue':    return '\x1b[34m';
-    case 'magenta': return '\x1b[35m';
-    case 'cyan':    return '\x1b[36m';
-    case 'white':   return '\x1b[37m';
-    default:        return '';
-  }
-}
-
 function levelToStyle(level) {
   switch (level) {
-    case 'error':    return 'red';
-    case 'warn':     return 'yellow';
-    case 'info':     return 'cyan';
-    default:         return 'unset';
+    case 'error': return 'red';
+    case 'warn':  return 'yellow';
+    case 'info':  return 'cyan';
+    default:      return 'unset';
   }
 }

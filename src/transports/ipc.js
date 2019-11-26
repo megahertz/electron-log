@@ -1,6 +1,6 @@
 'use strict';
 
-var format = require('../format');
+var transform = require('../transform');
 var electronApi = require('../electronApi');
 var log = require('../log.js');
 
@@ -11,6 +11,8 @@ function ipcTransportFactory(electronLog) {
   transport.level = electronLog.isDev ? 'silly' : false;
 
   electronApi.onIpc(transport.eventId, function (_, message) {
+    message.date = new Date(message.date);
+
     log.runTransport(
       electronLog.transports.console,
       message,
@@ -23,7 +25,13 @@ function ipcTransportFactory(electronLog) {
   return electronApi.isElectron() ? transport : null;
 
   function transport(message) {
-    message.data = message.data.map(format.stringifyObject);
-    electronApi.sendIpc(transport.eventId, message);
+    var ipcMessage = Object.assign({}, message, {
+      data: transform.transform(message, [
+        transform.removeStyles,
+        transform.toJSON,
+      ]),
+    });
+
+    electronApi.sendIpc(transport.eventId, ipcMessage);
   }
 }
