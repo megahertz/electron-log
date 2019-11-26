@@ -35,11 +35,6 @@ declare namespace ElectronLog {
     level: LogLevel;
 
     /**
-     * CSS like strings, eg ['color: red']
-     */
-    styles: string[];
-
-    /**
      * Variables used by formatter
      */
     variables?: Variables;

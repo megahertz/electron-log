@@ -22,11 +22,15 @@ Connection: close
   "client": { "name": "electron-application" },
   "data": [
     "Some problem appears",
-    { "error": "Error: test\n    at App.createWindow ..." }
+    { 
+      "error": {
+        "constructor": "Error",
+        "stack": "Error: test\n    at App.createWindow ..."
+      }
+    }
   ],
   "date": 1574238042989,
   "level": "warn",
-  "styles": [],
   "variables": { "processType": "browser" }
 }
 ```

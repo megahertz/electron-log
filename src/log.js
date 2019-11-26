@@ -9,13 +9,11 @@ module.exports = {
 function log(electronLog, level) {
   var transports = electronLog.transports;
 
-  var payload = splitBodyAndStyle(Array.prototype.slice.call(arguments, 2));
   var message = {
-    data: payload.messages,
+    data: Array.prototype.slice.call(arguments, 2),
     date: new Date(),
     level: level,
     variables: electronLog.variables,
-    styles: payload.styles,
   };
 
   for (var i in transports) {
@@ -63,19 +61,4 @@ function runHooks(hooks, transport, message) {
   }
 
   return message;
-}
-
-function splitBodyAndStyle(messages) {
-  var styles = [];
-
-  messages = messages.filter(function (el) {
-    if (el && el.substr && el.substr(0, 6) === 'color:') {
-      styles.push(el);
-      return false;
-    }
-
-    return true;
-  });
-
-  return { messages: messages, styles: styles };
 }
