@@ -18,6 +18,7 @@ module.exports = {
   getVersion: getVersion,
   isDev: isDev,
   isElectron: isElectron,
+  isIpcChannelListened: isIpcChannelListened,
   loadRemoteModule: loadRemoteModule,
   onIpc: onIpc,
   sendIpc: sendIpc,
@@ -50,6 +51,19 @@ function getElectronModule(name) {
 
   return null;
 }
+
+function getIpc() {
+  if (process.type === 'browser' && electron && electron.ipcMain) {
+    return electron.ipcMain;
+  }
+
+  if (process.type === 'renderer' && electron && electron.ipcRenderer) {
+    return electron.ipcRenderer;
+  }
+
+  return null;
+}
+
 
 function getPath(name) {
   var app = getApp();
@@ -90,6 +104,15 @@ function isElectron() {
 }
 
 /**
+ * Return true if the process listens for the IPC channel
+ * @param {string} channel
+ */
+function isIpcChannelListened(channel) {
+  var ipc = getIpc();
+  return ipc ? ipc.listenerCount(channel) > 0 : false;
+}
+
+/**
  * Try to load the module in the opposite process
  * @param {string} moduleName
  */
@@ -115,27 +138,10 @@ function loadRemoteModule(moduleName) {
  * @param {function} listener
  */
 function onIpc(channel, listener) {
-  if (process.type === 'browser') {
-    onIpcMain(channel, listener);
-  } else if (process.type === 'renderer') {
-    onIpcRenderer(channel, listener);
+  var ipc = getIpc();
+  if (ipc) {
+    ipc.on(channel, listener);
   }
-}
-
-function onIpcMain(channel, listener) {
-  if (!electron || !electron.ipcMain) {
-    return;
-  }
-
-  electron.ipcMain.on(channel, listener);
-}
-
-function onIpcRenderer(channel, listener) {
-  if (!electron || !electron.ipcRenderer) {
-    return;
-  }
-
-  electron.ipcRenderer.on(channel, listener);
 }
 
 /**

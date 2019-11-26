@@ -10,6 +10,11 @@ function ipcTransportFactory(electronLog) {
   transport.eventId = '__ELECTRON_LOG_IPC_' + electronLog.logId + '__';
   transport.level = electronLog.isDev ? 'silly' : false;
 
+  // Prevent problems when there are multiple instances after webpack
+  if (electronApi.isIpcChannelListened(transport.eventId)) {
+    return function () {};
+  }
+
   electronApi.onIpc(transport.eventId, function (_, message) {
     message.date = new Date(message.date);
 
