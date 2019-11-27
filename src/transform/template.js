@@ -38,7 +38,7 @@ function pad(number, zeros) {
 
 function templateDate(data, message) {
   var template = data[0];
-  if (typeof template !== 'string' || !message.variables) {
+  if (typeof template !== 'string') {
     return data;
   }
 
@@ -65,9 +65,9 @@ function templateVariables(data, message) {
   return data;
 }
 
-function templateText(data, message) {
+function templateText(data) {
   var template = data[0];
-  if (typeof template !== 'string' || !message.variables) {
+  if (typeof template !== 'string') {
     return data;
   }
 
