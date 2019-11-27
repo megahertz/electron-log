@@ -61,12 +61,13 @@ function fileTransportFactory(electronLog, customRegistry) {
   }
 
   function archiveLog(file) {
-    file = file.toString();
-    var info = path.parse(file);
+    var oldPath = file.toString();
+    var inf = path.parse(oldPath);
     try {
-      fs.renameSync(file, path.join(info.dir, info.name + '.old' + info.ext));
+      fs.renameSync(oldPath, path.join(inf.dir, inf.name + '.old' + inf.ext));
     } catch (e) {
       logConsole('Could not rotate log', e);
+      file.crop(Math.round(transport.maxSize / 4));
     }
   }
 

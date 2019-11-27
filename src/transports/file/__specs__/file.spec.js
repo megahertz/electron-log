@@ -41,7 +41,7 @@ describe('transports/file/file', function () {
     });
 
     describe('clear', function () {
-      it('should remove file if exists', function () {
+      it('should remove file when exists', function () {
         var tmpDir = makeTmpDir();
         var testFile = new file.File(path.join(tmpDir.path, 'test.txt'));
 
@@ -49,16 +49,40 @@ describe('transports/file/file', function () {
 
         expect(testFile.clear()).toBe(true);
 
-        expect(fs.existsSync(testFile.path)).toBe(false);
+        expect(fs.statSync(testFile.path).size).toBe(0);
       });
 
-      it('should do nothing when no file exists', function () {
+      it('should create an empty file when no file exists', function () {
         var tmpDir = makeTmpDir();
         var testFile = new file.File(path.join(tmpDir.path, 'test.txt'));
 
         expect(testFile.clear()).toBe(true);
 
-        expect(fs.existsSync(testFile.path)).toBe(false);
+        expect(fs.statSync(testFile.path).size).toBe(0);
+      });
+    });
+
+    describe('crop', function () {
+      it('should crop when file contains more than bytesAfter', function () {
+        var tmpDir = makeTmpDir();
+        var testFile = new file.File(path.join(tmpDir.path, 'test.txt'));
+
+        testFile.writeLine('1'.repeat(4096));
+        testFile.crop(8);
+
+        expect(fs.readFileSync(testFile.path, 'utf8'))
+          .toEqual('[log cropped]' + os.EOL + '1111111' + os.EOL + os.EOL);
+      });
+
+      it('should crop when file contains less than bytesAfter', function () {
+        var tmpDir = makeTmpDir();
+        var testFile = new file.File(path.join(tmpDir.path, 'test.txt'));
+
+        testFile.writeLine('1'.repeat(4));
+        testFile.crop(8);
+
+        expect(fs.readFileSync(testFile.path, 'utf8'))
+          .toEqual('[log cropped]' + os.EOL + '1111' + os.EOL + os.EOL);
       });
     });
 

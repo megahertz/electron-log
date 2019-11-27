@@ -73,7 +73,10 @@ util.inherits(File, EventEmitter);
 
 File.prototype.clear = function () {
   try {
-    fs.unlinkSync(this.path);
+    fs.writeFileSync(this.path, '', {
+      mode: this.writeOptions.mode,
+      flag: 'w',
+    });
     this.reset();
     return true;
   } catch (e) {
@@ -83,6 +86,20 @@ File.prototype.clear = function () {
 
     this.emit('error', e, this);
     return false;
+  }
+};
+
+File.prototype.crop = function (bytesAfter) {
+  try {
+    var content = readFileSyncFromEnd(this.path, bytesAfter || 4096);
+    this.clear();
+    this.writeLine('[log cropped]' + os.EOL + content);
+  } catch (e) {
+    this.emit(
+      'error',
+      new Error('Couldn\'t crop file ' + this.path + '. ' + e.message),
+      this
+    );
   }
 };
 
@@ -179,6 +196,7 @@ function NullFile(filePath) {
 util.inherits(NullFile, File);
 
 NullFile.prototype.clear = function () {};
+NullFile.prototype.crop = function () {};
 NullFile.prototype.writeLine = function () {};
 NullFile.prototype.getSize = function () { return 0 };
 NullFile.prototype.isNull = function () { return true };
@@ -280,4 +298,18 @@ function mkDir(dirPath) {
       throw e;
     }
   }
+}
+
+function readFileSyncFromEnd(filePath, bytesCount) {
+  var buffer = Buffer.alloc(bytesCount);
+  var stats = fs.statSync(filePath);
+
+  var readLength = Math.min(stats.size, bytesCount);
+  var offset = Math.max(0, stats.size - bytesCount);
+
+  var fd = fs.openSync(filePath);
+  var totalBytes = fs.readSync(fd, buffer, 0, readLength, offset);
+  fs.closeSync(fd);
+
+  return buffer.toString('utf8', 0, totalBytes);
 }
