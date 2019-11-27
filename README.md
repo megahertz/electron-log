@@ -45,6 +45,10 @@ electron-log supports the following log levels:
 
     error, warn, info, verbose, debug, silly
 
+### `nodeIntegration`
+If you've got an error in a renderer process similar to `require is not defined`
+read [the nodeIntegration section](docs/node-integration.md).
+
 ### Transport
 
 Transport is a simple function which does some work with log message.
