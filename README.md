@@ -135,7 +135,7 @@ pretty easy:
 console.log = log.log;
 ```
 
-If you would like to override other function like `error`, `warn` and so on:
+If you would like to override other functions like `error`, `warn` and so on:
 
 ```js
 Object.assign(console, log.functions);
