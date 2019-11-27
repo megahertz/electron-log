@@ -6,6 +6,8 @@
  - multiple logger instances support.
  
    `const log = electronLog.create('loggerId')`
+   
+ - add object `log.functions` which allows to safety exports logger functions
 
 ### File transport
  - New default log file path:

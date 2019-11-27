@@ -312,32 +312,7 @@ declare namespace ElectronLog {
     stop (): void;
   }
 
-  interface ElectronLog {
-    /**
-     * Transport instances
-     */
-    transports: Transports;
-
-    /**
-     * Array with all attached hooks
-     */
-    hooks: Hook[];
-
-    /**
-     * Array with all available levels
-     */
-    levels: Levels;
-
-    /**
-     * Variables used by formatters
-     */
-    variables: Variables;
-
-    /**
-     * Catch and log unhandled errors/rejected promises
-     */
-    catchErrors (options?: CatchErrorsOptions): CatchErrorsResult;
-
+  interface LogFunctions {
     /**
      * Log an error message
      */
@@ -372,6 +347,38 @@ declare namespace ElectronLog {
      * Shortcut to info
      */
     log (...params: any[]): void;
+  }
+
+  interface ElectronLog extends LogFunctions {
+    /**
+     * Object contained only log functions
+     */
+    functions: LogFunctions;
+
+    /**
+     * Transport instances
+     */
+    transports: Transports;
+
+    /**
+     * Array with all attached hooks
+     */
+    hooks: Hook[];
+
+    /**
+     * Array with all available levels
+     */
+    levels: Levels;
+
+    /**
+     * Variables used by formatters
+     */
+    variables: Variables;
+
+    /**
+     * Catch and log unhandled errors/rejected promises
+     */
+    catchErrors (options?: CatchErrorsOptions): CatchErrorsResult;
 
     /**
      * Create a new electron-log instance

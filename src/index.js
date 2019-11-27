@@ -22,6 +22,7 @@ function create(logId) {
       catchErrors(opts);
     },
     create: create,
+    functions: {},
     hooks: [],
     isDev: electronApi.isDev(),
     levels: ['error', 'warn', 'info', 'verbose', 'debug', 'silly'],
@@ -40,9 +41,11 @@ function create(logId) {
 
   instance.levels.forEach(function (level) {
     instance[level] = log.bind(null, instance, level);
+    instance.functions[level] = instance[level];
   });
 
   instance.log = log.bind(null, instance, 'info');
+  instance.functions.log = instance.log;
 
   return instance;
 }

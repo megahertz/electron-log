@@ -126,6 +126,21 @@ Transport is just a function `(msg: LogMessage) => void`, so you can
 easily override/add your own transport.
 [More info](docs/extend.md#transport).
 
+### Overriding console.log
+
+Sometimes it's helpful to use electron-log instead of default `console`. It's
+pretty easy:
+
+```js
+console.log = log.log;
+```
+
+If you would like to override other function like `error`, `warn` and so on:
+
+```js
+Object.assign(console, log.functions);
+```
+
 ### Colors
 
 Colors can be used for both main and DevTools console.
