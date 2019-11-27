@@ -307,7 +307,7 @@ function readFileSyncFromEnd(filePath, bytesCount) {
   var readLength = Math.min(stats.size, bytesCount);
   var offset = Math.max(0, stats.size - bytesCount);
 
-  var fd = fs.openSync(filePath);
+  var fd = fs.openSync(filePath, 'r');
   var totalBytes = fs.readSync(fd, buffer, 0, readLength, offset);
   fs.closeSync(fd);
 
