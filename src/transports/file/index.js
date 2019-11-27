@@ -94,7 +94,7 @@ function fileTransportFactory(electronLog, customRegistry) {
   }
 
   /**
-   * @param {IPathVariables} vars
+   * @param {PathVariables} vars
    */
   function resolvePath(vars) {
     return path.join(vars.libraryDefaultDir, vars.fileName);

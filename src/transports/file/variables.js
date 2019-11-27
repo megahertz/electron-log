@@ -70,7 +70,7 @@ function getNameAndVersion() {
 
 /**
  * @param {string} platform
- * @return {IPathVariables}
+ * @return {PathVariables}
  */
 function getPathVariables(platform) {
   var nameAndVersion = getNameAndVersion();

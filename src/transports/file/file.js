@@ -24,7 +24,7 @@ module.exports = {
  *
  * @constructor
  * @param {string} filePath
- * @param {IWriteOptions} [writeOptions]
+ * @param {WriteOptions} [writeOptions]
  * @param {boolean} [writeAsync]
  */
 function File(filePath, writeOptions, writeAsync) {
@@ -55,7 +55,7 @@ function File(filePath, writeOptions, writeAsync) {
   this.writeAsync = Boolean(writeAsync);
 
   /**
-   * @type {IWriteOptions}
+   * @type {WriteOptions}
    * @private
    */
   this.writeOptions = writeOptions || {
@@ -201,7 +201,7 @@ util.inherits(FileRegistry, EventEmitter);
 /**
  * Provide a File object corresponding to the filePath
  * @param {string} filePath
- * @param {IWriteOptions} [writeOptions]
+ * @param {WriteOptions} [writeOptions]
  * @param {boolean} [async]
  * @return {File}
  */
@@ -227,7 +227,7 @@ FileRegistry.prototype.provide = function (filePath, writeOptions, async) {
 
 /**
  * @param {string} filePath
- * @param {IWriteOptions} writeOptions
+ * @param {WriteOptions} writeOptions
  * @param {boolean} async
  * @return {File}
  * @private
