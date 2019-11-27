@@ -68,7 +68,7 @@ describe('transports/file/file', function () {
         var testFile = new file.File(path.join(tmpDir.path, 'test.txt'));
 
         testFile.writeLine('1'.repeat(4096));
-        testFile.crop(8);
+        testFile.crop(7 + os.EOL.length);
 
         expect(fs.readFileSync(testFile.path, 'utf8'))
           .toEqual('[log cropped]' + os.EOL + '1111111' + os.EOL + os.EOL);
