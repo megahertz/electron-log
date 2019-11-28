@@ -8,6 +8,7 @@ var packageJson = require('./packageJson');
 module.exports = {
   getAppData: getAppData,
   getLibraryDefaultDir: getLibraryDefaultDir,
+  getLibraryTemplate: getLibraryTemplate,
   getNameAndVersion: getNameAndVersion,
   getPathVariables: getPathVariables,
   getUserData: getUserData,
@@ -48,6 +49,14 @@ function getLibraryDefaultDir(platform, appName) {
   return path.join(getUserData(platform, appName), 'logs');
 }
 
+function getLibraryTemplate(platform) {
+  if (platform === 'darwin') {
+    return path.join(getHome(), 'Library/Logs', '{appName}');
+  }
+
+  return path.join(getAppData(platform), '{appName}', 'logs');
+}
+
 function getNameAndVersion() {
   var name = electronApi.getName();
   var version = electronApi.getVersion();
@@ -84,6 +93,7 @@ function getPathVariables(platform) {
     electronDefaultDir: electronApi.getPath('logs'),
     home: getHome(),
     libraryDefaultDir: getLibraryDefaultDir(platform, appName),
+    libraryTemplate: getLibraryTemplate(platform),
     temp: electronApi.getPath('temp') || os.tmpdir(),
     userData: getUserData(platform, appName),
   };

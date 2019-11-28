@@ -102,6 +102,12 @@ declare namespace ElectronLog {
     readonly libraryDefaultDir: string;
 
     /**
+     * Same as libraryDefaultDir, but contains '{appName}' template instead
+     * of the real application name
+     */
+    readonly libraryTemplate: string;
+
+    /**
      * OS temporary path
      */
     readonly tempDir: string;

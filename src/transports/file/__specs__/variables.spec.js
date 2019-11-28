@@ -46,6 +46,26 @@ describe('transports/file/variables', function () {
     });
   });
 
+  describe('getLibraryTemplate', function () {
+    it('on Linux', function () {
+      expect(variables.getLibraryTemplate('linux')).toBe(
+        path.join(os.homedir(), '.config/{appName}/logs')
+      );
+    });
+
+    it('on macOS', function () {
+      expect(variables.getLibraryTemplate('darwin')).toBe(
+        path.join(os.homedir(), 'Library/Logs/{appName}')
+      );
+    });
+
+    it('on Windows', function () {
+      expect(variables.getLibraryTemplate('win32')).toBe(
+        path.join(os.homedir(), 'AppData', 'Roaming', '{appName}', 'logs')
+      );
+    });
+  });
+
   it('getNameAndVersion', function () {
     var nameAndVersion = variables.getNameAndVersion();
 
@@ -64,6 +84,7 @@ describe('transports/file/variables', function () {
         electronDefaultDir: null, // test runned not in electron
         home: os.homedir(),
         libraryDefaultDir: path.join(appData, 'humile/logs'),
+        libraryTemplate: path.join(appData, '{appName}/logs'),
         temp: os.tmpdir(),
         userData: path.join(appData, 'humile'),
       });
@@ -79,6 +100,7 @@ describe('transports/file/variables', function () {
         electronDefaultDir: null, // test runned not in electron
         home: os.homedir(),
         libraryDefaultDir: path.join(os.homedir(), 'Library/Logs/humile'),
+        libraryTemplate: path.join(os.homedir(), 'Library/Logs/{appName}'),
         temp: os.tmpdir(),
         userData: path.join(appData, 'humile'),
       });
@@ -94,6 +116,7 @@ describe('transports/file/variables', function () {
         electronDefaultDir: null, // test runned not in electron
         home: os.homedir(),
         libraryDefaultDir: path.join(appData, 'humile', 'logs'),
+        libraryTemplate: path.join(appData, '{appName}/logs'),
         temp: os.tmpdir(),
         userData: path.join(appData, 'humile'),
       });
