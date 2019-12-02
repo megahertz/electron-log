@@ -3,11 +3,12 @@
 var http = require('http');
 var https = require('https');
 var url = require('url');
+var log = require('../log');
 var transform = require('../transform');
 
 module.exports = remoteTransportFactory;
 
-function remoteTransportFactory() {
+function remoteTransportFactory(electronLog) {
   transport.client = { name: 'electron-application' };
   transport.depth = 6;
   transport.level = false;
@@ -15,28 +16,47 @@ function remoteTransportFactory() {
   transport.url = null;
 
   return transport;
+
+  function transport(message) {
+    if (!transport.url) return;
+
+    var request = post(transport.url, transport.requestOptions, {
+      client: transport.client,
+      data: transform.transform(message, [
+        transform.removeStyles,
+        transform.toJSON,
+        transform.maxDepthFactory(transport.depth + 1),
+      ]),
+      date: message.date.getTime(),
+      level: message.level,
+      variables: message.variables,
+    });
+
+    request.on('error', function (error) {
+      var errorMessage = {
+        data: [
+          'electron-log.transports.remote:'
+          + ' cannot send HTTP request to ' + transport.url,
+          error,
+        ],
+        date: new Date(),
+        level: 'warn',
+      };
+
+      var transports = [
+        electronLog.transports.console,
+        electronLog.transports.ipc,
+        electronLog.transports.file,
+      ];
+
+      log.runTransports(transports, errorMessage, electronLog);
+    });
+  }
 }
 
-function transport(message) {
-  if (!transport.url) return;
-
-  post(transport.url, {
-    client: transport.client,
-    data: transform.transform(message, [
-      transform.removeStyles,
-      transform.toJSON,
-      transform.maxDepthFactory(transport.depth + 1),
-    ]),
-    date: message.date.getTime(),
-    level: message.level,
-    styles: message.styles,
-    variables: message.variables,
-  });
-}
-
-function post(serverUrl, data) {
+function post(serverUrl, requestOptions, data) {
   var urlObject = url.parse(serverUrl);
-  var htTransport = urlObject.protocol === 'https:' ? https : http;
+  var httpTransport = urlObject.protocol === 'https:' ? https : http;
 
   var body = JSON.stringify(data);
 
@@ -51,9 +71,11 @@ function post(serverUrl, data) {
     },
   };
 
-  Object.assign(options, transport.requestOptions);
+  Object.assign(options, requestOptions);
 
-  var request = htTransport.request(options);
+  var request = httpTransport.request(options);
   request.write(body);
   request.end();
+
+  return request;
 }

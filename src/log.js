@@ -4,6 +4,7 @@ module.exports = {
   compareLevels: compareLevels,
   log: log,
   runTransport: runTransport,
+  runTransports: runTransports,
 };
 
 function log(electronLog, level) {
@@ -16,6 +17,10 @@ function log(electronLog, level) {
     variables: electronLog.variables,
   };
 
+  runTransports(transports, message, electronLog);
+}
+
+function runTransports(transports, message, electronLog) {
   for (var i in transports) {
     if (Object.prototype.hasOwnProperty.call(transports, i)) {
       runTransport(transports[i], message, electronLog);
