@@ -8,6 +8,8 @@
    `const log = electronLog.create('loggerId')`
    
  - add object `log.functions` which allows to safety exports logger functions
+ 
+ - Web Workers support
 
 ### File transport
  - New default log file path:
@@ -16,8 +18,8 @@
     - **on Windows:** `%USERPROFILE%\AppData\Roaming\{app name}\{process type}.log`
   
   
- - the option `file.fileName` is now `main.log` and `renderer.log` depending
-   on process type
+ - the option `file.fileName` is now `main.log`, `renderer.log` or `worker.log`
+   depending on process type
  - new option `file.resolvePath`
  - new method `file.getFile()`
 

@@ -14,7 +14,6 @@ var globalRegistry = new FileRegistry();
 
 function fileTransportFactory(electronLog, customRegistry) {
   var pathVariables = variables.getPathVariables(process.platform);
-  var fileName = process.type === 'renderer' ? 'renderer.log' : 'main.log';
 
   var registry = customRegistry || globalRegistry;
   registry.on('error', function (e, file) {
@@ -23,7 +22,7 @@ function fileTransportFactory(electronLog, customRegistry) {
 
   /* eslint-disable no-multi-spaces */
   transport.archiveLog   = archiveLog;
-  transport.fileName     = fileName;
+  transport.fileName     = getDefaultFileName();
   transport.format       = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}';
   transport.getFile      = getFile;
   transport.level        = 'silly';
@@ -151,5 +150,13 @@ function fileTransportFactory(electronLog, customRegistry) {
     }
 
     function init() {}
+  }
+}
+
+function getDefaultFileName() {
+  switch (process.type) {
+    case 'renderer': return 'renderer.log';
+    case 'worker': return 'worker.log';
+    default: return 'main.log';
   }
 }

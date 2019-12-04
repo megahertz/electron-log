@@ -48,7 +48,8 @@ Deprecated. Use `resolvePath` instead.
 
 #### `fileName` {string}
 
-Default: `'main.log'` or `'renderer.log'` depending on process type
+Default: `'main.log'`, `'renderer.log'` or  `'worker.log'` depending on
+process type
 
 The actual file name without path.
 

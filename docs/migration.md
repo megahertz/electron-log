@@ -30,8 +30,8 @@ that a default log file path was changed.
    
    If you need to keep old file paths, you can override `file.resolvePath` 
    
- - `file.fileName` is now `main.log` and `renderer.log` depending on process
-   type
+ - `file.fileName` is now `main.log`, `renderer.log` or `worker.log`
+   depending on process type
    
  - new option `file.resolvePath` allows to override default log path. Here
    is default implementation: 

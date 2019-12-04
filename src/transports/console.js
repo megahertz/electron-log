@@ -21,6 +21,7 @@ var separator = process.platform === 'win32' ? '>' : '›';
 var DEFAULT_FORMAT = {
   browser: '%c{h}:{i}:{s}.{ms}%c ' + separator + ' {text}',
   renderer: '{h}:{i}:{s}.{ms} › {text}',
+  worker: '{h}:{i}:{s}.{ms} › {text}',
 };
 
 function consoleTransportFactory() {
@@ -31,7 +32,7 @@ function consoleTransportFactory() {
   return transport;
 
   function transport(message) {
-    if (process.type === 'renderer') {
+    if (process.type === 'renderer' || process.type === 'worker') {
       var content = transform.transform(message, [
         transform.customFormatterFactory(transport.format),
       ]);

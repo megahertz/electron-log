@@ -83,7 +83,7 @@ The file transport writes log messages to a file.
 
 ##### Options
 
- - **fileName**, default 'main.log' or 'renderer.log'
+ - **fileName**, default 'main.log', 'renderer.log' or 'worker.log'
  - **[format](docs/format.md)**, default
    `'[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}'`
  - **level**, default 'silly'
@@ -192,7 +192,12 @@ const electronLog = require('electron-log');
 const log = electronLog.create('anotherInstance');
 ````
 
+### Web Worker
+
+It's possible to use the module with Web Worker. However, ipc transport is not
+active, so log messages from worker are not displayed in the main app console.
+
 ## Related
 
  - [electron-cfg](https://github.com/megahertz/electron-cfg) -
-   Settings manager for your Electron application.
+   Settings for your Electron application.

@@ -34,7 +34,7 @@ function tryReadJsonAt(searchPath) {
 
     var json = JSON.parse(fs.readFileSync(fileName, 'utf8'));
     var name = json.productName || json.name;
-    if (!name || name === 'Electron') {
+    if (!name || name.toLowerCase() === 'electron') {
       return null;
     }
 
