@@ -55,6 +55,12 @@ function File(filePath, writeOptions, writeAsync) {
   this.writeAsync = Boolean(writeAsync);
 
   /**
+   * @type {string[]}
+   * @private
+   */
+  this.asyncWriteQueue = [];
+
+  /**
    * @type {WriteOptions}
    * @private
    */
@@ -122,18 +128,8 @@ File.prototype.writeLine = function (text) {
   text += os.EOL;
 
   if (this.writeAsync) {
-    var file = this;
-    fs.writeFile(this.path, text, this.writeOptions, function (e) {
-      if (e) {
-        file.emit(
-          'error',
-          new Error('Couldn\'t write to ' + file.path + '. ' + e.message),
-          this
-        );
-      } else {
-        file.increaseBytesWrittenCounter(text);
-      }
-    });
+    this.asyncWriteQueue.push(text);
+    this.nextAsyncWrite();
     return;
   }
 
@@ -179,6 +175,33 @@ File.prototype.isNull = function () {
  */
 File.prototype.increaseBytesWrittenCounter = function (text) {
   this.bytesWritten += Buffer.byteLength(text, this.writeOptions.encoding);
+};
+
+/**
+ * @private
+ */
+File.prototype.nextAsyncWrite = function () {
+  var file = this;
+
+  if (this.asyncWriteQueue.length < 1) {
+    return;
+  }
+
+  var text = this.asyncWriteQueue.shift();
+
+  fs.writeFile(this.path, text, this.writeOptions, function (e) {
+    if (e) {
+      file.emit(
+        'error',
+        new Error('Couldn\'t write to ' + file.path + '. ' + e.message),
+        this
+      );
+    } else {
+      file.increaseBytesWrittenCounter(text);
+    }
+
+    file.nextAsyncWrite();
+  });
 };
 
 /**
