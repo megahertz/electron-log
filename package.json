@@ -8,8 +8,8 @@
     "test": "humile 'src/**/*spec.js'",
     "test:full": "npm run test && npm run lint && npm run test:projects",
     "test:projects": "humile 'test-projects/**/*.spec.js' -R list",
-    "postversion": "npm run test:full && git push && git push --tags",
-    "prepack": "npm run test:full"
+    "prepack": "npm run test:full",
+    "preversion": "npm run test:full && git push && git push --tags"
   },
   "typings": "src/index.d.ts",
   "repository": "megahertz/electron-log",
