@@ -95,6 +95,10 @@ function toJSON(data) {
 
 function toString(data) {
   var simplifiedData = data.map(function (item) {
+    if (item === undefined) {
+      return undefined;
+    }
+
     return JSON.parse(JSON.stringify(item, serialize, '  '));
   });
 
