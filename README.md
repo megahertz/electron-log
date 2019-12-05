@@ -3,8 +3,6 @@
 [![NPM version](https://badge.fury.io/js/electron-log.svg)](https://badge.fury.io/js/electron-log)
 [![Dependencies status](https://david-dm.org/megahertz/electron-log/status.svg)](https://david-dm.org/megahertz/electron-log)
 
-## Description
-
 Just a simple logging module for your Electron or NW.js application.
 No dependencies. No complicated configuration. Just require and use.
 Also, it can be used without Electron in any node.js application.
