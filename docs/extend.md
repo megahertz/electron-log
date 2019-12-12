@@ -1,5 +1,7 @@
 # Extending electron-log
 
+Each process in Electron has its own electron-log instance, so make sure you define a custom transport or hook in each process. It's a good idea to save such a code in a separated file and require it from inside each process.
+
 ## Transport
 
 Transport is just a function `(msg: LogMessage) => void`, so you can
