@@ -3,10 +3,18 @@
 var object = require('../object');
 
 describe('transform/object', function () {
-  it('maxDepthFactory', function () {
-    var obj = [{ a: { b: {} } }];
-    expect(object.maxDepthFactory(3)(obj))
-      .toEqual([{ a: { b: '[object]' } }]);
+  describe('maxDepthFactory', function () {
+    it('should remove objects nested deeper than depth', function () {
+      var obj = [{ a: { b: {} } }];
+      expect(object.maxDepthFactory(3)(obj))
+        .toEqual([{ a: { b: '[object]' } }]);
+    });
+
+    it('should correctly process null values', function () {
+      var obj = [{ a: null, b: undefined, c: { c1: null } }, null];
+      expect(object.maxDepthFactory()(obj))
+        .toEqual([{ a: null, b: undefined, c: { c1: null } }, null]);
+    });
   });
 
   describe('serialize', function () {

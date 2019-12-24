@@ -10,6 +10,10 @@ module.exports = {
 };
 
 function maxDepth(data, depth) {
+  if (!data) {
+    return data;
+  }
+
   if (depth < 1) {
     if (data.push) return '[array]';
     if (typeof data === 'object') return '[object]';
