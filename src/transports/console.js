@@ -46,6 +46,7 @@ function consoleTransportFactory() {
       addTemplateColorFactory(transport.format),
       transform.customFormatterFactory(transport.format),
       useStyles ? transform.applyAnsiStyles : transform.removeStyles,
+      transform.maxDepthFactory(10),
       transform.toJSON,
     ]);
 

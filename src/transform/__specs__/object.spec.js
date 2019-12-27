@@ -15,6 +15,15 @@ describe('transform/object', function () {
       expect(object.maxDepthFactory()(obj))
         .toEqual([{ a: null, b: undefined, c: { c1: null } }, null]);
     });
+
+    it('should prevent circular reference exception', function () {
+      var obj = { a: 1 };
+      obj.b = obj;
+      var safeObj = object.maxDepthFactory()(obj);
+
+      expect(function () { object.toJSON(obj) }).toThrow();
+      expect(function () { object.toJSON(safeObj) }).not.toThrow();
+    });
   });
 
   describe('serialize', function () {

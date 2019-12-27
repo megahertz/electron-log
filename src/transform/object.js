@@ -40,6 +40,10 @@ function maxDepth(data, depth) {
     return null;
   }
 
+  if (data instanceof Error) {
+    return data;
+  }
+
   var newJson = {};
   for (var i in data) {
     if (!Object.prototype.hasOwnProperty.call(data, i)) continue;

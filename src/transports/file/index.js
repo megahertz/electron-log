@@ -53,6 +53,7 @@ function fileTransportFactory(electronLog, customRegistry) {
     var content = transform.transform(message, [
       transform.removeStyles,
       transform.customFormatterFactory(transport.format),
+      transform.maxDepthFactory(10),
       transform.toString,
     ]);
 

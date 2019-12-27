@@ -9,7 +9,7 @@ The file transport writes log messages to a file.
 Default: `undefined`
 
 Determines a location of log file, something like
-`~/.config/<app name>/log.log` depending on OS. By default
+`~/.config/<app name>/log.log` depending on OS. By default,
 electron-log reads this value from `name` or `productName` value in
 `package.json`. In most cases you should keep default value.
 
@@ -40,7 +40,7 @@ synchronously.
 
 Default: `undefined`
 
-The full log file path. I can recommend to change this value only if you
+The full log file path. I can recommend changing this value only if you
 strongly understand what are you doing. If set, `appName` and `fileName`
 options are ignored.
 
@@ -64,7 +64,7 @@ Determines how to serialize log message while writing to a file.
   
 Default: `'silly'`
 
-Filter log messages which can be send via the transport.
+Filter log messages which can be sent via the transport.
 
 #### `maxSize` {number}
 
@@ -88,7 +88,7 @@ Directory hierarchy will be created automatically if necessary.
 
 The variables argument is just object of 
 [PathVariables type](../src/index.d.ts#L69) which contains several
-predefined values. Feel free to choice the most suitable for your application.
+predefined values. Feel free to choose the most suitable for your application.
   
 Electron has built-in method to get logs path `app.getPath('logs')`. But it
 seems not stable in the current version. There is a chance that default path on
