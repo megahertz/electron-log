@@ -7,7 +7,7 @@ Just a simple logging module for your Electron or NW.js application.
 No dependencies. No complicated configuration. Just require and use.
 Also, it can be used without Electron in any node.js application.
 
-By default it writes logs to the following locations:
+By default, it writes logs to the following locations:
 
  - **on Linux:** `~/.config/{app name}/logs/{process type}.log`
  - **on macOS:** `~/Library/Logs/{app name}/{process type}.log`
@@ -30,8 +30,8 @@ log.warn('Some problem appears');
 
 ### electron-log v2.x, v3.x
 
-Read [the migration guide](docs/migration.md) and [the changelog](CHANGELOG.md)
-if you would like to upgrade to the latest version.
+If you would like to upgrade to the latest version, read
+[the migration guide](docs/migration.md) and [the changelog](CHANGELOG.md).
 
 ### Log levels
 
@@ -40,7 +40,7 @@ electron-log supports the following log levels:
     error, warn, info, verbose, debug, silly
 
 ### `nodeIntegration`
-If you've got an error in a renderer process similar to `require is not defined`
+If you've got an error like `require is not defined` in a renderer process,
 read [the nodeIntegration section](docs/node-integration.md).
 
 ### Transport
@@ -162,7 +162,7 @@ electron-log can catch and log unhandled errors/rejected promises:
 
 ##### Options
 
- - **showDialog**, default true for the main process. Set it to false to prevent
+ - **showDialog**, default true for the main process. false prevents
    showing a default electron error dialog
  - **onError**, `(error) => void | false`, default null - attach a custom
    error handler. If the handler returns false, this error will not be processed.

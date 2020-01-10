@@ -30,9 +30,9 @@ const log = require('electron-log');
 window.log = log.functions;
 ```
 
-### 2. Enable `nodeIntegration` when creating a window
+### 2. Enable `nodeIntegration` option when creating a window
 
-Its better to use preload script as described above. But if you need features
+It's better to use preload script as described above. But if you need features
 provided by `nodeIntegration` and understand all potential risks, you can
 enable it:
 
@@ -54,6 +54,7 @@ not enable this option if you load some third-party resources to BrowserWindow.
 Currently, the only way to use node modules in worker is to enable
 node integration:
 
+```js
 const window = new BrowserWindow({
   width: 800,
   height: 600,
@@ -61,3 +62,4 @@ const window = new BrowserWindow({
     nodeIntegrationInWorker: true,
   },
 });
+```

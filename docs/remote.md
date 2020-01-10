@@ -56,7 +56,7 @@ request size set depth option to exclude nested objects which are deeper than
 
 Default: `false`
 
-Filter log messages which can be send via the transport.
+Filter log messages which can be sent via the transport.
 
 #### `requestOptions` {module:http.RequestOptions}
 

@@ -71,7 +71,7 @@ Filter log messages which can be sent via the transport.
 Default: `1048576` (1mb)
 
 Maximum size of a log file in bytes. When a log file exceeds this limit,
-it will be moved to {file name}.old.log file. You can set it to `0` to disable
+it will be moved to {file name}.old.log file. You can set it to 0 to disable
 log rotation.
   
 #### `resolvePath` {(variables: PathVariables, message?: LogMessage) => string}
@@ -86,8 +86,8 @@ function resolvePath(variables) {
 Allows to set a custom path for a log file. It should only return file path.
 Directory hierarchy will be created automatically if necessary.
 
-The variables argument is just object of 
-[PathVariables type](../src/index.d.ts#L69) which contains several
+The variables argument is just an object of 
+[PathVariables type](../src/index.d.ts#L69), which contains several
 predefined values. Feel free to choose the most suitable for your application.
   
 Electron has built-in method to get logs path `app.getPath('logs')`. But it
@@ -150,3 +150,5 @@ to call only if you change `appName`, `file` or `fileName` property,
 but it has no effect.
 
 Deprecated. Doesn't matter anymore.
+
+<!-- spech-dictionary whether -->

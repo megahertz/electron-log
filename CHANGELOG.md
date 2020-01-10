@@ -7,7 +7,7 @@
  
    `const log = electronLog.create('loggerId')`
    
- - add object `log.functions` which allows to safety exports logger functions
+ - add object `log.functions`
  
  - Web Workers support
 
@@ -38,9 +38,9 @@
 ## 3.0.0
  - Now IPC is used only for some transports, which are disabled for a
    packaged application. So now electron-log works using almost the same
-   way in main and renderer processes. The reason - IPC is pretty slow
+   way in the main and renderer processes. The reason - IPC is pretty slow
    and can freeze an application when there are a lot of calls.
- - File transport doesn't use stream.Writable anymore.
+ - File transport doesn't use `stream.Writable` anymore.
  - New feature: hooks.
  - New feature: log file clearing.
  - New feature: colors support.
@@ -53,12 +53,12 @@
 
 ## 2.0.0
  - Move log.appName property to log.transports.file.appName.
- - Change a log message object. See updated
-   [Override transport section](README.md#override-transport) if you use
-   a custom transport.
+ - Change a log message object.
+   See updated [Override transport section](README.md#override-transport) if you
+   use custom transport.
  - Now it's not possible to configure transports from a renderer
    process, only from the main.
- - To disable a transport set its level to false.
+ - To disable a transport set its level to `false`.
  - Fix problems when this package is used from a renderer process.
  - Add Typescript definitions.
  - Add [log-s](https://github.com/megahertz/log-s) transport

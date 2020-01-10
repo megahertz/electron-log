@@ -12,7 +12,7 @@ If you would like to upgrade to the latest version, check
 
 `npm install electron-log@latest`
 
-If you just use electron-log with default configuration you only need to know
+If you just use electron-log with default configuration, you only need to know
 that a default log file path was changed.
 
 ### File transport
@@ -33,7 +33,7 @@ that a default log file path was changed.
  - `file.fileName` is now `main.log`, `renderer.log` or `worker.log`
    depending on process type
    
- - new option `file.resolvePath` allows to override default log path. Here
+ - new option `file.resolvePath` allows overriding default log path. Here
    is default implementation: 
    
    ```js
@@ -69,7 +69,7 @@ should apply the changed both in main and renderer processes.
 
 Another changes:
 
- - require 'electron-log/main' and 'electron-log/renderer' is deprecated.
+ - require `electron-log/main` and `electron-log/renderer` is deprecated.
  - `transports.file.level` is default to 'silly'.
  - `transports.file.stream` and `streamConfig` options are removed. Instead, you
    can use one of the following options: `file`, `fileName`, `writeOptions`.
