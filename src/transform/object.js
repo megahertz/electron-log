@@ -15,13 +15,13 @@ function maxDepth(data, depth) {
   }
 
   if (depth < 1) {
-    if (data.push) return '[array]';
+    if (data.map) return '[array]';
     if (typeof data === 'object') return '[object]';
 
     return data;
   }
 
-  if (data.push) {
+  if (typeof data.map === 'function') {
     return data.map(function (child) {
       return maxDepth(child, depth - 1);
     });
