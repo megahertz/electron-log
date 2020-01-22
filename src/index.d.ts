@@ -1,3 +1,5 @@
+import { RequestOptions } from "http";
+
 declare namespace ElectronLog {
   type LogLevel = 'error' | 'warn' | 'info' | 'verbose' | 'debug' |
     'silly';
@@ -269,6 +271,11 @@ declare namespace ElectronLog {
      * Server URL
      */
     url: string;
+
+    /**
+     * Additional options for the HTTP request
+     */
+    requestOptions?: RequestOptions;
   }
 
   interface Transports {
