@@ -268,14 +268,14 @@ declare namespace ElectronLog {
     depth?: number;
 
     /**
-     * Server URL
-     */
-    url: string;
-
-    /**
      * Additional options for the HTTP request
      */
     requestOptions?: RequestOptions;
+    
+    /**
+     * Server URL
+     */
+    url: string;
   }
 
   interface Transports {
