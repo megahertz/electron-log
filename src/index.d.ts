@@ -6,7 +6,7 @@ declare namespace ElectronLog {
   type LevelOption = LogLevel | false;
   type Levels = Array<LogLevel | string>;
 
-  type Format = (message: LogMessage) => void;
+  type Format = (message: LogMessage, data: any[]) => any[];
 
   type FopenFlags = 'r' | 'r+' | 'rs+' | 'w' | 'wx' | 'w+' | 'wx+' |
     'a' | 'ax' | 'a+' | 'ax+';
