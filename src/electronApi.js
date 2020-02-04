@@ -119,9 +119,14 @@ function isIpcChannelListened(channel) {
 function loadRemoteModule(moduleName) {
   if (process.type === 'browser') {
     getApp().on('web-contents-created', function (e, contents) {
-      contents.executeJavaScript(
-        'try {require("' + moduleName + '")} catch(e){}'
+      var promise = contents.executeJavaScript(
+        'try {require("' + moduleName + '")} catch(e){}; void 0;'
       );
+
+      // Do nothing on error, just prevent Unhandled rejection
+      if (promise && typeof promise.catch === 'function') {
+        promise.catch(function () {});
+      }
     });
   } else if (process.type === 'renderer') {
     try {
