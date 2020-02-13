@@ -9,6 +9,37 @@ module.exports = {
   toString: toString,
 };
 
+function createSerializer() {
+  var seen = createWeakSet();
+
+  return function (key, value) {
+    if (typeof value === 'object' && value !== null) {
+      if (seen.has(value)) {
+        return undefined;
+      }
+
+      seen.add(value);
+    }
+
+    return serialize(key, value);
+  };
+}
+
+/**
+ * @return {WeakSet<object>}
+ */
+function createWeakSet() {
+  if (typeof WeakSet !== 'undefined') {
+    return new WeakSet();
+  }
+
+  var cache = [];
+  this.add = function (value) { cache.push(value) };
+  this.has = function (value) { return cache.indexOf(value) !== -1 };
+
+  return this;
+}
+
 function maxDepth(data, depth) {
   if (!data) {
     return data;
@@ -98,7 +129,7 @@ function serialize(key, value) {
 }
 
 function toJSON(data) {
-  return JSON.parse(JSON.stringify(data, serialize));
+  return JSON.parse(JSON.stringify(data, createSerializer()));
 }
 
 function toString(data) {
@@ -107,7 +138,7 @@ function toString(data) {
       return undefined;
     }
 
-    return JSON.parse(JSON.stringify(item, serialize, '  '));
+    return JSON.parse(JSON.stringify(item, createSerializer(), '  '));
   });
 
   return util.format.apply(util, simplifiedData);

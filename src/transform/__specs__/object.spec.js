@@ -15,15 +15,6 @@ describe('transform/object', function () {
       expect(object.maxDepthFactory()(obj))
         .toEqual([{ a: null, b: undefined, c: { c1: null } }, null]);
     });
-
-    it('should prevent circular reference exception', function () {
-      var obj = { a: 1 };
-      obj.b = obj;
-      var safeObj = object.maxDepthFactory()(obj);
-
-      expect(function () { object.toJSON(obj) }).toThrow();
-      expect(function () { object.toJSON(safeObj) }).not.toThrow();
-    });
   });
 
   describe('serialize', function () {
@@ -42,6 +33,16 @@ describe('transform/object', function () {
     it('should serialize functions', function () {
       expect(object.serialize(null, function () { return 1 }))
         .toEqual('[function] function () { return 1 }');
+    });
+  });
+
+  describe('toJson', function () {
+    it('should prevent circular reference exception', function () {
+      var obj = { a: 1 };
+      obj.b = obj;
+      var safeObj = object.maxDepthFactory()(obj);
+
+      expect(function () { object.toJSON(safeObj) }).not.toThrow();
     });
   });
 });
