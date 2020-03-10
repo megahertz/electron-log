@@ -6,10 +6,6 @@ var os = require('os');
 var path = require('path');
 var util = require('util');
 
-var nodeVersion = Number(
-  process.version.match(/^v(\d+\.\d+)/)[1].replace(/\.(\d)$/, '.0$1')
-);
-
 module.exports = {
   File: File,
   FileRegistry: FileRegistry,
@@ -297,7 +293,7 @@ FileRegistry.prototype.testFileWriting = function (filePath) {
 };
 
 function mkDir(dirPath) {
-  if (nodeVersion >= 10.12) {
+  if (checkNodeJsVersion(10.12)) {
     fs.mkdirSync(dirPath, { recursive: true });
     return true;
   }
@@ -321,6 +317,18 @@ function mkDir(dirPath) {
       throw e;
     }
   }
+}
+
+function checkNodeJsVersion(version) {
+  if (!process.versions) {
+    return false;
+  }
+
+  var nodeVersion = Number(
+    process.version.match(/^v(\d+\.\d+)/)[1].replace(/\.(\d)$/, '.0$1')
+  );
+
+  return nodeVersion >= version;
 }
 
 function readFileSyncFromEnd(filePath, bytesCount) {
