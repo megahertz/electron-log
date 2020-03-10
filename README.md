@@ -68,8 +68,8 @@ DevTools console (renderer process).
    `'%c{h}:{i}:{s}.{ms}%c › {text}'` (main),
    `'{h}:{i}:{s}.{ms} › {text}'` (renderer)
  - **level**, default 'silly'
- - **forceStyles**, use styles in the main process even if TTY isn't attached,
-   default false
+ - **useStyles**, use styles in the main process even if TTY isn't attached,
+   default `null`
 
 #### File transport
 

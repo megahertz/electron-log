@@ -6,6 +6,7 @@ var template = require('./template');
 
 module.exports = {
   applyAnsiStyles: style.applyAnsiStyles,
+  concatFirstStringElements: template.concatFirstStringElements,
   customFormatterFactory: customFormatterFactory,
   maxDepthFactory: object.maxDepthFactory,
   removeStyles: style.removeStyles,
@@ -14,13 +15,14 @@ module.exports = {
   transform: transform,
 };
 
-function customFormatterFactory(customFormat) {
+function customFormatterFactory(customFormat, concatFirst) {
   if (typeof customFormat === 'string') {
     return function customStringFormatter(data, message) {
       return transform(message, [
         template.templateVariables,
         template.templateDate,
         template.templateText,
+        concatFirst && template.concatFirstStringElements,
       ], [customFormat].concat(data));
     };
   }
@@ -34,12 +36,16 @@ function customFormatterFactory(customFormat) {
   }
 
   return function (data) {
-    return data;
+    return [].concat(data);
   };
 }
 
 function transform(message, transformers, initialData) {
   return transformers.reduce(function (data, transformer) {
-    return transformer(data, message);
+    if (typeof transformer === 'function') {
+      return transformer(data, message);
+    }
+
+    return data;
   }, initialData || message.data);
 }

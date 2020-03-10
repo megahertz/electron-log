@@ -54,7 +54,7 @@ describe('transform/template', function () {
 
     it('should stringify all if it`s not the latest variable', function () {
       expect(template.templateText(['{text} log', 1], message))
-        .toEqual(['1 log']);
+        .toEqual([1, ' log']);
     });
   });
 });

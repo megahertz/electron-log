@@ -16,6 +16,8 @@ var original = {
 };
 
 module.exports = consoleTransportFactory;
+module.exports.transformRenderer = transformRenderer;
+module.exports.transformMain = transformMain;
 
 var separator = process.platform === 'win32' ? '>' : '›';
 var DEFAULT_FORMAT = {
@@ -26,32 +28,38 @@ var DEFAULT_FORMAT = {
 
 function consoleTransportFactory() {
   transport.level  = 'silly';
-  transport.forceStyles = Boolean(process.env.FORCE_STYLES);
+  transport.useStyles = process.env.FORCE_STYLES;
   transport.format = DEFAULT_FORMAT[process.type] || DEFAULT_FORMAT.browser;
 
   return transport;
 
   function transport(message) {
     if (process.type === 'renderer' || process.type === 'worker') {
-      var content = transform.transform(message, [
-        transform.customFormatterFactory(transport.format),
-      ]);
-      consoleLog(message.level, content);
+      consoleLog(message.level, transformRenderer(message, transport));
       return;
     }
 
-    var useStyles = transport.forceStyles || canUseStyles(message.level);
-
-    var styledContent = transform.transform(message, [
-      addTemplateColorFactory(transport.format),
-      transform.customFormatterFactory(transport.format),
-      useStyles ? transform.applyAnsiStyles : transform.removeStyles,
-      transform.maxDepthFactory(4),
-      transform.toJSON,
-    ]);
-
-    consoleLog(message.level, styledContent);
+    consoleLog(message.level, transformMain(message, transport));
   }
+}
+
+function transformRenderer(message, transport) {
+  return transform.transform(message, [
+    transform.customFormatterFactory(transport.format, true),
+  ]);
+}
+
+function transformMain(message, transport) {
+  var useStyles = canUseStyles(transport.useStyles, message.level);
+
+  return transform.transform(message, [
+    addTemplateColorFactory(transport.format),
+    transform.customFormatterFactory(transport.format),
+    useStyles ? transform.applyAnsiStyles : transform.removeStyles,
+    transform.concatFirstStringElements,
+    transform.maxDepthFactory(4),
+    transform.toJSON,
+  ]);
 }
 
 function addTemplateColorFactory(format) {
@@ -64,7 +72,11 @@ function addTemplateColorFactory(format) {
   };
 }
 
-function canUseStyles(level) {
+function canUseStyles(useStyleValue, level) {
+  if (useStyleValue === true || useStyleValue === false) {
+    return useStyleValue;
+  }
+
   var useStderr = level === 'error' || level === 'warn';
   var stream = useStderr ? process.stderr : process.stdout;
   return stream && stream.isTTY;

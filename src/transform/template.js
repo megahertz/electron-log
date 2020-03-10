@@ -1,8 +1,7 @@
 'use strict';
 
-var object = require('./object');
-
 module.exports = {
+  concatFirstStringElements: concatFirstStringElements,
   formatDate: formatDate,
   formatTimeZone: formatTimeZone,
   pad: pad,
@@ -10,6 +9,29 @@ module.exports = {
   templateVariables: templateVariables,
   templateText: templateText,
 };
+
+/**
+ * The first argument of console.log may contain templates. In the library
+ * the first element is a string related to transports.console.format. So
+ * this function concatenates first two elements to make templates like %d
+ * work
+ * @param {*[]} data
+ * @return {*[]}
+ */
+function concatFirstStringElements(data) {
+  if (typeof data[0] !== 'string' || typeof data[1] !== 'string') {
+    return data;
+  }
+
+  if (data[0].match(/%[1cdfiOos]/)) {
+    return data;
+  }
+
+  data[1] = data[0] + ' ' + data[1];
+  data.shift();
+
+  return data;
+}
 
 function formatDate(template, date) {
   return template
@@ -74,10 +96,25 @@ function templateText(data) {
   var textTplPosition = template.lastIndexOf('{text}');
   if (textTplPosition === template.length - 6) {
     data[0] = template.replace(/\s?{text}/, '');
+    if (data[0] === '') {
+      data.shift();
+    }
+
     return data;
   }
 
-  return [
-    template.replace('{text}', object.toString(data.slice(1))),
-  ];
+  var templatePieces = template.split('{text}');
+  var result = [];
+
+  if (templatePieces[0] !== '') {
+    result.push(templatePieces[0]);
+  }
+
+  result = result.concat(data.slice(1));
+
+  if (templatePieces[1] !== '') {
+    result.push(templatePieces[1]);
+  }
+
+  return result;
 }

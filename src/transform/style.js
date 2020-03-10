@@ -36,26 +36,35 @@ function removeStyles(data) {
 }
 
 function transformStyles(data, onStyleFound, onStyleApplied) {
-  var skipNext = 0;
+  var foundStyles = {};
 
   return data.reduce(function (result, item, index, array) {
-    if (skipNext > 0) {
-      skipNext -= 1;
+    if (foundStyles[index]) {
       return result;
     }
 
     if (typeof item === 'string') {
-      item = item.replace(/%c/g, function (match) {
-        skipNext += 1;
-        var style = array[index + skipNext];
-        if (style) {
+      var valueIndex = index;
+      var styleApplied = false;
+
+      item = item.replace(/%[1cdfiOos]/g, function (match) {
+        valueIndex += 1;
+
+        if (match !== '%c') {
+          return match;
+        }
+
+        var style = array[valueIndex];
+        if (typeof style === 'string') {
+          foundStyles[valueIndex] = true;
+          styleApplied = true;
           return onStyleFound(style, item);
         }
 
         return match;
       });
 
-      if (skipNext > 0 && onStyleApplied) {
+      if (styleApplied && onStyleApplied) {
         item = onStyleApplied(item);
       }
     }

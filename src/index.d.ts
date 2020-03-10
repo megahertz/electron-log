@@ -60,7 +60,7 @@ declare namespace ElectronLog {
     /**
      * Use styles even if TTY isn't attached
      */
-    forceStyles: boolean;
+    useStyles: boolean;
   }
 
   interface PathVariables {
@@ -271,7 +271,7 @@ declare namespace ElectronLog {
      * Additional options for the HTTP request
      */
     requestOptions?: RequestOptions;
-    
+
     /**
      * Server URL
      */
