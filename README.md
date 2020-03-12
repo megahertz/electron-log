@@ -186,6 +186,16 @@ const electronLog = require('electron-log');
 const log = electronLog.create('anotherInstance');
 ````
 
+### Logging scopes (experimental)
+
+```js
+const log = require('electron-log');
+const userLog = log.scope('user');
+
+userLog.info('message with user scope');
+// Prints 12:12:21.962 (user) › message with user scope
+```
+
 ### Web Worker
 
 It's possible to use the module with Web Worker. However, ipc transport is not

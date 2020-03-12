@@ -7,6 +7,7 @@ describe('transform/template', function () {
     level: 'info',
     data: ['test'],
     date: new Date(2000, 0, 1, 1, 1, 1),
+    scope: { label: 'test' },
     variables: { myVar: 'myVarValue' },
   };
 
@@ -36,6 +37,12 @@ describe('transform/template', function () {
     expect(template.pad(10, 3)).toBe('010');
   });
 
+  it('padString', function () {
+    expect(template.padString('test', 2)).toBe('test');
+    expect(template.padString('test', 5)).toBe('test ');
+    expect(template.padString('', 5)).toBe('     ');
+  });
+
   it('templateDate', function () {
     expect(template.templateDate(['{h}:{i}:{s}', 1], message))
       .toEqual(['01:01:01', 1]);
@@ -44,6 +51,39 @@ describe('transform/template', function () {
   it('templateVariables', function () {
     expect(template.templateVariables(['{myVar}s', 1], message))
       .toEqual(['myVarValues', 1]);
+  });
+
+  describe('templateScopeFactory', function () {
+    it('should set scope with padding', function () {
+      var templateScope = template.templateScopeFactory({ labelLength: 6 });
+
+      expect(templateScope(['{scope}', 1], message))
+        .toEqual([' (test)  ', 1]);
+    });
+
+    it('should set empty scope if defaultLabel is false', function () {
+      var msg = Object.assign({}, message, { scope: undefined });
+
+      var templateScope = template.templateScopeFactory({
+        labelLength: 6,
+        defaultLabel: false,
+      });
+
+      expect(templateScope(['{scope}', 1], msg))
+        .toEqual(['', 1]);
+    });
+
+    it('should add blank padding if defaultLabel is empty string', function () {
+      message = Object.assign({}, message, { scope: undefined });
+
+      var templateScope = template.templateScopeFactory({
+        labelLength: 6,
+        defaultLabel: '',
+      });
+
+      expect(templateScope(['{scope}', 1], message))
+        .toEqual(['         ', 1]);
+    });
   });
 
   describe('templateText', function () {

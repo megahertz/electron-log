@@ -15,11 +15,12 @@ module.exports = {
   transform: transform,
 };
 
-function customFormatterFactory(customFormat, concatFirst) {
+function customFormatterFactory(customFormat, concatFirst, scopeOptions) {
   if (typeof customFormat === 'string') {
     return function customStringFormatter(data, message) {
       return transform(message, [
         template.templateVariables,
+        template.templateScopeFactory(scopeOptions),
         template.templateDate,
         template.templateText,
         concatFirst && template.concatFirstStringElements,

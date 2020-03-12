@@ -21,12 +21,12 @@ module.exports.transformMain = transformMain;
 
 var separator = process.platform === 'win32' ? '>' : '›';
 var DEFAULT_FORMAT = {
-  browser: '%c{h}:{i}:{s}.{ms}%c ' + separator + ' {text}',
-  renderer: '{h}:{i}:{s}.{ms} › {text}',
-  worker: '{h}:{i}:{s}.{ms} › {text}',
+  browser: '%c{h}:{i}:{s}.{ms}{scope}%c ' + separator + ' {text}',
+  renderer: '{h}:{i}:{s}.{ms}{scope} › {text}',
+  worker: '{h}:{i}:{s}.{ms}{scope} › {text}',
 };
 
-function consoleTransportFactory() {
+function consoleTransportFactory(electronLog) {
   transport.level  = 'silly';
   transport.useStyles = process.env.FORCE_STYLES;
   transport.format = DEFAULT_FORMAT[process.type] || DEFAULT_FORMAT.browser;
@@ -34,27 +34,31 @@ function consoleTransportFactory() {
   return transport;
 
   function transport(message) {
+    var scopeOptions = electronLog.scope.getOptions();
+
+    var data;
     if (process.type === 'renderer' || process.type === 'worker') {
-      consoleLog(message.level, transformRenderer(message, transport));
-      return;
+      data = transformRenderer(message, transport, scopeOptions);
+    } else {
+      data = transformMain(message, transport, scopeOptions);
     }
 
-    consoleLog(message.level, transformMain(message, transport));
+    consoleLog(message.level, data);
   }
 }
 
-function transformRenderer(message, transport) {
+function transformRenderer(message, transport, scopeOptions) {
   return transform.transform(message, [
-    transform.customFormatterFactory(transport.format, true),
+    transform.customFormatterFactory(transport.format, true, scopeOptions),
   ]);
 }
 
-function transformMain(message, transport) {
+function transformMain(message, transport, scopeOptions) {
   var useStyles = canUseStyles(transport.useStyles, message.level);
 
   return transform.transform(message, [
     addTemplateColorFactory(transport.format),
-    transform.customFormatterFactory(transport.format),
+    transform.customFormatterFactory(transport.format, false, scopeOptions),
     useStyles ? transform.applyAnsiStyles : transform.removeStyles,
     transform.concatFirstStringElements,
     transform.maxDepthFactory(4),

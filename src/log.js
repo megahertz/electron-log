@@ -7,13 +7,14 @@ module.exports = {
   runTransports: runTransports,
 };
 
-function log(electronLog, level) {
+function log(electronLog, options) {
   var transports = electronLog.transports;
 
   var message = {
     data: Array.prototype.slice.call(arguments, 2),
     date: new Date(),
-    level: level,
+    level: options.level,
+    scope: options.scope,
     variables: electronLog.variables,
   };
 

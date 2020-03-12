@@ -5,8 +5,10 @@ module.exports = {
   formatDate: formatDate,
   formatTimeZone: formatTimeZone,
   pad: pad,
+  padString: padString,
   templateDate: templateDate,
   templateVariables: templateVariables,
+  templateScopeFactory: templateScopeFactory,
   templateText: templateText,
 };
 
@@ -58,6 +60,12 @@ function pad(number, zeros) {
   return (new Array(zeros + 1).join('0') + number).substr(-zeros, zeros);
 }
 
+function padString(value, length) {
+  length = Math.max(length, value.length);
+  var padValue = Array(length + 1).join(' ');
+  return (value + padValue).substring(0, length);
+}
+
 function templateDate(data, message) {
   var template = data[0];
   if (typeof template !== 'string') {
@@ -66,6 +74,35 @@ function templateDate(data, message) {
 
   data[0] = formatDate(template, message.date);
   return data;
+}
+
+/**
+ * @param {{ labelLength: number, defaultLabel: string }} options
+ */
+function templateScopeFactory(options) {
+  options = options || {};
+  var labelLength = options.labelLength || 0;
+
+  return function templateScope(data, message) {
+    var template = data[0];
+    var label = message.scope && message.scope.label;
+
+    if (!label) {
+      label = options.defaultLabel;
+    }
+
+    var scopeText;
+    if (label === '') {
+      scopeText = labelLength > 0 ? padString('', labelLength + 3) : '';
+    } else if (typeof label === 'string') {
+      scopeText = padString(' (' + label + ')', labelLength + 3);
+    } else {
+      scopeText = '';
+    }
+
+    data[0] = template.replace('{scope}', scopeText);
+    return data;
+  };
 }
 
 function templateVariables(data, message) {

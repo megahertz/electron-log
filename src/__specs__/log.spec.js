@@ -16,7 +16,7 @@ describe('log', function () {
     it('should call a transport function', function () {
       var electronLog = mockElectronLog();
 
-      log.log(electronLog, 'info', 'test');
+      log.log(electronLog, { level: 'info' }, 'test');
 
       expect(electronLog.journal[0].data).toEqual(['test']);
       expect(electronLog.journal[0].level).toBe('info');
@@ -24,7 +24,7 @@ describe('log', function () {
 
     it('should process undefined value', function () {
       var electronLog = mockElectronLog();
-      log.log(electronLog, 'info', undefined);
+      log.log(electronLog, { level: 'info' }, undefined);
 
       expect(electronLog.journal[0].data).toEqual([undefined]);
       expect(electronLog.journal[0].level).toBe('info');
@@ -38,7 +38,7 @@ describe('log', function () {
         return msg;
       });
 
-      log.log(electronLog, 'info', 'test');
+      log.log(electronLog, { level: 'info' }, 'test');
 
       expect(electronLog.journal[0].data).toEqual(['test hooked']);
 
@@ -47,7 +47,7 @@ describe('log', function () {
         return null;
       });
 
-      log.log(electronLog, 'info', 'test');
+      log.log(electronLog, { level: 'info' }, 'test');
 
       expect(electronLog.journal.length).toBe(1);
     });
@@ -56,11 +56,11 @@ describe('log', function () {
       var electronLog = mockElectronLog();
       electronLog.levels.push('custom');
 
-      log.log(electronLog, 'custom', 'test');
+      log.log(electronLog, { level: 'custom' }, 'test');
       expect(electronLog.journal.length).toBe(0);
 
       electronLog.transports.variable.level = 'custom';
-      log.log(electronLog, 'custom', 'test');
+      log.log(electronLog, { level: 'custom' }, 'test');
       expect(electronLog.journal.length).toBe(1);
     });
   });

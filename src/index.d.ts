@@ -37,6 +37,11 @@ declare namespace ElectronLog {
     level: LogLevel;
 
     /**
+     * Message scope label
+     */
+    scope?: string;
+
+    /**
      * Variables used by formatter
      */
     variables?: Variables;
@@ -304,6 +309,25 @@ declare namespace ElectronLog {
     [key: string]: Transport | null;
   }
 
+  interface Scope {
+    (label: string): LogFunctions;
+
+    /**
+     * Label for log message without scope. False value disables padding
+     * when labelPadding is enabled.
+     */
+    defaultLabel: string | false;
+
+    /**
+     * Pad scope label using spaces
+     * false: disabled
+     * true: automatically
+     * number: set exact maximum label length. Helpful when a scope can
+     * be created after some log messages were sent
+     */
+    labelPadding: boolean | number;
+  }
+
   interface CatchErrorsOptions {
     /**
      * Default true for the main process. Set it to false to prevent showing a
@@ -397,6 +421,11 @@ declare namespace ElectronLog {
      * Create a new electron-log instance
      */
     create(logId: string): ElectronLog.ElectronLog;
+
+    /**
+     * Create a new scope
+     */
+    scope: Scope;
   }
 }
 

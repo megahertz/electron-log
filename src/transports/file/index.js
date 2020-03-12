@@ -23,7 +23,8 @@ function fileTransportFactory(electronLog, customRegistry) {
   /* eslint-disable no-multi-spaces */
   transport.archiveLog   = archiveLog;
   transport.fileName     = getDefaultFileName();
-  transport.format       = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}';
+  transport
+    .format = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}]{scope} {text}';
   transport.getFile      = getFile;
   transport.level        = 'silly';
   transport.maxSize      = 1024 * 1024;

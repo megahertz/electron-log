@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.1.0
+
+ - New feature: scopes
+
 ## 4.0.0
 
 ### Core
