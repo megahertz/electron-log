@@ -164,6 +164,9 @@ describe('File transport', function () {
 
 function createTransport(options) {
   var electronLog = {
+    scope: {
+      getOptions: function () { return {} },
+    },
     transports: {
       // eslint-disable-next-line no-console
       console: console.log,
