@@ -51,9 +51,10 @@ function fileTransportFactory(electronLog, customRegistry) {
       file.reset();
     }
 
+    var scopeOptions = electronLog.scope.getOptions();
     var content = transform.transform(message, [
       transform.removeStyles,
-      transform.customFormatterFactory(transport.format),
+      transform.customFormatterFactory(transport.format, false, scopeOptions),
       transform.concatFirstStringElements,
       transform.maxDepthFactory(),
       transform.toString,
