@@ -26,6 +26,11 @@ function scopeFactory(electronLog) {
   function scope(label) {
     var instance = {
       label: label,
+      toJSON: function () {
+        return {
+          label: this.label,
+        };
+      },
     };
 
     electronLog.levels.forEach(function (level) {

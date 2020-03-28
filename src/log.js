@@ -14,7 +14,7 @@ function log(electronLog, options) {
     data: Array.prototype.slice.call(arguments, 2),
     date: new Date(),
     level: options.level,
-    scope: options.scope,
+    scope: options.scope ? options.scope.toJSON() : null,
     variables: electronLog.variables,
   };
 
