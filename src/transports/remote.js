@@ -14,13 +14,14 @@ function remoteTransportFactory(electronLog) {
   transport.level = false;
   transport.requestOptions = {};
   transport.url = null;
+  transport.transformBody = function (body) { return JSON.stringify(body) };
 
   return transport;
 
   function transport(message) {
     if (!transport.url) return;
 
-    var request = post(transport.url, transport.requestOptions, {
+    var body = transport.transformBody({
       client: transport.client,
       data: transform.transform(message, [
         transform.removeStyles,
@@ -31,6 +32,8 @@ function remoteTransportFactory(electronLog) {
       level: message.level,
       variables: message.variables,
     });
+
+    var request = post(transport.url, transport.requestOptions, body);
 
     request.on('error', function (error) {
       var errorMessage = {
@@ -54,11 +57,9 @@ function remoteTransportFactory(electronLog) {
   }
 }
 
-function post(serverUrl, requestOptions, data) {
+function post(serverUrl, requestOptions, body) {
   var urlObject = url.parse(serverUrl);
   var httpTransport = urlObject.protocol === 'https:' ? https : http;
-
-  var body = JSON.stringify(data);
 
   var options = {
     hostname: urlObject.hostname,

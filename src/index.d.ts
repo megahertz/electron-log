@@ -278,6 +278,11 @@ declare namespace ElectronLog {
     requestOptions?: RequestOptions;
 
     /**
+     * Callback which transforms request body to string
+     */
+    transformBody?: (data: LogMessage & { client: object }) => string;
+
+    /**
      * Server URL
      */
     url: string;

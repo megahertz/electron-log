@@ -64,6 +64,12 @@ Default: `{}`
 
 Customize options used by
 [`http.request()`](https://nodejs.org/api/http.html#http_http_request_options_callback)
+    
+#### **`transformBody`** {(data: LogMessage & { client: object }) => string}
+
+Default: `data => JSON.stringify(data)`
+
+Callback which transforms request body to string
 
 #### **`url`** {string}
 
