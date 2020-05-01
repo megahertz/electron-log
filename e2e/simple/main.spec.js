@@ -4,7 +4,7 @@ var helper = require('../spec-helper');
 
 var TIMEOUT = 8000;
 
-describe('test:projects', function () {
+describe('e2e', function () {
   it('simple: check log files', function () {
     return helper.run('simple', TIMEOUT).then(function (logReader) {
       expect(logReader.format()).toEqual([

@@ -1,1 +1,0 @@
-Here are a few projects for test purposes. These projects ARE NOT examples.

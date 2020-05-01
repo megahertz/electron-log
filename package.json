@@ -6,8 +6,8 @@
   "scripts": {
     "lint": "eslint '**/*.js' --ignore-pattern '**/dist/*.js' && tsc --noEmit",
     "test": "humile 'src/**/*spec.js'",
-    "test:full": "npm run test && npm run lint && npm run test:projects",
-    "test:projects": "humile 'test-projects/**/*.spec.js' -R list",
+    "test:full": "npm run test && npm run lint && npm run test:e2e",
+    "test:e2e": "humile 'e2e/**/*.spec.js' -R list",
     "postversion": "git push && git push --tags",
     "prepack": "npm run test:full",
     "preversion": "npm run test:full"

@@ -1,3 +1,3 @@
 .idea
 node_modules
-test-projects/local
+e2e/local
