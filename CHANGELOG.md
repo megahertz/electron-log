@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased]
+- 'Critical' log level
+- 'Important' log level
+
 ## 4.1.0
 
  - New feature: scopes
