@@ -33,7 +33,7 @@ function create(logId) {
     functions: {},
     hooks: [],
     isDev: electronApi.isDev(),
-    levels: ['error', 'warn', 'info', 'verbose', 'debug', 'silly'],
+    levels: ['error', 'critical', 'important', 'warn', 'info', 'verbose', 'debug', 'silly'],
     logId: logId,
     variables: {
       processType: process.type,

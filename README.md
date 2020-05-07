@@ -37,7 +37,7 @@ If you would like to upgrade to the latest version, read
 
 electron-log supports the following log levels:
 
-    error, warn, info, verbose, debug, silly
+    error, critical, important, warn, info, verbose, debug, silly
 
 ### `nodeIntegration`
 If you've got an error like `require is not defined` in a renderer process,

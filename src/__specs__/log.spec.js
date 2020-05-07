@@ -99,7 +99,7 @@ function mockElectronLog() {
   var electronLog = {
     hooks: [],
     journal: [],
-    levels: ['error', 'warn', 'info', 'verbose', 'debug', 'silly', 'custom'],
+    levels: ['error', 'critical', 'important', 'warn', 'info', 'verbose', 'debug', 'silly', 'custom'],
     transports: {
       variable: function (msg) { electronLog.journal.push(msg) },
     },

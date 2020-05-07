@@ -5,14 +5,16 @@
 var transform = require('../transform');
 
 var original = {
-  context: console,
-  error:   console.error,
-  warn:    console.warn,
-  info:    console.info,
-  verbose: console.verbose,
-  debug:   console.debug,
-  silly:   console.silly,
-  log:     console.log,
+  context:   console,
+  error:     console.error,
+  important: console.warn,
+  critical:  console.error,
+  warn:      console.warn,
+  info:      console.info,
+  verbose:   console.verbose,
+  debug:     console.debug,
+  silly:     console.silly,
+  log:       console.log,
 };
 
 module.exports = consoleTransportFactory;
@@ -96,7 +98,7 @@ function consoleLog(level, args) {
 
 function levelToStyle(level) {
   switch (level) {
-    case 'error': return 'red';
+    case 'error': case 'critical': case 'important': return 'red';
     case 'warn':  return 'yellow';
     case 'info':  return 'cyan';
     default:      return 'unset';

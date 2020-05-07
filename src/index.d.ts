@@ -1,8 +1,8 @@
 import { RequestOptions } from "http";
 
 declare namespace ElectronLog {
-  type LogLevel = 'error' | 'warn' | 'info' | 'verbose' | 'debug' |
-    'silly';
+  type LogLevel = 'error' | 'critical' | 'important' | 'warn' | 'info' | 'verbose' | 'debug' |
+    'silly' ;
   type LevelOption = LogLevel | false;
   type Levels = Array<LogLevel | string>;
 
@@ -359,6 +359,16 @@ declare namespace ElectronLog {
      * Log an error message
      */
     error (...params: any[]): void;
+
+    /**
+     * Log a critical error message
+     */
+    critical (...params: any[]): void;
+
+    /**
+     * Log an important error message
+     */
+    important (...params: any[]): void;
 
     /**
      * Log a warning message
