@@ -32,7 +32,6 @@ function ipcTransportFactory(electronLog) {
   function transport(message) {
     var ipcMessage = Object.assign({}, message, {
       data: transform.transform(message, [
-        transform.removeStyles,
         transform.toJSON,
         transform.maxDepthFactory(3),
       ]),
