@@ -24,10 +24,7 @@ describe('transform/object', function () {
 
     it('should serialize errors', function () {
       expect(object.serialize(null, new Error('test')))
-        .toEqual({
-          constructor: 'Error',
-          stack: jasmine.stringMatching('Error: test'),
-        });
+        .toMatch('Error: test\n');
     });
 
     it('should serialize functions', function () {

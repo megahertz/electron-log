@@ -94,23 +94,7 @@ function maxDepthFactory(depth) {
 
 function serialize(key, value) {
   if (value instanceof Error) {
-    var object = Object.assign(
-      {
-        constructor: (value.constructor && value.constructor.name) || 'Error',
-      },
-      value,
-      { stack: value.stack }
-    );
-
-    if (!object.stack) {
-      object.message = value.message;
-    }
-
-    if (value.constructor && value.constructor.name) {
-      object.constructor = value.constructor.name;
-    }
-
-    return object;
+    return value.stack;
   }
 
   if (!value) {

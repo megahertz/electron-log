@@ -14,14 +14,14 @@ describe('e2e', function () {
           '    return 1;',
           '  }',
         ].join('\n'),
-        jasmine.stringMatching('main.log: {\n'),
+        jasmine.stringMatching('main.log: Error: Error in renderer\n'),
         'renderer.log: { name: \'Log object in main\' }',
         [
           'renderer.log: [function] function functionInMain() {',
           '      return 1;',
           '    }',
         ].join('\n'),
-        jasmine.stringMatching('renderer.log: {\n'),
+        jasmine.stringMatching('renderer.log: Error: Error in main'),
       ]);
     });
   }, TIMEOUT);
