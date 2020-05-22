@@ -58,8 +58,13 @@ function getLibraryTemplate(platform) {
 }
 
 function getNameAndVersion() {
-  var name = electronApi.getName();
+  var name = electronApi.getName() || '';
   var version = electronApi.getVersion();
+
+  if (name.toLowerCase() === 'electron') {
+    name = '';
+    version = '';
+  }
 
   if (name && version) {
     return { name: name, version: version };
@@ -100,6 +105,10 @@ function getPathVariables(platform) {
 }
 
 function getUserData(platform, appName) {
+  if (electronApi.getName() !== appName) {
+    return path.join(getAppData(platform), appName);
+  }
+
   return electronApi.getPath('userData')
     || path.join(getAppData(platform), appName);
 }
