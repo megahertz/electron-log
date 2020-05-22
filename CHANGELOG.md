@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.2.0
+
+ - Helper for custom log levels: log.levels.add
+ - Stringify Errors instead of converting to object
+
 ## 4.1.0
 
  - New feature: scopes
