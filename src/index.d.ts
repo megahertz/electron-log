@@ -4,7 +4,9 @@ declare namespace ElectronLog {
   type LogLevel = 'error' | 'warn' | 'info' | 'verbose' | 'debug' |
     'silly';
   type LevelOption = LogLevel | false;
-  type Levels = Array<LogLevel | string>;
+  type Levels = Array<LogLevel | string> & {
+    add(name: string, index?: number): void
+  };
 
   type Format = (message: LogMessage, transformedData?: any[]) => any[] | string;
 

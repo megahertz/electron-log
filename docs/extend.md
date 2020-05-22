@@ -46,6 +46,29 @@ log.hooks.push((message, transport) => {
 });
 ```
 
+## Log levels
+
+Add a new "notice" level before "info" (index = 2):
+
+```js
+log.levels.add('notice', 2);
+log.notice('New level added');
+```
+
+Also, you can add TypeScript type definition:
+
+*electron-log.extend.d.ts:*
+```typescript
+import 'electron-log'
+
+declare module 'electron-log' {
+  interface LogFunctions {
+    notice(...params: any[]): void;
+  }
+}
+
+```
+
 ## LogMessage
 
  - data: any[] Arguments passed to log function

@@ -33,7 +33,7 @@ function create(logId) {
     functions: {},
     hooks: [],
     isDev: electronApi.isDev(),
-    levels: ['error', 'warn', 'info', 'verbose', 'debug', 'silly'],
+    levels: [],
     logId: logId,
     variables: {
       processType: process.type,
@@ -49,10 +49,19 @@ function create(logId) {
     ipc: transportIpc(instance),
   };
 
-  instance.levels.forEach(function (level) {
-    instance[level] = log.bind(null, instance, { level: level });
-    instance.functions[level] = instance[level];
+  Object.defineProperty(instance.levels, 'add', {
+    enumerable: false,
+    value: function add(name, index) {
+      index = index === undefined ? instance.levels.length : index;
+      instance.levels.splice(index, 0, name);
+      instance[name] = log.bind(null, instance, { level: name });
+      instance.functions[name] = instance[name];
+    },
   });
+
+  ['error', 'warn', 'info', 'verbose', 'debug', 'silly'].forEach(
+    function (level) { instance.levels.add(level) }
+  );
 
   instance.log = log.bind(null, instance, { level: 'info' });
   instance.functions.log = instance.log;
