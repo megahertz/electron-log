@@ -16,7 +16,7 @@ function fileTransportFactory(electronLog, customRegistry) {
   var pathVariables = variables.getPathVariables(process.platform);
 
   var registry = customRegistry || globalRegistry;
-  if (registry.listenerCount('error') <= 0) {
+  if (registry.listenerCount('error') < 1) {
     registry.on('error', function (e, file) {
       logConsole('Can\'t write to ' + file, e);
     });
