@@ -16,9 +16,11 @@ function fileTransportFactory(electronLog, customRegistry) {
   var pathVariables = variables.getPathVariables(process.platform);
 
   var registry = customRegistry || globalRegistry;
-  registry.on('error', function (e, file) {
-    logConsole('Can\'t write to ' + file, e);
-  });
+  if (registry.listenerCount('error') <= 0) {
+    registry.on('error', function (e, file) {
+      logConsole('Can\'t write to ' + file, e);
+    });
+  }
 
   /* eslint-disable no-multi-spaces */
   transport.archiveLog   = archiveLog;
