@@ -12,15 +12,19 @@ try {
   electron = null;
 }
 
+var os = require('os');
+
 module.exports = {
   getName: getName,
   getPath: getPath,
   getVersion: getVersion,
+  getVersions: getVersions,
   isDev: isDev,
   isElectron: isElectron,
   isIpcChannelListened: isIpcChannelListened,
   loadRemoteModule: loadRemoteModule,
   onIpc: onIpc,
+  openUrl: openUrl,
   sendIpc: sendIpc,
   showErrorBox: showErrorBox,
 };
@@ -89,6 +93,31 @@ function getVersion() {
   if (!app) return null;
 
   return 'version' in app ? app.version : app.getVersion();
+}
+
+function getVersions() {
+  return {
+    app: getName() + ' ' + getVersion(),
+    electron: 'Electron ' + process.versions.electron,
+    os: getOsVersion(),
+  };
+}
+
+function getOsVersion() {
+  var osName = os.type().replace('_', ' ');
+  var osVersion = os.release();
+
+  if (osName === 'Darwin') {
+    osName = 'macOS';
+    osVersion = getMacOsVersion();
+  }
+
+  return osName + ' ' + osVersion;
+}
+
+function getMacOsVersion() {
+  var release = Number(os.release().split('.')[0]);
+  return '10.' + (release - 4);
 }
 
 function isDev() {
@@ -184,4 +213,18 @@ function showErrorBox(title, message) {
   if (!dialog) return;
 
   dialog.showErrorBox(title, message);
+}
+
+/**
+ * @param {string} url
+ * @param {Function} [logFunction]
+ */
+function openUrl(url, logFunction) {
+  // eslint-disable-next-line no-console
+  logFunction = logFunction || console.error;
+
+  var shell = getElectronModule('shell');
+  if (!shell) return;
+
+  shell.openExternal(url).catch(logFunction);
 }

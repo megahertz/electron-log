@@ -2,12 +2,13 @@
 
 ## 4.2.0
 
- - Helper for custom log levels: log.levels.add
+ - Feature: Helper for custom log levels: log.levels.add
  - Stringify Errors instead of converting to object
+ - Feature: Submit error report to github or other source
 
 ## 4.1.0
 
- - New feature: scopes
+ - Feature: Scopes
 
 ## 4.0.0
 

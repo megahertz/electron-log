@@ -5,6 +5,7 @@
  */
 
 var electronApi = require('./electronApi');
+var queryString = require('querystring');
 
 var isAttached = false;
 
@@ -25,7 +26,8 @@ module.exports = function catchErrors(options) {
   function onError(e) {
     try {
       if (typeof options.onError === 'function') {
-        if (options.onError(e) === false) {
+        var versions = electronApi.getVersions();
+        if (options.onError(e, versions, createIssue) === false) {
           return;
         }
       }
@@ -85,5 +87,10 @@ module.exports = function catchErrors(options) {
       process.removeListener('uncaughtException', onError);
       process.removeListener('unhandledRejection', onRejection);
     }
+  }
+
+  function createIssue(pageUrl, queryParams) {
+    var issueUrl = pageUrl + '?' + queryString.stringify(queryParams);
+    electronApi.openUrl(issueUrl, options.log);
   }
 };

@@ -154,18 +154,13 @@ Available colors:
  
 For DevTools console you can use other CSS properties.
 
-### Catch errors
+### [Catch errors](docs/catch.md)
 
 electron-log can catch and log unhandled errors/rejected promises:
 
 `log.catchErrors(options?)`;
 
-##### Options
-
- - **showDialog**, default true for the main process. false prevents
-   showing a default electron error dialog
- - **onError**, `(error) => void | false`, default null - attach a custom
-   error handler. If the handler returns false, this error will not be processed.
+[More info](docs/catch.md).
 
 ### [Hooks](docs/extend.md#hooks)
 

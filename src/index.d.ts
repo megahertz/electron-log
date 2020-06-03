@@ -335,6 +335,17 @@ declare namespace ElectronLog {
     labelPadding: boolean | number;
   }
 
+  interface ReportData {
+    body: string;
+    title: string;
+
+    assignee: string;
+    labels: string;
+    milestone: string;
+    projects: string;
+    template: string;
+  }
+
   interface CatchErrorsOptions {
     /**
      * Default true for the main process. Set it to false to prevent showing a
@@ -346,7 +357,11 @@ declare namespace ElectronLog {
      * Attach a custom error handler. If the handler returns false, this error
      * will not be processed
      */
-    onError? (error: Error): void;
+    onError?(
+      error: Error,
+      versions?: { app: string; electron: string; os: string },
+      submitIssue?: (url: string, data: ReportData | any) => void,
+    ): void;
   }
 
   interface CatchErrorsResult {
