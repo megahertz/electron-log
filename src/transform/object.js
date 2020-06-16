@@ -6,7 +6,7 @@ module.exports = {
   maxDepthFactory: maxDepthFactory,
   serialize: serialize,
   toJSON: toJSON,
-  toString: toString,
+  toStringFactory: toStringFactory,
 };
 
 function createSerializer() {
@@ -116,14 +116,23 @@ function toJSON(data) {
   return JSON.parse(JSON.stringify(data, createSerializer()));
 }
 
-function toString(data) {
-  var simplifiedData = data.map(function (item) {
-    if (item === undefined) {
-      return undefined;
+function toStringFactory(depth) {
+  depth = depth || 5;
+
+  return function toStringFunction(data) {
+    var simplifiedData = data.map(function (item) {
+      if (item === undefined) {
+        return undefined;
+      }
+
+      return JSON.parse(JSON.stringify(item, createSerializer(), '  '));
+    });
+
+    if (util.formatWithOptions) {
+      simplifiedData.unshift({ depth: depth });
+      return util.formatWithOptions.apply(util, simplifiedData);
     }
 
-    return JSON.parse(JSON.stringify(item, createSerializer(), '  '));
-  });
-
-  return util.format.apply(util, simplifiedData);
+    return util.format.apply(util, simplifiedData);
+  };
 }

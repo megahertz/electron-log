@@ -24,6 +24,7 @@ function fileTransportFactory(electronLog, customRegistry) {
 
   /* eslint-disable no-multi-spaces */
   transport.archiveLog   = archiveLog;
+  transport.depth        = 5;
   transport.fileName     = getDefaultFileName();
   transport
     .format = '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}]{scope} {text}';
@@ -58,8 +59,7 @@ function fileTransportFactory(electronLog, customRegistry) {
       transform.removeStyles,
       transform.customFormatterFactory(transport.format, false, scopeOptions),
       transform.concatFirstStringElements,
-      transform.maxDepthFactory(),
-      transform.toString,
+      transform.toStringFactory(transport.depth),
     ]);
 
     file.writeLine(content);

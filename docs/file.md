@@ -36,6 +36,14 @@ Callback which is called on log rotation. You can override it if you need
 custom log rotation behavior. This function should remove old file
 synchronously.
 
+#### depth {number}
+
+Default: `5`
+
+Sometimes logging a very complex object can produce a huge chunk of data. To
+reduce file size set the depth option to exclude nested objects which are deeper
+than `depth`.
+
 #### file {string} **DEPRECATED**
 
 Default: `undefined`

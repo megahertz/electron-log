@@ -11,7 +11,7 @@ module.exports = {
   maxDepthFactory: object.maxDepthFactory,
   removeStyles: style.removeStyles,
   toJSON: object.toJSON,
-  toString: object.toString,
+  toStringFactory: object.toStringFactory,
   transform: transform,
 };
 

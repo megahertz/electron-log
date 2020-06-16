@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.2.2
+
+ - Add `transports.file.depth` option
+
 ## 4.2.0
 
  - Feature: Helper for custom log levels: log.levels.add

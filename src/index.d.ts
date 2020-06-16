@@ -196,6 +196,11 @@ declare namespace ElectronLog {
     bytesWritten: number;
 
     /**
+     * How deep to serialize complex objects
+     */
+    depth: number;
+
+    /**
      * The full log file path. I can recommend to change this value only if
      * you strongly understand what are you doing. If set, appName and fileName
      * options are ignored
