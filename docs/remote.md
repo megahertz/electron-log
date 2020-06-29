@@ -71,6 +71,14 @@ Default: `data => JSON.stringify(data)`
 
 Callback which transforms request body to string
 
+#### `errorTransports` [array]
+
+Default: `[electronLog.transports.console, electronLog.transports.ipc, electronLog.transports.file]`
+
+If the network request fails, electron-log will log the error message to specified transports. By default the
+error messages are also logged to file, however it is recommended to disable file logging on devices with
+low disc speed as it would double the disc writes if the device is behind a firewall or not connected to the Internet.
+
 #### **`url`** {string}
 
 Default: `undefined`

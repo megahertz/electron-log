@@ -15,6 +15,11 @@ function remoteTransportFactory(electronLog) {
   transport.requestOptions = {};
   transport.url = null;
   transport.transformBody = function (body) { return JSON.stringify(body) };
+  transport.errorTransports = [
+    electronLog.transports.console,
+    electronLog.transports.ipc,
+    electronLog.transports.file,
+  ];
 
   return transport;
 
@@ -46,13 +51,7 @@ function remoteTransportFactory(electronLog) {
         level: 'warn',
       };
 
-      var transports = [
-        electronLog.transports.console,
-        electronLog.transports.ipc,
-        electronLog.transports.file,
-      ];
-
-      log.runTransports(transports, errorMessage, electronLog);
+      log.runTransports(transport.errorTransports, errorMessage, electronLog);
     });
   }
 }
