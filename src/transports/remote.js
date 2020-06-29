@@ -15,11 +15,7 @@ function remoteTransportFactory(electronLog) {
   transport.requestOptions = {};
   transport.url = null;
   transport.transformBody = function (body) { return JSON.stringify(body) };
-  transport.errorTransports = [
-    electronLog.transports.console,
-    electronLog.transports.ipc,
-    electronLog.transports.file,
-  ];
+  transport.errorTransports = null; // not specifying here as that would make it depend on other transport on initialization
 
   return transport;
 
@@ -51,7 +47,14 @@ function remoteTransportFactory(electronLog) {
         level: 'warn',
       };
 
-      log.runTransports(transport.errorTransports, errorMessage, electronLog);
+      var defaultTransports = [
+        electronLog.transports.console,
+        electronLog.transports.ipc,
+        electronLog.transports.file,
+      ];
+      var transports = transport.errorTransports ? transport.errorTransports : defaultTransports;
+
+      log.runTransports(transports, errorMessage, electronLog);
     });
   }
 }

@@ -73,7 +73,7 @@ Callback which transforms request body to string
 
 #### `errorTransports` [array]
 
-Default: `[electronLog.transports.console, electronLog.transports.ipc, electronLog.transports.file]`
+Default: `null` (sending to console, ipc and file)
 
 If the network request fails, electron-log will log the error message to specified transports. By default the
 error messages are also logged to file, however it is recommended to disable file logging on devices with
