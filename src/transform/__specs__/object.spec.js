@@ -42,4 +42,13 @@ describe('transform/object', function () {
       expect(function () { object.toJSON(safeObj) }).not.toThrow();
     });
   });
+
+  describe('toString', function () {
+    it('should not throw when stringify undefined value', function () {
+      var error = new Error();
+      delete error.stack;
+
+      expect(function () { object.toStringFactory()([error]) }).not.toThrow();
+    });
+  });
 });
