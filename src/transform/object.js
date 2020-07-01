@@ -125,7 +125,12 @@ function toStringFactory(depth) {
         return undefined;
       }
 
-      return JSON.parse(JSON.stringify(item, createSerializer(), '  '));
+      var str = JSON.stringify(item, createSerializer(), '  ');
+      if (str === undefined) {
+        return undefined;
+      }
+
+      return JSON.parse(str);
     });
 
     if (util.formatWithOptions) {
