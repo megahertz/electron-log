@@ -16,6 +16,7 @@ module.exports = {
 function readPackageJson() {
   return tryReadJsonAt(require.main && require.main.filename)
     || tryReadJsonAt(process.resourcesPath, 'app.asar')
+    || tryReadJsonAt(process.resourcesPath, 'app')
     || tryReadJsonAt(process.cwd())
     || { name: null, version: null };
 }
