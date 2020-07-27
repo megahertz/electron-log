@@ -88,9 +88,10 @@ function canUseStyles(useStyleValue, level) {
 
 function consoleLog(level, args) {
   if (original[level]) {
-    original[level].apply(original.context, args);
+    // using setTimeout to detach from the source, as a fix for issue #207
+    setTimeout(original[level].bind(original.context, ...args));
   } else {
-    original.log.apply(original.context, args);
+    setTimeout(original.log.bind(original.context, ...args));
   }
 }
 
