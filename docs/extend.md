@@ -8,7 +8,7 @@ Transport is just a function `(msg: LogMessage) => void`, so you can
 easily override/add your own transport.
 
 ```js
-const format = require('util');
+const util = require('util');
 
 log.transports.console = (message) => {
   const text = util.format.apply(util, message.data);
