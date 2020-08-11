@@ -13,7 +13,10 @@ function createWindow() {
   win = new BrowserWindow({
     width: 800,
     height: 600,
-    webPreferences: { nodeIntegration: true },
+    webPreferences: {
+      enableRemoteModule: true,
+      nodeIntegration: true,
+    },
   });
   win.loadURL('file://' + path.join(__dirname, 'index.html'));
   win.on('closed', function () { win = null });
