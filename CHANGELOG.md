@@ -3,6 +3,7 @@
 ## 4.2.3
 
  - Add `transports.remote.onError` option
+ - Add `logMessageWithTransports` method
 
 ## 4.2.2
 

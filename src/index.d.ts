@@ -453,6 +453,11 @@ declare namespace ElectronLog {
      * Create a new scope
      */
     scope: Scope;
+
+    /**
+     * Low level method which logs the message using specified transports
+     */
+    logMessageWithTransports(message: LogMessage, transports: Transport[]): void;
   }
 }
 

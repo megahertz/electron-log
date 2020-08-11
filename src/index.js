@@ -2,7 +2,7 @@
 
 var catchErrors = require('./catchErrors');
 var electronApi = require('./electronApi');
-var log = require('./log').log;
+var log = require('./log');
 var scopeFactory = require('./scope');
 var transportConsole = require('./transports/console');
 var transportFile = require('./transports/file');
@@ -54,7 +54,7 @@ function create(logId) {
     value: function add(name, index) {
       index = index === undefined ? instance.levels.length : index;
       instance.levels.splice(index, 0, name);
-      instance[name] = log.bind(null, instance, { level: name });
+      instance[name] = log.log.bind(null, instance, { level: name });
       instance.functions[name] = instance[name];
     },
   });
@@ -63,8 +63,12 @@ function create(logId) {
     function (level) { instance.levels.add(level) }
   );
 
-  instance.log = log.bind(null, instance, { level: 'info' });
+  instance.log = log.log.bind(null, instance, { level: 'info' });
   instance.functions.log = instance.log;
+
+  instance.logMessageWithTransports = function (message, transports) {
+    return log.runTransports(transports, message, instance);
+  };
 
   return instance;
 }
