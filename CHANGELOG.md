@@ -4,6 +4,7 @@
 
  - Add `transports.remote.onError` option
  - Add `logMessageWithTransports` method
+ - Add `transports.file.readAllLogs` method
 
 ## 4.2.2
 

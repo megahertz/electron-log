@@ -2,6 +2,7 @@
 
 var fs = require('fs');
 var path = require('path');
+var os = require('os');
 var util = require('util');
 var transform = require('../../transform');
 var FileRegistry = require('./file').FileRegistry;
@@ -31,6 +32,7 @@ function fileTransportFactory(electronLog, customRegistry) {
   transport.getFile      = getFile;
   transport.level        = 'silly';
   transport.maxSize      = 1024 * 1024;
+  transport.readAllLogs  = readAllLogs;
   transport.resolvePath  = resolvePath;
   transport.sync         = true;
   transport.writeOptions = {
@@ -105,6 +107,27 @@ function fileTransportFactory(electronLog, customRegistry) {
    */
   function resolvePath(vars) {
     return path.join(vars.libraryDefaultDir, vars.fileName);
+  }
+
+  function readAllLogs() {
+    var vars = Object.assign({}, pathVariables, {
+      fileName: transport.fileName,
+    });
+    var logsPath = path.dirname(transport.resolvePath(vars));
+
+    return fs.readdirSync(logsPath)
+      .map(function (fileName) {
+        var logPath = path.join(logsPath, fileName);
+        try {
+          return {
+            path: logPath,
+            lines: fs.readFileSync(logPath, 'utf8').split(os.EOL),
+          };
+        } catch (e) {
+          return null;
+        }
+      })
+      .filter(Boolean);
   }
 
   function initDeprecated() {

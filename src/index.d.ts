@@ -233,6 +233,11 @@ declare namespace ElectronLog {
     maxSize: number;
 
     /**
+     * Reads content of all log files
+     */
+    readAllLogs(): Array<{ path: string, lines: string[] }>;
+
+    /**
      * Allow to change log file path dynamically
      */
     resolvePath: (variables: PathVariables, message?: LogMessage) => string;

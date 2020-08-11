@@ -159,4 +159,11 @@ but it has no effect.
 
 Deprecated. Doesn't matter anymore.
 
+#### `readAllLogs() => Array<{ path: string, lines: string[] }>`
+
+Reads content of all log files.
+
+Be careful, if you use multiple log directories through overriding resolvePath,
+it won't return all the files.
+
 <!-- spech-dictionary whether -->
