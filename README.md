@@ -181,7 +181,7 @@ const electronLog = require('electron-log');
 const log = electronLog.create('anotherInstance');
 ````
 
-### Logging scopes (experimental)
+### Logging scopes
 
 ```js
 const log = require('electron-log');
