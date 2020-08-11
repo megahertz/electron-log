@@ -4,7 +4,7 @@
 
 var transform = require('../transform');
 
-var original = {
+var consoleMethods = {
   context: console,
   error:   console.error,
   warn:    console.warn,
@@ -87,11 +87,17 @@ function canUseStyles(useStyleValue, level) {
 }
 
 function consoleLog(level, args) {
-  if (original[level]) {
-    original[level].apply(original.context, args);
-  } else {
-    original.log.apply(original.context, args);
+  var consoleMethod = consoleMethods[level] || consoleMethods.info;
+
+  if (process.type === 'renderer') {
+    setTimeout(consoleMethod.bind.apply(
+      consoleMethod,
+      [consoleMethod.context].concat(args)
+    ));
+    return;
   }
+
+  consoleMethod.apply(consoleMethods.context, args);
 }
 
 function levelToStyle(level) {
