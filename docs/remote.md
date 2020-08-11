@@ -58,6 +58,10 @@ Default: `false`
 
 Filter log messages which can be sent via the transport.
 
+#### `onError` {(error: Error) => void}
+
+Allow overriding http request error handler
+
 #### `requestOptions` {module:http.RequestOptions}
 
 Default: `{}`

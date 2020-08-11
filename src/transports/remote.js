@@ -14,6 +14,7 @@ function remoteTransportFactory(electronLog) {
   transport.level = false;
   transport.requestOptions = {};
   transport.url = null;
+  transport.onError = null;
   transport.transformBody = function (body) { return JSON.stringify(body) };
 
   return transport;
@@ -35,7 +36,9 @@ function remoteTransportFactory(electronLog) {
 
     var request = post(transport.url, transport.requestOptions, body);
 
-    request.on('error', function (error) {
+    request.on('error', transport.onError || onError);
+
+    function onError(error) {
       var errorMessage = {
         data: [
           'electron-log.transports.remote:'
@@ -53,7 +56,7 @@ function remoteTransportFactory(electronLog) {
       ];
 
       log.runTransports(transports, errorMessage, electronLog);
-    });
+    }
   }
 }
 

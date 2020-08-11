@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.2.3
+
+ - Add `transports.remote.onError` option
+
 ## 4.2.2
 
  - Add `transports.file.depth` option
