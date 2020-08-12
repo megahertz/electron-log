@@ -204,9 +204,9 @@ function sendIpcToRenderer(channel, message) {
   }
 
   electron.BrowserWindow.getAllWindows()
-    .map(function (wnd) { return wnd.webContents; })
-    .filter(function (wc) { return wc && !wc.isDestroyed(); })
-    .forEach(function (wc) { wc.send(channel, message); });
+    .map(function (wnd) { return wnd.webContents })
+    .filter(function (wc) { return wc && !wc.isDestroyed() })
+    .forEach(function (wc) { wc.send(channel, message) });
 }
 
 function showErrorBox(title, message) {
