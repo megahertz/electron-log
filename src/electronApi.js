@@ -204,7 +204,7 @@ function sendIpcToRenderer(channel, message) {
   }
 
   electron.BrowserWindow.getAllWindows().forEach(function (wnd) {
-    wnd.webContents && wnd.webContents.send(channel, message);
+    wnd.webContents && !wnd.webContents.isDestroyed() && wnd.webContents.send(channel, message);
   });
 }
 
