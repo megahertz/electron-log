@@ -203,10 +203,11 @@ function sendIpcToRenderer(channel, message) {
     return;
   }
 
-  electron.BrowserWindow.getAllWindows()
-    .map(function (wnd) { return wnd.webContents })
-    .filter(function (wc) { return wc && !wc.isDestroyed() })
-    .forEach(function (wc) { wc.send(channel, message) });
+  electron.BrowserWindow.getAllWindows().forEach(function (wnd) {
+    if (wnd.webContents && !wnd.webContents.isDestroyed()) {
+      wnd.webContents.send(channel, message);
+    }
+  });
 }
 
 function showErrorBox(title, message) {
