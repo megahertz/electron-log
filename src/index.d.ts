@@ -1,4 +1,5 @@
-import { RequestOptions } from "http";
+import { RequestOptions } from 'http';
+import { InspectOptions } from 'util';
 
 declare namespace ElectronLog {
   type LogLevel = 'error' | 'warn' | 'info' | 'verbose' | 'debug' |
@@ -197,6 +198,8 @@ declare namespace ElectronLog {
 
     /**
      * How deep to serialize complex objects
+     * Deprecated in favor of inspectOptions
+     * @deprecated
      */
     depth: number;
 
@@ -224,6 +227,12 @@ declare namespace ElectronLog {
      * resolvePath callback depending on a message.
      */
     getFile (message?: Partial<LogMessage>): LogFile;
+
+    /**
+     * Serialization options
+     * @link https://nodejs.org/api/util.html#util_util_inspect_object_options
+     */
+    inspectOptions: InspectOptions;
 
     /**
      * Maximum size of log file in bytes, 1048576 (1mb) by default. When a log

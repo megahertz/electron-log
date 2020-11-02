@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.3.0
+ - Add `transport.file.inspectOptions`
+ - `transport.file.depth` is deprecated
+
 ## 4.2.3
 
  - Add `transports.remote.onError` option

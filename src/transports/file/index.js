@@ -40,6 +40,7 @@ function fileTransportFactory(electronLog, customRegistry) {
     mode: 438, // 0666
     encoding: 'utf8',
   };
+  transport.inspectOptions = {};
 
   initDeprecated();
 
@@ -57,11 +58,15 @@ function fileTransportFactory(electronLog, customRegistry) {
     }
 
     var scopeOptions = electronLog.scope.getOptions();
+    var inspectOptions = Object.assign(
+      { depth: transport.depth },
+      transport.inspectOptions
+    );
     var content = transform.transform(message, [
       transform.removeStyles,
       transform.customFormatterFactory(transport.format, false, scopeOptions),
       transform.concatFirstStringElements,
-      transform.toStringFactory(transport.depth),
+      transform.toStringFactory(inspectOptions),
     ]);
 
     file.writeLine(content);

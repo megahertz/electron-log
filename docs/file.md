@@ -36,7 +36,7 @@ Callback which is called on log rotation. You can override it if you need
 custom log rotation behavior. This function should remove old file
 synchronously.
 
-#### depth {number}
+#### depth {number} **DEPRECATED**
 
 Default: `5`
 
@@ -67,6 +67,14 @@ Default: `'[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}'`
 
 Determines how to serialize log message while writing to a file.
 [Read more](format.md).
+
+
+#### `inspectOptions` {InspectOptions}
+
+Default: `{ depth: 5 }`
+
+How to serialize objects passed to log function
+https://nodejs.org/api/util.html#util_util_inspect_object_options
 
 #### `level` {LogLevel | false}
   

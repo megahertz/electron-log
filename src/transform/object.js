@@ -116,9 +116,7 @@ function toJSON(data) {
   return JSON.parse(JSON.stringify(data, createSerializer()));
 }
 
-function toStringFactory(depth) {
-  depth = depth || 5;
-
+function toStringFactory(inspectOptions) {
   return function toStringFunction(data) {
     var simplifiedData = data.map(function (item) {
       if (item === undefined) {
@@ -134,7 +132,7 @@ function toStringFactory(depth) {
     });
 
     if (util.formatWithOptions) {
-      simplifiedData.unshift({ depth: depth });
+      simplifiedData.unshift(inspectOptions || {});
       return util.formatWithOptions.apply(util, simplifiedData);
     }
 
