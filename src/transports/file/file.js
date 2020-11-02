@@ -306,6 +306,7 @@ function mkDir(dirPath) {
       return mkDir(path.dirname(dirPath)) && mkDir(dirPath);
     }
 
+    // eslint-disable-next-line no-useless-catch
     try {
       if (fs.statSync(dirPath).isDirectory()) {
         return true;

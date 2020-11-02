@@ -7,7 +7,6 @@ var FileRegistry = require('../file').FileRegistry;
 var fileTransportFactory = require('../index');
 var makeTmpDir = require('./makeTmpDir');
 
-
 describe('File transport', function () {
   var TEST_MESSAGE = createMessage('test');
   var TEST_MESSAGE_SIZE = 37 + os.EOL.length;

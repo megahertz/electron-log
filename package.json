@@ -35,15 +35,15 @@
   "bugs": "https://github.com/megahertz/electron-log/issues",
   "homepage": "https://github.com/megahertz/electron-log#readme",
   "devDependencies": {
-    "@types/node": "^13.1.8",
+    "@types/node": "^14.14.6",
     "electron": "*",
-    "eslint": "^6.6.0",
-    "eslint-config-airbnb-base": "^13.2.0",
-    "eslint-plugin-import": "^2.18.2",
-    "humile": "*",
+    "eslint": "^7.12.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "humile": "^0.2.20",
     "nw": "0.42.3",
-    "typescript": "*",
-    "webpack": "*",
-    "webpack-cli": "*"
+    "typescript": "^4.0.5",
+    "webpack": "^5.3.2",
+    "webpack-cli": "^4.1.0"
   }
 }

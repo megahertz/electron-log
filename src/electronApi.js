@@ -68,7 +68,6 @@ function getIpc() {
   return null;
 }
 
-
 function getPath(name) {
   var app = getApp();
   if (!app) return null;
