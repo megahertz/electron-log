@@ -46,13 +46,13 @@ function maxDepth(data, depth) {
   }
 
   if (depth < 1) {
-    if (data.map) return '[array]';
-    if (typeof data === 'object') return '[object]';
+    if (isArray(data)) return '[array]';
+    if (typeof data === 'object' && data) return '[object]';
 
     return data;
   }
 
-  if (typeof data.map === 'function') {
+  if (isArray(data)) {
     return data.map(function (child) {
       return maxDepth(child, depth - 1);
     });
@@ -140,4 +140,8 @@ function toStringFactory(depth) {
 
     return util.format.apply(util, simplifiedData);
   };
+}
+
+function isArray(value) {
+  return Object.prototype.toString.call(value) === '[object Array]';
 }
