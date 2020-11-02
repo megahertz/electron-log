@@ -4,7 +4,7 @@
   "description": "Just a very simple logging module for your Electron application",
   "main": "src/index.js",
   "scripts": {
-    "lint": "node src/__specs__/utils/node-check.js 10 && eslint '**/*.js' --ignore-pattern '**/dist/*.js' && tsc --noEmit",
+    "lint": "eslint '**/*.js' --ignore-pattern '**/dist/*.js' && tsc --noEmit",
     "test": "humile 'src/**/*spec.js'",
     "test:full": "npm run test && npm run lint && npm run test:e2e",
     "test:e2e": "humile 'e2e/**/*.spec.js' -R list",
