@@ -1,7 +1,7 @@
 # electron-log
 [![Build Status](https://travis-ci.org/megahertz/electron-log.svg?branch=master)](https://travis-ci.org/megahertz/electron-log)
 [![NPM version](https://badge.fury.io/js/electron-log.svg)](https://badge.fury.io/js/electron-log)
-[![Dependencies status](https://david-dm.org/megahertz/electron-log/status.svg)](https://david-dm.org/megahertz/electron-log)
+[![Dependencies status](https://img.shields.io/david/megahertz/electron-log)](https://david-dm.org/megahertz/electron-log)
 
 Just a simple logging module for your Electron or NW.js application.
 No dependencies. No complicated configuration. Just require and use.
