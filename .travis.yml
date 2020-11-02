@@ -9,7 +9,7 @@ os:
 
 matrix:
   include:
-    - node_js: "8"
+    - node_js: "6"
   allow_failures:
     - os: osx
     - os: windows
@@ -19,6 +19,10 @@ before_install: |
   if [ "${TRAVIS_OS_NAME}" = 'windows' ]; then
     npm config set script-shell 'bash'
   fi
+
+  echo ${TRAVIS_NODE_VERSION}
+
+  env
 
 script: |
   if [ "${TRAVIS_OS_NAME}" = 'linux' ]; then
