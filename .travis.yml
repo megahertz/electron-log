@@ -20,12 +20,14 @@ before_install: |
     npm config set script-shell 'bash'
   fi
 
-  echo ${TRAVIS_NODE_VERSION}
-
-  env
+  if [ "${TRAVIS_NODE_VERSION}" -lt 8 ]; then
+    npm uninstall electron
+  fi
 
 script: |
-  if [ "${TRAVIS_OS_NAME}" = 'linux' ]; then
+  if [ "${TRAVIS_NODE_VERSION}" -lt 10 ]; then
+    npm run test
+  elif [ "${TRAVIS_OS_NAME}" = 'linux' ]; then
     xvfb-run npm run test:full
   else
     npm run test:full
