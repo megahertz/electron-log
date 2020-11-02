@@ -34,10 +34,10 @@ function createWeakSet() {
   }
 
   var cache = [];
-  this.add = function (value) { cache.push(value) };
-  this.has = function (value) { return cache.indexOf(value) !== -1 };
-
-  return this;
+  return {
+    add: function (value) { cache.push(value) },
+    has: function (value) { return cache.indexOf(value) !== -1 },
+  };
 }
 
 function maxDepth(data, depth) {
