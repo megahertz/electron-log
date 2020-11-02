@@ -21,7 +21,7 @@ before_install: |
   fi
 
   if [ "${TRAVIS_NODE_VERSION}" -lt 8 ]; then
-    npm uninstall electron
+    npm r -D electron
   fi
 
 script: |
