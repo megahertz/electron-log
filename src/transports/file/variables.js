@@ -38,7 +38,7 @@ function getAppData(platform) {
 }
 
 function getHome() {
-  return os.homedir ? os.homedir() : process.env.HOME;
+  return os.homedir() ? os.homedir() : process.env.HOME;
 }
 
 function getLibraryDefaultDir(platform, appName) {
