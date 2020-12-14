@@ -69,13 +69,15 @@ function post(serverUrl, requestOptions, body) {
     port:     urlObject.port,
     path:     urlObject.path,
     method:   'POST',
-    headers:  {
-      'Content-Length': body.length,
-      'Content-Type':   'application/json',
-    },
+    headers:  {},
   };
 
   Object.assign(options, requestOptions);
+
+  options.headers['Content-Length'] = body.length;
+  if (!options.headers['Content-Type']) {
+    options.headers['Content-Type'] = 'application/json';
+  }
 
   var request = httpTransport.request(options);
   request.write(body);
