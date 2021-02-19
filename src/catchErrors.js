@@ -49,15 +49,14 @@ module.exports = function catchErrors(options) {
 
   function onRejection(reason) {
     if (reason instanceof Error) {
-      var reasonName = 'UnhandledRejection ' + reason.name;
-
-      var errPrototype = Object.getPrototypeOf(reason);
-      var nameProperty = Object.getOwnPropertyDescriptor(errPrototype, 'name');
-      if (!nameProperty || !nameProperty.writable) {
-        reason = new Error(reason.message);
+      try {
+        Object.defineProperty(reason, 'name', {
+          value: 'UnhandledRejection ' + reason.name,
+        });
+      } catch (e) {
+        // Can't redefine error name, but who cares?
       }
 
-      reason.name = reasonName;
       onError(reason);
       return;
     }
