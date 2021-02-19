@@ -118,6 +118,8 @@ function templateVariables(data, message) {
     template = template.replace('{' + i + '}', variables[i]);
   }
 
+  // Add additional space to the end of {level}] template to align messages
+  template = template.replace('{level}]', padString(message.level + ']', 6));
   template = template.replace('{level}', message.level);
 
   data[0] = template;

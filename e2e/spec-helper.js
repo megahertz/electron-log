@@ -20,7 +20,6 @@ module.exports = {
       .then(function () { return self.removeLogDir(appName) })
       .then(function () { return self.runApplication(appName, timeout) })
       .then(function () { logReader = self.readLog(appName) })
-      .then(function () { return self.removeLogDir(appName) })
       .then(function () { return logReader });
   },
 

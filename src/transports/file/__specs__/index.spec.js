@@ -9,7 +9,7 @@ var makeTmpDir = require('./makeTmpDir');
 
 describe('File transport', function () {
   var TEST_MESSAGE = createMessage('test');
-  var TEST_MESSAGE_SIZE = 37 + os.EOL.length;
+  var TEST_MESSAGE_SIZE = 38 + os.EOL.length;
 
   afterEach(function () {
     TestLogReader.removeDefaultLogDir('humile');

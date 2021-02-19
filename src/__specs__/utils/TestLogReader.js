@@ -68,7 +68,7 @@ TestLogReader.prototype.loadFile = function (filePath) {
   var items = content.split(os.EOL)
     .filter(Boolean)
     .reduce(function (result, line) {
-      var matches = line.match(/\[([\w.: -]+)] \[(\w+)] ([\s\S]*)/);
+      var matches = line.match(/\[([\w.: -]+)] \[(\w+)]  ?([\s\S]*)/);
       if (matches) {
         return result.concat({
           date: matches[1],
