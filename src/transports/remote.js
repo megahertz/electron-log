@@ -3,7 +3,6 @@
 var http = require('http');
 var https = require('https');
 var url = require('url');
-var log = require('../log');
 var transform = require('../transform');
 
 module.exports = remoteTransportFactory;
@@ -39,23 +38,21 @@ function remoteTransportFactory(electronLog) {
     request.on('error', transport.onError || onError);
 
     function onError(error) {
-      var errorMessage = {
-        data: [
-          'electron-log.transports.remote:'
-          + ' cannot send HTTP request to ' + transport.url,
-          error,
-        ],
-        date: new Date(),
-        level: 'warn',
-      };
-
-      var transports = [
-        electronLog.transports.console,
-        electronLog.transports.ipc,
-        electronLog.transports.file,
-      ];
-
-      log.runTransports(transports, errorMessage, electronLog);
+      electronLog.logMessageWithTransports(
+        {
+          data: [
+            'electron-log.transports.remote:'
+            + ' cannot send HTTP request to ' + transport.url,
+            error,
+          ],
+          level: 'warn',
+        },
+        [
+          electronLog.transports.console,
+          electronLog.transports.ipc,
+          electronLog.transports.file,
+        ]
+      );
     }
   }
 }

@@ -66,7 +66,18 @@ function create(logId) {
   instance.log = log.log.bind(null, instance, { level: 'info' });
   instance.functions.log = instance.log;
 
-  instance.logMessageWithTransports = function (message, transports) {
+  instance.logMessageWithTransports = function logMessageWithTransports(
+    message,
+    transports
+  ) {
+    if (message.date === undefined) {
+      message.date = new Date();
+    }
+
+    if (message.variables === undefined) {
+      message.variables = instance.variables;
+    }
+
     return log.runTransports(transports, message, instance);
   };
 
