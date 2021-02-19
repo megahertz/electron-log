@@ -77,11 +77,14 @@ The file transport writes log messages to a file.
 
 ##### Options
 
- - **fileName**, default 'main.log', 'renderer.log' or 'worker.log'
  - **[format](docs/format.md)**, default
    `'[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}'`
  - **level**, default 'silly'
- - **maxSize** of log file in bytes, 1048576 (1mb) by default.
+ - **resolvePath** function sets the log path, for example
+ 
+```js
+log.transports.file.resolvePath = () => path.join(APP_DATA, 'logs/main.log');
+```
 
 [Read more about file transport](docs/file.md).
 

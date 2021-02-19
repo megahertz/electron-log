@@ -99,8 +99,10 @@ function resolvePath(variables) {
 }
 ```
 
-Allows to set a custom path for a log file. It should only return file path.
-Directory hierarchy will be created automatically if necessary.
+Allows to set a custom path for a log file. Directory hierarchy will be created
+automatically if necessary.
+
+That's just an option, so it's not recommended calling it directly.
 
 The variables argument is just an object of 
 [PathVariables type](../src/index.d.ts#L69), which contains several
@@ -108,11 +110,11 @@ predefined values. Feel free to choose the most suitable for your application.
   
 Electron has built-in method to get logs path `app.getPath('logs')`. But it
 seems not stable in the current version. There is a chance that default path on
-some platforms might be changed later. But if you would like to use default
+some platforms might be changed later. However, if you would like to use default
 Electron path, just use the following resolver:
 
 ```js
-function resolvePath(variables) {
+log.transports.file.resolvePath = (variables) => {
   return path.join(variables.electronDefaultDir, variables.fileName);
 }
 ```
