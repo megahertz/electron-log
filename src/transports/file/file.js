@@ -57,6 +57,12 @@ function File(filePath, writeOptions, writeAsync) {
   this.asyncWriteQueue = [];
 
   /**
+   * @type {boolean}
+   * @private
+   */
+  this.hasActiveAsyncWritting = false;
+
+  /**
    * @type {WriteOptions}
    * @private
    */
@@ -179,13 +185,16 @@ File.prototype.increaseBytesWrittenCounter = function (text) {
 File.prototype.nextAsyncWrite = function () {
   var file = this;
 
-  if (this.asyncWriteQueue.length < 1) {
+  if (this.hasActiveAsyncWritting || this.asyncWriteQueue.length < 1) {
     return;
   }
 
   var text = this.asyncWriteQueue.shift();
+  this.hasActiveAsyncWritting = true;
 
   fs.writeFile(this.path, text, this.writeOptions, function (e) {
+    file.hasActiveAsyncWritting = false;
+
     if (e) {
       file.emit(
         'error',
