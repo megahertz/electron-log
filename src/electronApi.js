@@ -120,11 +120,18 @@ function getMacOsVersion() {
 }
 
 function isDev() {
-  // based on sindresorhus/electron-is-dev
   var app = getApp();
-  if (!app) return false;
 
-  return !app.isPackaged || process.env.ELECTRON_IS_DEV === '1';
+  if (app && app.isPackaged !== undefined) {
+    return app.isPackaged;
+  }
+
+  if (typeof process.execPath === 'string') {
+    return process.execPath.toLowerCase().endsWith('electron');
+  }
+
+  return process.env.NODE_ENV === 'development'
+    || process.env.ELECTRON_IS_DEV === '1';
 }
 
 function isElectron() {
