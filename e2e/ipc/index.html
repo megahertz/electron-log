@@ -12,8 +12,6 @@
   var log = require('../..');
   var electronApi = require('../../src/electronApi');
 
-  var proc = electron.remote.process;
-
   log.transports.ipc.level = 'silly';
   log.transports.file.level = false;
 
@@ -37,8 +35,8 @@
   var callCount = 0;
   function increaseIpcCallCount() {
     callCount++;
-    if (callCount >= 3 && proc.argv.indexOf('--test') > -1) {
-      setTimeout(function () { proc.exit() }, 100);
+    if (callCount >= 3 && window.location.href.includes('test=true')) {
+      window.close();
     }
   }
 </script>

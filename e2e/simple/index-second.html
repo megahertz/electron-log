@@ -8,15 +8,12 @@
 <body>
 
 <script>
-  var electron = require('electron');
-  var log      = require('../..');
-  var proc     = electron.remote.process;
+  var log = require('../..');
 
   log.transports.file.fileName = 'second.log';
   log.warn('log from the second renderer process');
-  if (proc.argv.indexOf('--test') > -1) {
-    setTimeout(function () { proc.exit() }, 50);
-  }
+
+  setTimeout(function () { window.close() }, 50);
 </script>
 
 </body>

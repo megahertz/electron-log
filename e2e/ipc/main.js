@@ -1,25 +1,22 @@
 'use strict';
 
-var path = require('path');
 var electron = require('electron');
-var app = electron.app;
-var BrowserWindow = electron.BrowserWindow;
+var path = require('path');
 var log = require('../..');
 var electronApi = require('../../src/electronApi');
 
-var win;
-
 function createWindow() {
-  win = new BrowserWindow({
+  var win = new electron.BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      enableRemoteModule: true,
+      contextIsolation: false,
       nodeIntegration: true,
     },
   });
-  win.loadURL('file://' + path.join(__dirname, 'index.html'));
-  win.on('closed', function () { win = null });
+
+  var test = process.argv.includes('--test') ? 'true' : 'false';
+  win.loadURL('file://' + path.join(__dirname, 'index.html?test=' + test));
 
   log.transports.ipc.level = 'silly';
   log.transports.file.level = false;
@@ -41,16 +38,6 @@ function createWindow() {
   });
 }
 
-app.on('ready', createWindow);
-
-app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
-app.on('activate', function () {
-  if (!win) {
-    createWindow();
-  }
-});
+electron.app
+  .on('ready', createWindow)
+  .on('window-all-closed', function () { electron.app.quit() });
