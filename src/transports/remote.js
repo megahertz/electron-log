@@ -33,7 +33,11 @@ function remoteTransportFactory(electronLog) {
       variables: message.variables,
     });
 
-    var request = post(transport.url, transport.requestOptions, body);
+    var request = post(
+      transport.url,
+      transport.requestOptions,
+      Buffer.from(body, 'utf8')
+    );
 
     request.on('error', transport.onError || onError);
 
