@@ -123,7 +123,7 @@ function isDev() {
   var app = getApp();
 
   if (app && app.isPackaged !== undefined) {
-    return app.isPackaged;
+    return !app.isPackaged;
   }
 
   if (typeof process.execPath === 'string') {
