@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.4.0 
+ - Disable auto-loading of electron-log in the main process for using by ipc
+   transport
+
 ## 4.3.0
  - Add `transport.file.inspectOptions`
  - `transport.file.depth` is deprecated

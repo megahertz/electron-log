@@ -93,6 +93,9 @@ When logging inside renderer process, it also shows log in application
 console and vice versa. This transport can impact on performance, so
 it's disabled by default for packaged application.
 
+If you don't use electron-log in the main process but want to show renderer
+logs in the console, add `require('electron-log')` somewhere in the main code.
+
 ##### Options
 
  - **level**, default 'silly'

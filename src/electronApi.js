@@ -79,14 +79,6 @@ function getPath(name) {
   }
 }
 
-function getRemote() {
-  if (electron && electron.remote) {
-    return electron.remote;
-  }
-
-  return null;
-}
-
 function getVersion() {
   var app = getApp();
   if (!app) return null;
@@ -164,11 +156,8 @@ function loadRemoteModule(moduleName) {
       }
     });
   } else if (process.type === 'renderer') {
-    try {
-      getRemote().require(moduleName);
-    } catch (e) {
-      // Can't be required. Webpack?
-    }
+    // Previously, it was electron.remote.require(moduleName)
+    // but now the remote module is deprecated
   }
 }
 
