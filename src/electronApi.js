@@ -4,6 +4,7 @@
  * Split Electron API from the main code
  */
 
+var path = require('path');
 var electron;
 try {
   // eslint-disable-next-line global-require
@@ -119,7 +120,8 @@ function isDev() {
   }
 
   if (typeof process.execPath === 'string') {
-    return process.execPath.toLowerCase().endsWith('electron');
+    var execFileName = path.basename(process.execPath).toLowerCase();
+    return execFileName.startsWith('electron');
   }
 
   return process.env.NODE_ENV === 'development'
