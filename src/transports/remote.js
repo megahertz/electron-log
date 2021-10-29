@@ -75,7 +75,7 @@ function post(serverUrl, requestOptions, body) {
 
   Object.assign(options, requestOptions);
 
-  options.headers['Content-Length'] = body.length;
+  options.headers['Content-Length'] = new Blob([body]).size;
   if (!options.headers['Content-Type']) {
     options.headers['Content-Type'] = 'application/json';
   }
