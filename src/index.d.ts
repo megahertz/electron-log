@@ -42,7 +42,7 @@ declare namespace ElectronLog {
     /**
      * Message scope label
      */
-    scope?: { label: 'string' };
+    scope?: { label: string };
 
     /**
      * Variables used by formatter
