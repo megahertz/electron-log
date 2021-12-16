@@ -32,7 +32,7 @@ module.exports = function catchErrors(options) {
         }
       }
 
-      options.log(e);
+      options.log('Unhandled Exception', e);
 
       if (options.showDialog && e.name.indexOf('UnhandledRejection') < 0) {
         var type = process.type || 'main';
