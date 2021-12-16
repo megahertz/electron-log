@@ -23,7 +23,7 @@ describe('catchErrors', function () {
 
     Promise.reject(new Error('test-error'));
 
-    function log(e) {
+    function log(_, e) {
       expect(e.message).toBe('test-error');
       done();
     }

@@ -17,16 +17,16 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            node_version: 14
+            node_version: 16
             experimental: false
           - os: ubuntu-latest
-            node_version: 8
+            node_version: 10
             experimental: false
           - os: macos-latest
-            node_version: 14
+            node_version: 16
             experimental: true
           - os: windows-latest
-            node_version: 14
+            node_version: 16
             experimental: true
 
     runs-on: ${{ matrix.os }}
