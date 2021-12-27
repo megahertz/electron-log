@@ -13,7 +13,11 @@
   log.transports.ipc.level = 'silly';
   log.warn('log from a renderer process');
 
-  window.open('file://' + __dirname + '/index-second.html');
+  window.open(
+    'file://' + __dirname + '/index-second.html',
+    '_blank',
+    'contextIsolation=no,nodeIntegration=yes'
+  );
 </script>
 
 </body>
