@@ -9,7 +9,12 @@ module.exports = {
   toStringFactory: toStringFactory,
 };
 
-function createSerializer() {
+/**
+ * @param {object} options?
+ * @param {boolean} options.serializeMapAndSet?
+ * @return {function}
+ */
+function createSerializer(options) {
   var seen = createWeakSet();
 
   return function (key, value) {
@@ -21,7 +26,7 @@ function createSerializer() {
       seen.add(value);
     }
 
-    return serialize(key, value);
+    return serialize(key, value, options);
   };
 }
 
@@ -92,7 +97,15 @@ function maxDepthFactory(depth) {
   };
 }
 
-function serialize(key, value) {
+/**
+ * @param {string} key
+ * @param {any} value
+ * @param {object} options?
+ * @return {any}
+ */
+function serialize(key, value, options) {
+  var serializeMapAndSet = !options || options.serializeMapAndSet !== false;
+
   if (value instanceof Error) {
     return value.stack;
   }
@@ -107,6 +120,14 @@ function serialize(key, value) {
 
   if (typeof value === 'function') {
     return '[function] ' + value.toString();
+  }
+
+  if (serializeMapAndSet && value instanceof Map && Object.fromEntries) {
+    return Object.fromEntries(value);
+  }
+
+  if (serializeMapAndSet && value instanceof Set && Array.from) {
+    return Array.from(value);
   }
 
   return value;

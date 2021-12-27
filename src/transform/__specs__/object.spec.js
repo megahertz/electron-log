@@ -31,6 +31,14 @@ describe('transform/object', function () {
       expect(object.serialize(null, function () { return 1 }))
         .toEqual('[function] function () { return 1 }');
     });
+
+    it('should serialize set', function () {
+      expect(object.serialize(null, new Set([1]))).toEqual([1]);
+    });
+
+    it('should serialize map', function () {
+      expect(object.serialize(null, new Map([['a', 1]]))).toEqual({ a: 1 });
+    });
   });
 
   describe('toJson', function () {
@@ -49,6 +57,11 @@ describe('transform/object', function () {
       delete error.stack;
 
       expect(function () { object.toStringFactory()([error]) }).not.toThrow();
+    });
+
+    it('should convert a set to a string representation', function () {
+      var set = new Set([1]);
+      expect(object.toStringFactory()([set])).toEqual('[ 1 ]');
     });
   });
 });
