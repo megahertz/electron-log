@@ -37,7 +37,9 @@ describe('transform/object', function () {
     });
 
     it('should serialize map', function () {
-      expect(object.serialize(null, new Map([['a', 1]]))).toEqual({ a: 1 });
+      if (Object.fromEntries) {
+        expect(object.serialize(null, new Map([['a', 1]]))).toEqual({ a: 1 });
+      }
     });
   });
 
