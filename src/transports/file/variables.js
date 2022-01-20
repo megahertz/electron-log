@@ -79,6 +79,11 @@ function getNameAndVersion() {
     version = packageValues.version;
   }
 
+  if (!name) {
+    // Fallback, otherwise file transport can't be initialized
+    name = 'Electron';
+  }
+
   return { name: name, version: version };
 }
 

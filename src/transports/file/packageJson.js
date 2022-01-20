@@ -15,6 +15,7 @@ module.exports = {
  */
 function readPackageJson() {
   return tryReadJsonAt(require.main && require.main.filename)
+    || tryReadJsonAt(extractPathFromArgs())
     || tryReadJsonAt(process.resourcesPath, 'app.asar')
     || tryReadJsonAt(process.resourcesPath, 'app')
     || tryReadJsonAt(process.cwd())
@@ -26,6 +27,10 @@ function readPackageJson() {
  * @return {{ name?: string, version?: string } | null}
  */
 function tryReadJsonAt(searchPath) {
+  if (!searchPath) {
+    return null;
+  }
+
   try {
     searchPath = path.join.apply(path, arguments);
     var fileName = findUp('package.json', searchPath);
@@ -73,4 +78,21 @@ function findUp(fileName, cwd) {
 
     currentPath = dir;
   }
+}
+
+/**
+ * Get app path from --user-data-dir cmd arg, passed to a renderer process
+ * @return {string|null}
+ */
+function extractPathFromArgs() {
+  var matchedArgs = process.argv.filter(function (arg) {
+    return arg.indexOf('--user-data-dir=') === 0;
+  });
+
+  if (matchedArgs.length === 0 || typeof matchedArgs[0] !== 'string') {
+    return null;
+  }
+
+  var userDataDir = matchedArgs[0];
+  return userDataDir.replace('--user-data-dir=', '');
 }
