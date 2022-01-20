@@ -144,12 +144,14 @@ function toStringFactory(inspectOptions) {
         return undefined;
       }
 
-      var str = JSON.stringify(item, createSerializer(), '  ');
-      if (str === undefined) {
-        return undefined;
+      try {
+        var str = JSON.stringify(item, createSerializer(), '  ');
+        return str === undefined ? undefined : JSON.parse(str);
+      } catch (e) {
+        // There are some rare cases when an item can't be simplified.
+        // In that case, it's fine to pass it to util.format directly.
+        return item;
       }
-
-      return JSON.parse(str);
     });
 
     if (util.formatWithOptions) {
