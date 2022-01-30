@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple test project</title>
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';">
+</head>
+<body>
+
+<script>
+  log.warn('log from a renderer process');
+
+  if (window.location.href.includes('test=true')) {
+    setTimeout(function () { window.close() }, 50);
+  }
+
+</script>
+
+</body>
+</html>
