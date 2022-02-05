@@ -16,8 +16,8 @@
   "typings": "src/index.d.ts",
   "repository": "megahertz/electron-log",
   "files": [
-    "src/*",
-    "!__specs__"
+    "!**/__specs__",
+    "src/*"
   ],
   "keywords": [
     "electron",
