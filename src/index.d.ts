@@ -188,7 +188,7 @@ declare namespace ElectronLog {
      * custom log rotation behavior. This function should remove old file
      * synchronously
      */
-    archiveLog: (oldLogPath: string) => void;
+    archiveLog: (oldLogFile: LogFile) => void;
 
     /**
      * How many bytes were written since transport initialization
