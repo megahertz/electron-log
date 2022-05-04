@@ -4,6 +4,7 @@ var EventEmitter = require('events');
 var fs = require('fs');
 var os = require('os');
 var path = require('path');
+var url = require('url');
 var util = require('util');
 
 module.exports = {
@@ -302,7 +303,8 @@ FileRegistry.prototype.testFileWriting = function (filePath) {
 };
 
 function mkDir(dirPath) {
-  if (checkNodeJsVersion(10.12)) {
+  var isNode1012 = Boolean(url.fileURLToPath);
+  if (isNode1012) {
     fs.mkdirSync(dirPath, { recursive: true });
     return true;
   }
@@ -327,18 +329,6 @@ function mkDir(dirPath) {
       throw e;
     }
   }
-}
-
-function checkNodeJsVersion(version) {
-  if (!process.versions) {
-    return false;
-  }
-
-  var nodeVersion = Number(
-    process.version.match(/^v(\d+\.\d+)/)[1].replace(/\.(\d)$/, '.0$1')
-  );
-
-  return nodeVersion >= version;
 }
 
 function readFileSyncFromEnd(filePath, bytesCount) {
