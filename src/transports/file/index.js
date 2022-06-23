@@ -121,6 +121,9 @@ function fileTransportFactory(electronLog, customRegistry) {
     var logsPath = path.dirname(transport.resolvePath(vars));
 
     return fs.readdirSync(logsPath)
+      .filter(function (fileName) {
+        return fileName.endsWith('.log');
+      })
       .map(function (fileName) {
         var logPath = path.join(logsPath, fileName);
         try {
