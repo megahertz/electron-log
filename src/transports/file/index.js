@@ -114,18 +114,18 @@ function fileTransportFactory(electronLog, customRegistry) {
     return path.join(vars.libraryDefaultDir, vars.fileName);
   }
 
-  function readAllLogs() {
+  function readAllLogs(options) {
+    var fileFilter = (options && typeof options.fileFilter === 'function')
+      || function (fileName) { return fileName.endsWith('.log') };
     var vars = Object.assign({}, pathVariables, {
       fileName: transport.fileName,
     });
     var logsPath = path.dirname(transport.resolvePath(vars));
 
     return fs.readdirSync(logsPath)
-      .filter(function (fileName) {
-        return fileName.endsWith('.log');
-      })
-      .map(function (fileName) {
-        var logPath = path.join(logsPath, fileName);
+      .map(function (fileName) { return path.join(logsPath, fileName) })
+      .filter(fileFilter)
+      .map(function (logPath) {
         try {
           return {
             path: logPath,
