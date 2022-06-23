@@ -244,7 +244,9 @@ declare namespace ElectronLog {
     /**
      * Reads content of all log files
      */
-    readAllLogs(): Array<{ path: string, lines: string[] }>;
+    readAllLogs(
+        options?: { fileFilter?: (logPath: string) => boolean }
+    ): Array<{ path: string, lines: string[] }>;
 
     /**
      * Allow to change log file path dynamically

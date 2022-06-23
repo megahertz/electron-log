@@ -115,8 +115,10 @@ function fileTransportFactory(electronLog, customRegistry) {
   }
 
   function readAllLogs(options) {
-    var fileFilter = (options && typeof options.fileFilter === 'function')
-      || function (fileName) { return fileName.endsWith('.log') };
+    var fileFilter = options && typeof options.fileFilter === 'function'
+      ? options.fileFilter
+      : function (fileName) { return fileName.endsWith('.log') };
+
     var vars = Object.assign({}, pathVariables, {
       fileName: transport.fileName,
     });
