@@ -68,7 +68,7 @@ module.exports = function catchErrors(options) {
 
   function onRendererError(event) {
     event.preventDefault();
-    onError(event.error);
+    onError(event.error || new Error(event.message));
   }
 
   function onRendererRejection(event) {
