@@ -4,16 +4,17 @@
 
 var transform = require('../transform');
 
-var consoleMethods = {
-  context: console,
-  error:   console.error,
-  warn:    console.warn,
-  info:    console.info,
-  verbose: console.verbose,
-  debug:   console.debug,
-  silly:   console.silly,
-  log:     console.log,
-};
+function getConsoleMethod(level) {
+   return {
+        error: console.error,
+        warn: console.warn,
+        info: console.info,
+        verbose: console.verbose,
+        debug: console.debug,
+        silly: console.silly,
+        log: console.log,
+   }[level];
+}
 
 module.exports = consoleTransportFactory;
 module.exports.transformRenderer = transformRenderer;
@@ -87,17 +88,17 @@ function canUseStyles(useStyleValue, level) {
 }
 
 function consoleLog(level, args) {
-  var consoleMethod = consoleMethods[level] || consoleMethods.info;
+  var consoleMethod = getConsoleMethod(level) || console.info;
 
   if (process.type === 'renderer') {
     setTimeout(consoleMethod.bind.apply(
       consoleMethod,
-      [consoleMethod.context].concat(args)
+      [console].concat(args)
     ));
     return;
   }
 
-  consoleMethod.apply(consoleMethods.context, args);
+  consoleMethod.apply(console, args);
 }
 
 function levelToStyle(level) {
