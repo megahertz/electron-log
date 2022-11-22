@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>E2E Test</title>
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';">
+</head>
+<body>
+
+<script>
+  const log = require('../..');
+  log.info('log from the renderer process');
+
+  if (log.transports.file) {
+    log.error(new Error('Should load renderer code'));
+  }
+
+  if (window.location.href.includes('test=true')) {
+    setTimeout(() => window.close(), 50);
+  }
+</script>
+
+</body>
+</html>

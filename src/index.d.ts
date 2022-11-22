@@ -1,27 +1,33 @@
 import { RequestOptions } from 'http';
 import { InspectOptions } from 'util';
 
-declare namespace ElectronLog {
+declare namespace Logger {
   type LogLevel = 'error' | 'warn' | 'info' | 'verbose' | 'debug' |
     'silly';
   type LevelOption = LogLevel | false;
-  type Levels = Array<LogLevel | string> & {
-    add(name: string, index?: number): void
-  };
 
-  type Format = (message: LogMessage, transformedData?: any[]) => any[] | string;
+  type Format = (({ message: LogMessage }) => any[]) | string;
 
-  type FopenFlags = 'r' | 'r+' | 'rs+' | 'w' | 'wx' | 'w+' | 'wx+' |
+  type FOpenFlags = 'r' | 'r+' | 'rs+' | 'w' | 'wx' | 'w+' | 'wx+' |
     'a' | 'ax' | 'a+' | 'ax+';
 
   type Hook = (
     message: LogMessage,
-    selectedTransport?: Transport,
+    transport?: Transport,
+    transportName?: string,
   ) => LogMessage | false;
 
   interface Variables {
+    processType: string;
     [name: string]: any;
   }
+
+  type TransformFn = (options: {
+    data: any[],
+    message: LogMessage,
+    transport: Transport,
+    logger: Logger
+  }) => any[];
 
   interface LogMessage {
     /**
@@ -40,9 +46,14 @@ declare namespace ElectronLog {
     level: LogLevel;
 
     /**
+     * Id of Logger instance
+     */
+    logId?: string;
+
+    /**
      * Message scope label
      */
-    scope?: { label: string };
+    scope?: string;
 
     /**
      * Variables used by formatter
@@ -57,6 +68,8 @@ declare namespace ElectronLog {
      * Messages with level lower than will be dropped
      */
     level: LevelOption;
+
+    transforms: TransformFn[];
   }
 
   interface ConsoleTransport extends Transport {
@@ -69,6 +82,11 @@ declare namespace ElectronLog {
      * Use styles even if TTY isn't attached
      */
     useStyles: boolean;
+
+    /**
+     * Override message printing
+     */
+    writeFn(options: { message: LogMessage }): void;
   }
 
   interface PathVariables {
@@ -133,7 +151,7 @@ declare namespace ElectronLog {
     /**
      * Default 'a'
      */
-    flag?: FopenFlags;
+    flag?: FOpenFlags;
 
     /**
      * Default 0666
@@ -165,36 +183,27 @@ declare namespace ElectronLog {
     /**
      * Clear the log file
      */
-    clear (): boolean;
+    clear(): boolean;
 
     /**
      * Emitted when there was some error while saving log file
      */
-    on (event: 'error', listener: (error: Error, file: this) => void): this;
+    on(event: 'error', listener: (error: Error, file: this) => void): this;
   }
 
   interface FileTransport extends Transport {
     /**
-     * Determines a location of log file, something like
-     * ~/.config/<app name>/log.log depending on OS. By default electron-log
-     * reads this value from name or productName value in package.json. In most
-     * cases you should keep a default value
+     * Deprecated alias of archiveLogFn
      * @deprecated
      */
-    appName?: string;
+    archiveLog: (oldLogFile: LogFile) => void;
 
     /**
      * Function which is called on log rotation. You can override it if you need
      * custom log rotation behavior. This function should remove old file
      * synchronously
      */
-    archiveLog: (oldLogFile: LogFile) => void;
-
-    /**
-     * How many bytes were written since transport initialization
-     * @deprecated
-     */
-    bytesWritten: number;
+    archiveLogFn: (oldLogFile: LogFile) => void;
 
     /**
      * How deep to serialize complex objects
@@ -202,14 +211,6 @@ declare namespace ElectronLog {
      * @deprecated
      */
     depth: number;
-
-    /**
-     * The full log file path. I can recommend to change this value only if
-     * you strongly understand what are you doing. If set, appName and fileName
-     * options are ignored
-     * @deprecated
-     */
-    file?: string;
 
     /**
      * Filename without path, main.log (or renderer.log) by default
@@ -249,9 +250,15 @@ declare namespace ElectronLog {
     ): Array<{ path: string, lines: string[] }>;
 
     /**
-     * Allow to change log file path dynamically
+     * Alias for resolvePathFn
+     * @deprecated
      */
     resolvePath: (variables: PathVariables, message?: LogMessage) => string;
+
+    /**
+     * Allow to change log file path dynamically
+     */
+    resolvePathFn: (variables: PathVariables, message?: LogMessage) => string;
 
     /**
      * Whether to write a log file synchronously. Default to true
@@ -262,25 +269,6 @@ declare namespace ElectronLog {
      * Options used when writing a file
      */
     writeOptions?: WriteOptions;
-
-    /**
-     * Clear the current log file
-     * @deprecated
-     */
-    clear (): void;
-
-    /**
-     * Return full path of the current log file
-     * @deprecated
-     */
-    findLogPath (appName?: string, fileName?: string): string;
-
-    /**
-     * In most cases, you don't need to call it manually. Try to call only if
-     * you change appName, file or fileName property, but it has no effect.
-     * @deprecated
-     */
-    init (): void;
   }
 
   interface RemoteTransport extends Transport {
@@ -303,7 +291,9 @@ declare namespace ElectronLog {
     /**
      * Callback which transforms request body to string
      */
-    transformBody?: (data: LogMessage & { client: object }) => string;
+    makeBodyFn: (
+      options: { logger: Logger, message: LogMessage, transport: Transport }
+    ) => string;
 
     /**
      * Server URL
@@ -323,11 +313,9 @@ declare namespace ElectronLog {
     file: FileTransport;
 
     /**
-     * When logging inside renderer process, it shows log in application
-     * console too and vice versa. This transport can impact on performance,
-     * so it's disabled by default for packaged application.
+     * Display main process logs in the renderer dev tools console
      */
-    ipc: Transport | null;
+    ipc: Transport;
 
     /**
      * Sends a JSON POST request with LogMessage in the body to the specified url
@@ -341,8 +329,8 @@ declare namespace ElectronLog {
     (label: string): LogFunctions;
 
     /**
-     * Label for log message without scope. False value disables padding
-     * when labelPadding is enabled.
+     * Label for log message without scope. If set to false and scope isn't
+     * set, no padding is used
      */
     defaultLabel: string | false;
 
@@ -365,31 +353,6 @@ declare namespace ElectronLog {
     milestone: string;
     projects: string;
     template: string;
-  }
-
-  interface CatchErrorsOptions {
-    /**
-     * Default true for the main process. Set it to false to prevent showing a
-     * default electron error dialog
-     */
-    showDialog?: boolean;
-
-    /**
-     * Attach a custom error handler. If the handler returns false, this error
-     * will not be processed
-     */
-    onError?(
-      error: Error,
-      versions?: { app: string; electron: string; os: string },
-      submitIssue?: (url: string, data: ReportData | any) => void,
-    ): void;
-  }
-
-  interface CatchErrorsResult {
-    /**
-     * Stop catching errors
-     */
-    stop (): void;
   }
 
   interface LogFunctions {
@@ -429,16 +392,46 @@ declare namespace ElectronLog {
     log (...params: any[]): void;
   }
 
-  interface ElectronLog extends LogFunctions {
+  interface ErrorHandlerOptions {
+    /**
+     * If true, error handler is initialized for all renderer processes too
+     */
+    includeRenderer: boolean;
+
+    /**
+     * Default true for the main process. Set it to false to prevent showing a
+     * default electron error dialog
+     */
+    showDialog?: boolean;
+
+    /**
+     * Attach a custom error handler. If the handler returns false, this error
+     * will not be processed
+     */
+    onError?(
+        error: Error,
+        versions?: { app: string; electron: string; os: string },
+        submitIssue?: (url: string, data: ReportData | any) => void,
+    ): void;
+  }
+
+  interface ErrorHandler {
+    handle(error: Error, options: ErrorHandlerOptions): void;
+    setOptions(options: Partial<ErrorHandlerOptions>): void;
+    startCatching(options?: ErrorHandlerOptions): void;
+    stopCatching(): void;
+  }
+
+  interface Logger extends LogFunctions {
+    /**
+     * Error handling helper
+     */
+    errorHandler: ErrorHandler;
+
     /**
      * Object contained only log functions
      */
     functions: LogFunctions;
-
-    /**
-     * Transport instances
-     */
-    transports: Transports;
 
     /**
      * Array with all attached hooks
@@ -448,22 +441,7 @@ declare namespace ElectronLog {
     /**
      * Array with all available levels
      */
-    levels: Levels;
-
-    /**
-     * Variables used by formatters
-     */
-    variables: Variables;
-
-    /**
-     * Catch and log unhandled errors/rejected promises
-     */
-    catchErrors (options?: CatchErrorsOptions): CatchErrorsResult;
-
-    /**
-     * Create a new electron-log instance
-     */
-    create(logId: string): ElectronLog.ElectronLog;
+    levels: string[];
 
     /**
      * Create a new scope
@@ -471,14 +449,47 @@ declare namespace ElectronLog {
     scope: Scope;
 
     /**
+     * Transport instances
+     */
+    transports: Transports;
+
+    /**
+     * Variables used by formatters
+     */
+    variables: Variables;
+
+    /**
+     * Add a custom log level
+     */
+    addLevel(level: string, index?: number): void;
+
+    /**
+     * Catch and log unhandled errors/rejected promises
+     * @deprecated
+     */
+    catchErrors (options?: ErrorHandlerOptions): ErrorHandler;
+
+    /**
+     * Create a new electron-log instance
+     */
+    create(logId: string): Logger.Logger;
+
+    initialize(
+      options: { preload: string | boolean, spyRendererConsole: boolean },
+    ): void;
+
+    /**
      * Low level method which logs the message using specified transports
      */
-    logMessageWithTransports(message: LogMessage, transports: Transport[]): void;
+    processMessage(
+      message: LogMessage,
+      transports: Transport[] | string[],
+    ): void;
   }
 }
 
 // Merge namespace with interface
-declare const ElectronLog: ElectronLog.ElectronLog & {
-  default: ElectronLog.ElectronLog;
+declare const Logger: Logger.Logger & {
+  default: Logger.Logger;
 }
-export = ElectronLog;
+export = Logger;

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Multiple renderers test project</title>
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';">
+</head>
+<body>
+
+<script>
+  electronLog.warn('log from the first renderer process');
+
+  const url = new URL(window.location.href);
+
+  const query = url.searchParams.get('test') === 'true' ? 'test=true' : '';
+  const dirname = url.searchParams.get('dirname');
+
+  const wnd = window.open(`file://${dirname}/index-second.html?${query}`);
+  setInterval(() => wnd.closed && window.close(), 1000)
+</script>
+
+</body>
+</html>

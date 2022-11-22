@@ -1,15 +1,15 @@
 'use strict';
 
-var fs = require('fs');
-var os = require('os');
-var path = require('path');
-var rmDir = require('../../../__specs__/utils/fsHelpers').rmDir;
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const { rmDir } = require('../../../__specs__/utils/fsHelpers');
 
 module.exports = makeTmpDir;
 
 function makeTmpDir(createFolderOnInit) {
   createFolderOnInit = createFolderOnInit === undefined || createFolderOnInit;
-  var dirPath = path.join(os.tmpdir(), 'electron-log-tests');
+  const dirPath = path.join(os.tmpdir(), 'electron-log-tests');
 
   if (createFolderOnInit) {
     fs.mkdirSync(dirPath, { recursive: true });
@@ -17,7 +17,7 @@ function makeTmpDir(createFolderOnInit) {
 
   return {
     path: dirPath,
-    remove: function () {
+    remove() {
       rmDir(this.path);
     },
   };

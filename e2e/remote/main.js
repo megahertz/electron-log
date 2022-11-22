@@ -1,40 +1,28 @@
 'use strict';
 
-var log = require('../..');
-var startServer = require('./server');
-
-var IS_TEST = process.argv.indexOf('--test') !== -1;
+const log = require('../..');
+const startServer = require('./server');
 
 log.transports.remote.url = 'http://localhost:7777/remote-log';
 log.transports.remote.level = 'verbose';
 log.transports.file.level = false;
-// log.transports.console.level = false;
 
-function main() {
-  return startServer(7777)
-    .then(function (server) {
-      log.info('Remote logging');
-      return server.waitForRequest();
-    })
-    .then(function (server) {
-      log.info('🐛🐛 UTF8 🐛🐛');
-      return server.waitForRequest();
-    })
-    .then(function (server) {
-      if (IS_TEST) {
-        return server.close();
-      }
+async function main() {
+  const server = await startServer(7777);
 
-      return server;
-    })
-    .then(function () {
-      if (IS_TEST) {
-        process.exit(0);
-      }
-    });
+  log.info('Remote logging');
+  await server.waitForRequest();
+
+  log.info('🐛🐛 UTF8 🐛🐛');
+  await server.waitForRequest();
+
+  if (process.argv.indexOf('--test') !== -1) {
+    await server.close();
+    process.exit(0);
+  }
 }
 
-main().catch(function (e) {
+main().catch((e) => {
   // eslint-disable-next-line no-console
   console.error(e);
   process.exit(1);

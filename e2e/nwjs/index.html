@@ -6,12 +6,13 @@
 </head>
 <body>
 <script>
-  var log = require('../..');
-  var App = require('nw.gui').App;
-  log.warn('Log from nw.js');
+  const { App } = require('nw.gui');
+  const log = require('../..');
+
+  log.warn('log from nw.js');
 
   if (App.argv.indexOf('--test') !== -1) {
-    setTimeout(function () { App.quit(); }, 50);
+    setTimeout(() => App.quit(), 50);
   }
 </script>
 </body>

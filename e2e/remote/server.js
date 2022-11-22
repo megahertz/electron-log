@@ -1,21 +1,21 @@
 'use strict';
 
-var http = require('http');
-var log = require('../..');
+const http = require('http');
+const log = require('../..');
 
 module.exports = startServer;
 
-var logger = log.create('server');
+const logger = log.create('server');
 logger.transports.file.fileName = 'server.log';
 
-function startServer(port) {
-  var onSuccessRequest;
-  var onFailureRequest;
+async function startServer(port) {
+  let onSuccessRequest;
+  let onFailureRequest;
 
-  return new Promise(function (resolve, reject) {
-    var server = http.createServer(function (req, res) {
+  return new Promise((resolve, reject) => {
+    const server = http.createServer((req, res) => {
       readPostData(req)
-        .then(function (data) {
+        .then((data) => {
           logger.info('Request:', data.data[0]);
 
           res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -25,7 +25,7 @@ function startServer(port) {
             onSuccessRequest(makeServerInterface());
           }
         })
-        .catch(function (e) {
+        .catch((e) => {
           res.writeHead(500, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ ok: false, error: e }));
 
@@ -35,7 +35,7 @@ function startServer(port) {
         });
     });
 
-    server.listen(port, function () {
+    server.listen(port, () => {
       resolve(makeServerInterface());
     });
 
@@ -44,13 +44,13 @@ function startServer(port) {
     function makeServerInterface() {
       return {
         instance: server,
-        close: function () {
-          return new Promise(function (resolveClose) {
+        close() {
+          return new Promise((resolveClose) => {
             server.close(resolveClose);
           });
         },
-        waitForRequest: function () {
-          return new Promise(function (requestResolve, requestReject) {
+        waitForRequest() {
+          return new Promise((requestResolve, requestReject) => {
             onSuccessRequest = requestResolve;
             onFailureRequest = requestReject;
           });
@@ -60,23 +60,23 @@ function startServer(port) {
   });
 }
 
-function readPostData(req) {
-  return new Promise(function (resolve, reject) {
+async function readPostData(req) {
+  return new Promise((resolve, reject) => {
     if (req.method !== 'POST') {
       reject(new Error('POST method required'));
     }
 
-    var chunks = [];
+    const chunks = [];
 
     req
-      .on('data', function (data) { chunks.push(data) })
-      .on('end', function () {
-        var body = Buffer.concat(chunks).toString('utf8');
+      .on('data', (data) => { chunks.push(data) })
+      .on('end', () => {
+        const body = Buffer.concat(chunks).toString('utf8');
         try {
           resolve(JSON.parse(body));
         } catch (e) {
           reject(
-            new Error('Cannot read body: ' + e.message + '\nReceived: ' + body)
+            new Error(`Cannot read body: ${e.message}\nReceived: ${body}`),
           );
         }
       })

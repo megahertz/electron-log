@@ -2,12 +2,12 @@
 
 /* eslint-disable consistent-return */
 
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
 
 module.exports = {
-  readPackageJson: readPackageJson,
-  tryReadJsonAt: tryReadJsonAt,
+  readPackageJson,
+  tryReadJsonAt,
 };
 
 /**
@@ -23,30 +23,30 @@ function readPackageJson() {
 }
 
 /**
- * @param {...string} searchPath
+ * @param {...string} searchPaths
  * @return {{ name?: string, version?: string } | null}
  */
-function tryReadJsonAt(searchPath) {
-  if (!searchPath) {
+function tryReadJsonAt(...searchPaths) {
+  if (!searchPaths[0]) {
     return null;
   }
 
   try {
-    searchPath = path.join.apply(path, arguments);
-    var fileName = findUp('package.json', searchPath);
+    const searchPath = path.join(...searchPaths);
+    const fileName = findUp('package.json', searchPath);
     if (!fileName) {
       return null;
     }
 
-    var json = JSON.parse(fs.readFileSync(fileName, 'utf8'));
-    var name = json.productName || json.name;
+    const json = JSON.parse(fs.readFileSync(fileName, 'utf8'));
+    const name = json.productName || json.name;
     if (!name || name.toLowerCase() === 'electron') {
       return null;
     }
 
     if (json.productName || json.name) {
       return {
-        name: name,
+        name,
         version: json.version,
       };
     }
@@ -61,12 +61,12 @@ function tryReadJsonAt(searchPath) {
  * @return {string | null}
  */
 function findUp(fileName, cwd) {
-  var currentPath = cwd;
+  let currentPath = cwd;
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    var parsedPath = path.parse(currentPath);
-    var root = parsedPath.root;
-    var dir = parsedPath.dir;
+    const parsedPath = path.parse(currentPath);
+    const root = parsedPath.root;
+    const dir = parsedPath.dir;
 
     if (fs.existsSync(path.join(currentPath, fileName))) {
       return path.resolve(path.join(currentPath, fileName));
@@ -85,7 +85,7 @@ function findUp(fileName, cwd) {
  * @return {string|null}
  */
 function extractPathFromArgs() {
-  var matchedArgs = process.argv.filter(function (arg) {
+  const matchedArgs = process.argv.filter((arg) => {
     return arg.indexOf('--user-data-dir=') === 0;
   });
 
@@ -93,6 +93,6 @@ function extractPathFromArgs() {
     return null;
   }
 
-  var userDataDir = matchedArgs[0];
+  const userDataDir = matchedArgs[0];
   return userDataDir.replace('--user-data-dir=', '');
 }

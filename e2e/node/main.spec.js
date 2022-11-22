@@ -1,15 +1,14 @@
 'use strict';
 
-var helper = require('../spec-helper');
-var TIMEOUT = 6000;
+const { expect, test } = require('humile');
+const E2eApp = require('../E2eApp');
 
-describe('e2e', function () {
-  it('node: check log files', function () {
-    return helper.run('node', TIMEOUT).then(function (logReader) {
-      expect(logReader.format()).toEqual([
-        'main.log: node debug',
-        'main.log: node warn',
-      ]);
-    });
-  }, TIMEOUT);
-});
+const app = new E2eApp({ appPath: __dirname });
+
+test(app.appName, async () => {
+  const logReader = await app.run();
+  expect(logReader.format()).toEqual([
+    'node debug',
+    'node warn',
+  ]);
+}, app.timeout);

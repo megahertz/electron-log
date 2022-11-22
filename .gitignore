@@ -1,3 +1,5 @@
 .idea
-node_modules
+dist
 e2e/local
+node_modules
+todo.md
