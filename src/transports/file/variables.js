@@ -1,26 +1,26 @@
 'use strict';
 
-var os = require('os');
-var path = require('path');
-var electronApi = require('../../electronApi');
-var packageJson = require('./packageJson');
+const os = require('os');
+const path = require('path');
+const electronApi = require('../../core/electronApi');
+const packageJson = require('./packageJson');
 
 module.exports = {
-  getAppData: getAppData,
-  getLibraryDefaultDir: getLibraryDefaultDir,
-  getLibraryTemplate: getLibraryTemplate,
-  getNameAndVersion: getNameAndVersion,
-  getPathVariables: getPathVariables,
-  getUserData: getUserData,
+  getAppData,
+  getLibraryDefaultDir,
+  getLibraryTemplate,
+  getNameAndVersion,
+  getPathVariables,
+  getUserData,
 };
 
 function getAppData(platform) {
-  var appData = electronApi.getPath('appData');
+  const appData = electronApi.getPath('appData');
   if (appData) {
     return appData;
   }
 
-  var home = getHome();
+  const home = getHome();
 
   switch (platform) {
     case 'darwin': {
@@ -58,8 +58,8 @@ function getLibraryTemplate(platform) {
 }
 
 function getNameAndVersion() {
-  var name = electronApi.getName() || '';
-  var version = electronApi.getVersion();
+  let name = electronApi.getName() || '';
+  let version = electronApi.getVersion();
 
   if (name.toLowerCase() === 'electron') {
     name = '';
@@ -67,10 +67,10 @@ function getNameAndVersion() {
   }
 
   if (name && version) {
-    return { name: name, version: version };
+    return { name, version };
   }
 
-  var packageValues = packageJson.readPackageJson();
+  const packageValues = packageJson.readPackageJson();
   if (!name) {
     name = packageValues.name;
   }
@@ -84,7 +84,7 @@ function getNameAndVersion() {
     name = 'Electron';
   }
 
-  return { name: name, version: version };
+  return { name, version };
 }
 
 /**
@@ -92,14 +92,14 @@ function getNameAndVersion() {
  * @return {PathVariables}
  */
 function getPathVariables(platform) {
-  var nameAndVersion = getNameAndVersion();
-  var appName = nameAndVersion.name;
-  var appVersion = nameAndVersion.version;
+  const nameAndVersion = getNameAndVersion();
+  const appName = nameAndVersion.name;
+  const appVersion = nameAndVersion.version;
 
   return {
     appData: getAppData(platform),
-    appName: appName,
-    appVersion: appVersion,
+    appName,
+    appVersion,
     electronDefaultDir: electronApi.getPath('logs'),
     home: getHome(),
     libraryDefaultDir: getLibraryDefaultDir(platform, appName),

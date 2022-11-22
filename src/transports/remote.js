@@ -1,86 +1,78 @@
 'use strict';
 
-var http = require('http');
-var https = require('https');
-var url = require('url');
-var transform = require('../transform');
+const http = require('http');
+const https = require('https');
+const { transform } = require('../transforms/transform');
+const { removeStyles } = require('../transforms/style');
+const { toJSON, maxDepth } = require('../transforms/object');
 
 module.exports = remoteTransportFactory;
 
-function remoteTransportFactory(electronLog) {
-  transport.client = { name: 'electron-application' };
-  transport.depth = 6;
-  transport.level = false;
-  transport.requestOptions = {};
-  transport.url = null;
-  transport.onError = null;
-  transport.transformBody = function (body) { return JSON.stringify(body) };
+function remoteTransportFactory(logger) {
+  return Object.assign(transport, {
+    client: { name: 'electron-application' },
+    depth: 6,
+    level: false,
+    requestOptions: {},
+    onError: null,
+    transforms: [removeStyles, toJSON, maxDepth],
 
-  return transport;
+    makeBodyFn({ message }) {
+      return JSON.stringify({
+        client: transport.client,
+        data: message.data,
+        date: message.date.getTime(),
+        level: message.level,
+        scope: message.scope,
+        variables: message.variables,
+      });
+    },
+  });
 
   function transport(message) {
-    if (!transport.url) return;
+    if (!transport.url) {
+      return;
+    }
 
-    var body = transport.transformBody({
-      client: transport.client,
-      data: transform.transform(message, [
-        transform.removeStyles,
-        transform.toJSON,
-        transform.maxDepthFactory(transport.depth + 1),
-      ]),
-      date: message.date.getTime(),
-      level: message.level,
-      variables: message.variables,
+    const body = transport.makeBodyFn({
+      logger,
+      message: { ...message, data: transform({ logger, message, transport }) },
+      transport,
     });
 
-    var request = post(
+    const request = post(
       transport.url,
       transport.requestOptions,
-      Buffer.from(body, 'utf8')
+      Buffer.from(body, 'utf8'),
     );
 
     request.on('error', transport.onError || onError);
 
     function onError(error) {
-      electronLog.logMessageWithTransports(
+      logger.processMessage(
         {
-          data: [
-            'electron-log.transports.remote:'
-            + ' cannot send HTTP request to ' + transport.url,
-            error,
-          ],
+          data: [`electron-log: can't POST ${transport.url}`, error],
           level: 'warn',
         },
-        [
-          electronLog.transports.console,
-          electronLog.transports.ipc,
-          electronLog.transports.file,
-        ]
+        { transports: ['console', 'file'] },
       );
     }
   }
 }
 
 function post(serverUrl, requestOptions, body) {
-  var urlObject = url.parse(serverUrl);
-  var httpTransport = urlObject.protocol === 'https:' ? https : http;
+  const httpTransport = serverUrl.startsWith('https:') ? https : http;
 
-  var options = {
-    hostname: urlObject.hostname,
-    port:     urlObject.port,
-    path:     urlObject.path,
-    method:   'POST',
-    headers:  {},
-  };
+  const request = httpTransport.request(serverUrl, {
+    method: 'POST',
+    ...requestOptions,
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': body.length,
+      ...requestOptions.headers,
+    },
+  });
 
-  Object.assign(options, requestOptions);
-
-  options.headers['Content-Length'] = body.length;
-  if (!options.headers['Content-Type']) {
-    options.headers['Content-Type'] = 'application/json';
-  }
-
-  var request = httpTransport.request(options);
   request.write(body);
   request.end();
 

@@ -1,5 +1,6 @@
 'use strict';
 
-var log = require('../..');
+const log = require('../..');
+
 log.debug('node debug');
 log.warn('node warn');

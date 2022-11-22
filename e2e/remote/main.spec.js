@@ -1,15 +1,14 @@
 'use strict';
 
-var helper = require('../spec-helper');
-var TIMEOUT = 6000;
+const { expect, test } = require('humile');
+const E2eApp = require('../E2eApp');
 
-describe('e2e', function () {
-  it('remote: check log files', function () {
-    return helper.run('remote', TIMEOUT).then(function (logReader) {
-      expect(logReader.format()).toEqual([
-        'server.log: Request: Remote logging',
-        'server.log: Request: 🐛🐛 UTF8 🐛🐛',
-      ]);
-    });
-  }, TIMEOUT);
-});
+const app = new E2eApp({ appPath: __dirname });
+
+test(app.appName, async () => {
+  const logReader = await app.run();
+  expect(logReader.format('{fileName}: {text}')).toEqual([
+    'server.log: Request: Remote logging',
+    'server.log: Request: 🐛🐛 UTF8 🐛🐛',
+  ]);
+}, app.timeout);

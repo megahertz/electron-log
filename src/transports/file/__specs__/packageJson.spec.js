@@ -1,27 +1,27 @@
 'use strict';
 
-var path = require('path');
-var packageJsonSpec = require('../packageJson');
+const path = require('path');
+const packageJsonSpec = require('../packageJson');
 
-describe('transports/file/packageJson', function () {
-  describe('tryReadJsonAt', function () {
-    it('should resolve data when child path specified', function () {
-      var json = packageJsonSpec.tryReadJsonAt(__filename);
-
-      expect(json.name).toBe('electron-log');
-      expect(json.version).toMatch(/\d+\.\d+\.\d+/);
-    });
-
-    it('should resolve data when root specified', function () {
-      var rootPath = path.join(__dirname, '../../../..');
-      var json = packageJsonSpec.tryReadJsonAt(rootPath);
+describe('transports/file/packageJson', () => {
+  describe('tryReadJsonAt', () => {
+    it('should resolve data when child path specified', () => {
+      const json = packageJsonSpec.tryReadJsonAt(__filename);
 
       expect(json.name).toBe('electron-log');
       expect(json.version).toMatch(/\d+\.\d+\.\d+/);
     });
 
-    it('should return null on fail', function () {
-      var json = packageJsonSpec.tryReadJsonAt('/');
+    it('should resolve data when root specified', () => {
+      const rootPath = path.join(__dirname, '../../../..');
+      const json = packageJsonSpec.tryReadJsonAt(rootPath);
+
+      expect(json.name).toBe('electron-log');
+      expect(json.version).toMatch(/\d+\.\d+\.\d+/);
+    });
+
+    it('should return null on fail', () => {
+      const json = packageJsonSpec.tryReadJsonAt('/');
 
       expect(json).toBe(null);
     });

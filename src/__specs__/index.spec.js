@@ -1,29 +1,37 @@
 'use strict';
 
-var index = require('../index');
+const log = require('../index');
 
-describe('index', function () {
-  it('should contain all methods of Console API', function () {
-    var levels = ['error', 'warn', 'info', 'verbose', 'debug', 'silly', 'log'];
-    levels.forEach(function (level) {
-      expect(typeof index[level]).toBe('function');
+describe('index', () => {
+  it('should contain all methods of Console API', () => {
+    const levels = [
+      'error',
+      'warn',
+      'info',
+      'verbose',
+      'debug',
+      'silly',
+      'log',
+    ];
+    levels.forEach((level) => {
+      expect(typeof log[level]).toBe('function');
     });
   });
 
-  it('should allow to add a new log level', function () {
-    index.levels.add('notice', 2);
-    expect(index.levels).toEqual(
-      ['error', 'warn', 'notice', 'info', 'verbose', 'debug', 'silly']
+  it('should allow to add a new log level', () => {
+    log.addLevel('notice', 2);
+    expect(log.levels).toEqual(
+      ['error', 'warn', 'notice', 'info', 'verbose', 'debug', 'silly'],
     );
 
-    expect(typeof index.notice).toBe('function');
-    expect(typeof index.functions.notice).toBe('function');
-    expect(typeof index.scope('test').notice).toBe('function');
+    expect(typeof log.notice).toBe('function');
+    expect(typeof log.functions.notice).toBe('function');
+    expect(typeof log.scope('test').notice).toBe('function');
   });
 
-  it('should create independent logger instance', function () {
-    var defaultLogger = index;
-    var customLogger = index.create('custom');
+  it('should create independent logger instance', () => {
+    const defaultLogger = log;
+    const customLogger = log.create('custom');
 
     customLogger.transports.file.fileName = 'custom.log';
 
