@@ -19,38 +19,43 @@ jobs:
           # Different node version
           - os: ubuntu-latest
             node_version: 18
+            electron_version: latest
             experimental: false
           - os: ubuntu-latest
             node_version: 16
+            electron_version: latest
             experimental: false
           - os: ubuntu-latest
             node_version: 14
+            electron_version: latest
             experimental: true
 
           # Different electron version
           - os: ubuntu-latest
-            node_version: 18
+            node_version: latest
             electron_version: 16
             experimental: true
           - os: ubuntu-latest
-            node_version: 18
+            node_version: latest
             electron_version: 12
             experimental: true
 
           # Different OS
           - os: macos-latest
-            node_version: 18
+            node_version: latest
+            electron_version: latest
             experimental: true
           - os: windows-latest
-            node_version: 18
+            node_version: latest
+            electron_version: latest
             experimental: true
 
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node_version }}
 
@@ -60,7 +65,7 @@ jobs:
       - run: npm install
 
       - run: npm install -D electron@${{ matrix.electron_version }}
-        if: ${{ matrix.electron_version }}
+        if: ${{ matrix.electron_version != 'latest' }}
 
       - run: |
           if [ "${RUNNER_OS}" = 'Linux' ]; then
