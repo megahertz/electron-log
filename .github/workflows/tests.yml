@@ -37,7 +37,7 @@ jobs:
             experimental: true
           - os: ubuntu-latest
             node_version: latest
-            electron_version: 12
+            electron_version: 13
             experimental: true
 
           # Different OS

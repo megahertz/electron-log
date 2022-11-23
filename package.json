@@ -6,7 +6,7 @@
   "browser": "src/renderer.js",
   "engines": {
     "node": ">= 14",
-    "electron": ">= 12"
+    "electron": ">= 13"
   },
   "scripts": {
     "lint": "eslint '**/*.js' --ignore-pattern '**/dist/*.js' && tsc --noEmit",
