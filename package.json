@@ -5,8 +5,8 @@
   "main": "src/index.js",
   "browser": "src/renderer.js",
   "engines": {
-    "node": ">= 12",
-    "electron": ">= 6"
+    "node": ">= 14",
+    "electron": ">= 12"
   },
   "scripts": {
     "lint": "eslint '**/*.js' --ignore-pattern '**/dist/*.js' && tsc --noEmit",

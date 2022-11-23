@@ -12,7 +12,7 @@ describe('Console transport', () => {
       });
       expect(text).toMatch(
         // eslint-disable-next-line no-control-regex
-        /^\x1b\[36m\d\d:\d\d:\d\d.\d\d\d\x1b\[0m ›\x1b\[0m test$/,
+        /^\x1b\[36m\d\d:\d\d:\d\d.\d\d\d\x1b\[0m .\x1b\[0m test$/,
       );
     });
   });

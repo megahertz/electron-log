@@ -23,13 +23,13 @@ jobs:
             node_version: 16
             experimental: false
           - os: ubuntu-latest
-            node_version: 12
+            node_version: 14
             experimental: true
           - os: macos-latest
-            node_version: 16
+            node_version: 18
             experimental: true
           - os: windows-latest
-            node_version: 16
+            node_version: 18
             experimental: true
 
     runs-on: ${{ matrix.os }}

@@ -78,9 +78,7 @@ describe('File transport', () => {
 
     transport(TEST_MESSAGE);
 
-    expect(TestLogReader.fromApp('humile').format()).toEqual([
-      'main.log: test',
-    ]);
+    expect(TestLogReader.fromApp('humile').format()).toEqual(['test']);
   });
 });
 
