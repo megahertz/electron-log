@@ -19,6 +19,7 @@ declare namespace Logger {
 
   interface Variables {
     processType: string;
+
     [name: string]: any;
   }
 
@@ -227,7 +228,7 @@ declare namespace Logger {
      * You only need to provide message argument if you define log path inside
      * resolvePath callback depending on a message.
      */
-    getFile (message?: Partial<LogMessage>): LogFile;
+    getFile(message?: Partial<LogMessage>): LogFile;
 
     /**
      * Serialization options
@@ -246,7 +247,7 @@ declare namespace Logger {
      * Reads content of all log files
      */
     readAllLogs(
-        options?: { fileFilter?: (logPath: string) => boolean }
+      options?: { fileFilter?: (logPath: string) => boolean },
     ): Array<{ path: string, lines: string[] }>;
 
     /**
@@ -292,7 +293,7 @@ declare namespace Logger {
      * Callback which transforms request body to string
      */
     makeBodyFn: (
-      options: { logger: Logger, message: LogMessage, transport: Transport }
+      options: { logger: Logger, message: LogMessage, transport: Transport },
     ) => string;
 
     /**
@@ -359,44 +360,44 @@ declare namespace Logger {
     /**
      * Log an error message
      */
-    error (...params: any[]): void;
+    error(...params: any[]): void;
 
     /**
      * Log a warning message
      */
-    warn (...params: any[]): void;
+    warn(...params: any[]): void;
 
     /**
      * Log an informational message
      */
-    info (...params: any[]): void;
+    info(...params: any[]): void;
 
     /**
      * Log a verbose message
      */
-    verbose (...params: any[]): void;
+    verbose(...params: any[]): void;
 
     /**
      * Log a debug message
      */
-    debug (...params: any[]): void;
+    debug(...params: any[]): void;
 
     /**
      * Log a silly message
      */
-    silly (...params: any[]): void;
+    silly(...params: any[]): void;
 
     /**
      * Shortcut to info
      */
-    log (...params: any[]): void;
+    log(...params: any[]): void;
   }
 
   interface ErrorHandlerOptions {
     /**
      * If true, error handler is initialized for all renderer processes too
      */
-    includeRenderer: boolean;
+    includeRenderer?: boolean;
 
     /**
      * Default true for the main process. Set it to false to prevent showing a
@@ -409,16 +410,31 @@ declare namespace Logger {
      * will not be processed
      */
     onError?(
-        error: Error,
-        versions?: { app: string; electron: string; os: string },
-        submitIssue?: (url: string, data: ReportData | any) => void,
+      error: Error,
+      versions?: { app: string; electron: string; os: string },
+      submitIssue?: (url: string, data: ReportData | any) => void,
     ): void;
   }
 
   interface ErrorHandler {
-    handle(error: Error, options: ErrorHandlerOptions): void;
-    setOptions(options: Partial<ErrorHandlerOptions>): void;
+    /**
+     * Process an error by the ErrorHandler
+     */
+    handle(error: Error, options?: ErrorHandlerOptions): void;
+
+    /**
+     * Change some options
+     */
+    setOptions(options: ErrorHandlerOptions): void;
+
+    /**
+     * Start catching unhandled errors and rejections
+     */
     startCatching(options?: ErrorHandlerOptions): void;
+
+    /**
+     * Stop catching unhandled errors and rejections
+     */
     stopCatching(): void;
   }
 
@@ -467,7 +483,7 @@ declare namespace Logger {
      * Catch and log unhandled errors/rejected promises
      * @deprecated
      */
-    catchErrors (options?: ErrorHandlerOptions): ErrorHandler;
+    catchErrors(options?: ErrorHandlerOptions): ErrorHandler;
 
     /**
      * Create a new electron-log instance
@@ -475,7 +491,7 @@ declare namespace Logger {
     create(logId: string): Logger.Logger;
 
     initialize(
-      options: { preload: string | boolean, spyRendererConsole: boolean },
+      options?: { preload?: string | boolean, spyRendererConsole?: boolean },
     ): void;
 
     /**
@@ -483,7 +499,7 @@ declare namespace Logger {
      */
     processMessage(
       message: LogMessage,
-      transports: Transport[] | string[],
+      options?: { transports?: Transport[] | string[] },
     ): void;
   }
 }
@@ -491,5 +507,5 @@ declare namespace Logger {
 // Merge namespace with interface
 declare const Logger: Logger.Logger & {
   default: Logger.Logger;
-}
+};
 export = Logger;
