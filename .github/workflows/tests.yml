@@ -16,6 +16,7 @@ jobs:
     strategy:
       matrix:
         include:
+          # Different node version
           - os: ubuntu-latest
             node_version: 18
             experimental: false
@@ -25,6 +26,18 @@ jobs:
           - os: ubuntu-latest
             node_version: 14
             experimental: true
+
+          # Different electron version
+          - os: ubuntu-latest
+            node_version: 18
+            electron_version: 16
+            experimental: true
+          - os: ubuntu-latest
+            node_version: 18
+            electron_version: 12
+            experimental: true
+
+          # Different OS
           - os: macos-latest
             node_version: 18
             experimental: true
@@ -46,10 +59,11 @@ jobs:
 
       - run: npm install
 
+      - run: npm install -D electron@${{ matrix.electron_version }}
+        if: ${{ matrix.electron_version }}
+
       - run: |
-          if [ "${{ matrix.node_version }}" -lt 10 ]; then
-            npm run test
-          elif [ "${RUNNER_OS}" = 'Linux' ]; then
+          if [ "${RUNNER_OS}" = 'Linux' ]; then
             xvfb-run --auto-servernum npm run test:full
           else
             npm run test:full
