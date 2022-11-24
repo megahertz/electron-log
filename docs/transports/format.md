@@ -9,7 +9,9 @@ Example: ``'[{h}:{i}:{s}.{ms}] [{level}] {text}'``
 | Name        | Value                  |
 |-------------|------------------------|
 | level       | Logging level          |
+| logId       | Logging instance id    |
 | text        | Serialized log message |
+| scope       | Scope                  |
 | processType | browser or renderer    |
 | y           | Year                   |
 | m           | Month                  |
@@ -33,7 +35,7 @@ log.transports.console.format = '[{h}:{i}:{s}.{ms}] [{label}] {text}';
 `(message: LogMessage) => string`
 
 ```js
-log.transports.console.format = (message) => {
-  return util.format.apply(util, message.data);
+log.transports.console.format = ({ message }) => {
+  return util.format(...message.data);
 }
 ```
