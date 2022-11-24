@@ -26,7 +26,10 @@ Default: `true`
 
 Default: `true` 
 
-Show error dialog when an unhandled error thrown in the main process
+It follows Electron logic for error handling, so the dialog is
+shown only when error is thrown in the main process. Errors from a renderer
+process and any rejected promises are ignored. Settings it to false disables
+error dialog for any error.
    
 #### `onError(error, [versions, submitIssue]) => void | false`
    
