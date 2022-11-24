@@ -58,9 +58,13 @@ Default: `false`
 
 Filter log messages which can be sent via the transport.
 
-#### `onError` {(error: Error) => void}
+#### `makeBodyFn` {({ logger, message, transport }) => string}
 
-Allow overriding http request error handler
+A callback which makes a POST body from a message
+
+#### `processErrorFn` {({ error, logger, message, request, transport }) => void}
+
+A callback called on request error
 
 #### `requestOptions` {module:http.RequestOptions}
 

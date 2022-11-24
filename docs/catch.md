@@ -1,16 +1,32 @@
-# Catch errors
+# Catching errors
 
-#### `log.catchErrors([options])`
+electron-log can be used to collect all unhandled errors/rejections
 
-Catch and log unhandled errors/rejected promises
+#### `log.errorHandler.startCatching(options?)`
+
+Start catching
+
+#### `log.errorHandler.stopCatching()`
+
+Stop error catching
+
+#### `log.errorHandler.handle(error, options?)`
+
+Process an error. Works even if catching isn't started.
 
 ## Options
    
+#### `includeRenderer` {boolean}
+
+Catch errors from renderer processes
+
+Default: `true`
+
 #### `showDialog` {boolean}
 
-Default: `true` in main, `false` in renderer
+Default: `true` 
 
-False prevents showing a default Electron error dialog.
+Show error dialog when an unhandled error thrown in the main process
    
 #### `onError(error, [versions, submitIssue]) => void | false`
    
@@ -24,15 +40,15 @@ not be processed.
 `version: { app: string, electron: string, os: string }` - Version information
 which could be useful for an error report
 
-`submitIssue(url, queryParams)` Open the url with query params appended in a
+`createIssue(url, queryParams)` Open the url with query params appended in a
 browser
    
 ## Github issue example   
    
 ```js
-log.catchErrors({
+log.errorHandler.startCatching({
   showDialog: false,
-  onError(error, versions, submitIssue) {
+  onError({ error, versions, createIssue }) {
     electron.dialog.showMessageBox({
       title: 'An error occurred',
       message: error.message,
@@ -42,7 +58,7 @@ log.catchErrors({
     })
       .then((result) => {
         if (result.response === 1) {
-          submitIssue('https://github.com/my-acc/my-app/issues/new', {
+          createIssue('https://github.com/my-acc/my-app/issues/new', {
             title: `Error report for ${versions.app}`,
             body: 'Error:\n```' + error.stack + '\n```\n' + `OS: ${versions.os}`
           });
@@ -55,4 +71,4 @@ log.catchErrors({
       });
   }
 });
-
+```

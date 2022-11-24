@@ -29,9 +29,7 @@ function fileTransportFactory(logger, registry = globalRegistry) {
     fileName: getDefaultFileName(logger.variables.processType),
     format: '[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}]{scope} {text}',
     getFile,
-    inspectOptions: {
-      depth: 5,
-    },
+    inspectOptions: { depth: 5 },
     level: 'silly',
     maxSize: 1024 ** 2,
     readAllLogs,

@@ -3,6 +3,7 @@
 const electronApi = require('./electronApi');
 
 class ErrorHandler {
+  includeRenderer = true;
   isActive = false;
   logFn = null;
   onError = null;
@@ -35,7 +36,7 @@ class ErrorHandler {
 
       errorName ? logFn(errorName, error) : logFn(error);
 
-      if (showDialog && errorName.indexOf('Rejection') === -1) {
+      if (showDialog && !errorName.includes('rejection')) {
         electronApi.showErrorBox(
           `A JavaScript error occurred in the ${processType} process`,
           error.stack,
@@ -46,7 +47,11 @@ class ErrorHandler {
     }
   }
 
-  setOptions({ logFn, onError, showDialog }) {
+  setOptions({ includeRenderer, logFn, onError, showDialog }) {
+    if (typeof includeRenderer === 'function') {
+      this.includeRenderer = includeRenderer;
+    }
+
     if (typeof logFn === 'function') {
       this.logFn = logFn;
     }
@@ -60,17 +65,17 @@ class ErrorHandler {
     }
   }
 
-  startCatching({ onError, showDialog, includeRenderer = true } = {}) {
+  startCatching({ onError, showDialog, includeRenderer } = {}) {
     if (this.isActive) {
       return;
     }
 
     this.isActive = true;
-    this.setOptions({ onError, showDialog });
+    this.setOptions({ includeRenderer, onError, showDialog });
     process.on('uncaughtException', this.handleError);
     process.on('unhandledRejection', this.handleRejection);
 
-    if (includeRenderer) {
+    if (this.includeRenderer) {
       initializeRendererErrorHandler();
     }
   }

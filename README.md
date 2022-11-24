@@ -1,11 +1,10 @@
 # electron-log
 [![Build Status](https://travis-ci.org/megahertz/electron-log.svg?branch=master)](https://travis-ci.org/megahertz/electron-log)
 [![NPM version](https://badge.fury.io/js/electron-log.svg)](https://badge.fury.io/js/electron-log)
-[![Dependencies status](https://img.shields.io/david/megahertz/electron-log)](https://david-dm.org/megahertz/electron-log)
+[![Downloads](https://img.shields.io/npm/dw/electron-log)](https://img.shields.io/npm/dw/electron-log)
 
-Just a simple logging module for your Electron or NW.js application.
-No dependencies. No complicated configuration. Just require and use.
-Also, it can be used without Electron in any node.js application.
+Simple logging module Electron/Node.js/NW.js application.
+No dependencies. No complicated configuration.
 
 By default, it writes logs to the following locations:
 
@@ -15,20 +14,40 @@ By default, it writes logs to the following locations:
 
 ## Installation
 
+Currently, electron-log v5 is in a beta phase. It requires Electron 13+ or
+Node.js 14+. Feel free to use electron-log v4 for older runtime. v4
+supports Node.js 0.10+ and almost any Electron build.
+
 Install with [npm](https://npmjs.org/package/electron-log):
 
-    npm install electron-log
+    npm install electron-log@beta
     
 ## Usage
 
-```js
-const log = require('electron-log');
+### Main process
 
-log.info('Hello, log');
-log.warn('Some problem appears');
+```js
+import log from 'electron-log';
+
+// Optional, initialize logger for any renderer processses
+log.initialize({ preload: true });
+
+log.info('Log from the main process');
 ```
 
-### electron-log v2.x, v3.x
+### Renderer process
+
+Once the logger initialized in the main process using `log.initialize`, a
+global `electronLog` instance is available inside any renderer process.
+
+```js
+electronLog.info('Log from the renderer process');
+```
+
+There are a few other options how a logger can be initialized for a renderer
+process. [Read more](docs/initialize.md).
+
+### electron-log v2.x, v3.x, v4.x
 
 If you would like to upgrade to the latest version, read
 [the migration guide](docs/migration.md) and [the changelog](CHANGELOG.md).
@@ -39,23 +58,19 @@ electron-log supports the following log levels:
 
     error, warn, info, verbose, debug, silly
 
-### `nodeIntegration`
-If you've got an error like `require is not defined` in a renderer process,
-read [the nodeIntegration section](docs/node-integration.md).
-
 ### Transport
 
 Transport is a simple function which does some work with log message.
-By default, two transports are active: console and file. 
-
-**If you change some transport options, make sure you apply the changes both in
-main and renderer processes.**
+By default, two transports are active: console and file.
 
 You can set transport options or use methods using:
 
 `log.transports.console.format = '{h}:{i}:{s} {text}';`
 
 `log.transports.file.getFile();`
+
+Each transport has `level` and 
+[`transforms`](docs/extend.md#transforms) options.
 
 #### Console transport
 
@@ -64,12 +79,13 @@ DevTools console (renderer process).
 
 ##### Options
 
- - **[format](docs/format.md)**, default
+ - **[format](docs/transports/format.md)**, default
    `'%c{h}:{i}:{s}.{ms}%c › {text}'` (main),
    `'{h}:{i}:{s}.{ms} › {text}'` (renderer)
  - **level**, default 'silly'
- - **useStyles**, use styles in the main process even if TTY isn't attached,
-   default `null`
+ - **useStyles**, force enable/disable styles
+
+[Read more about console transport](docs/transports/console.md).
 
 #### File transport
 
@@ -77,28 +93,26 @@ The file transport writes log messages to a file.
 
 ##### Options
 
- - **[format](docs/format.md)**, default
+ - **[format](docs/transports/format.md)**, default
    `'[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}'`
  - **level**, default 'silly'
- - **resolvePath** function sets the log path, for example
+ - **resolvePathFn** function sets the log path, for example
  
 ```js
-log.transports.file.resolvePath = () => path.join(APP_DATA, 'logs/main.log');
+log.transports.file.resolvePathFn = () => path.join(APP_DATA, 'logs/main.log');
 ```
 
-[Read more about file transport](docs/file.md).
+[Read more about file transport](docs/transports/file.md).
 
 #### IPC transport
-When logging inside renderer process, it also shows log in application
-console and vice versa. This transport can impact on performance, so
-it's disabled by default for packaged application.
+It displays log messages from main process in the renderer's DevTools console.
+By default, it's disabled for a production build. You can enable in the
+production mode by setting the `level` property.
 
-If you don't use electron-log in the main process but want to show renderer
-logs in the console, add `require('electron-log')` somewhere in the main code.
 
 ##### Options
 
- - **level**, default 'silly'
+ - **level**, default 'silly' in the dev mode, `false` in the production.
 
 #### Remote transport
 
@@ -109,7 +123,7 @@ Sends a JSON POST request with `LogMessage` in the body to the specified url.
  - **level**, default false
  - **url**, remote endpoint
 
-[Read more about remote transport](docs/remote.md).
+[Read more about remote transport](docs/transports/remote.md).
 
 #### Disable a transport
 
@@ -164,7 +178,7 @@ For DevTools console you can use other CSS properties.
 
 electron-log can catch and log unhandled errors/rejected promises:
 
-`log.catchErrors(options?)`;
+`log.errorHandler.startCatching(options?)`;
 
 [More info](docs/catch.md).
 
@@ -173,7 +187,7 @@ electron-log can catch and log unhandled errors/rejected promises:
 In some situations, you may want to get more control over logging. Hook
 is a function which is called on each transport call.
 
-`(message: LogMessage, transport: Transport) => LogMessage`
+`(message: LogMessage, transport: Transport, transportName) => LogMessage`
 
 [More info](docs/extend.md#hooks).
 
@@ -182,25 +196,20 @@ is a function which is called on each transport call.
 You can create multiple logger instances with different settings:
 
 ```js
-const electronLog = require('electron-log');
+import log from 'electron-log';
 
-const log = electronLog.create('anotherInstance');
+const anotherLogger = log.create('anotherInstance');
 ````
 
 ### Logging scopes
 
 ```js
-const log = require('electron-log');
+import log from 'electron-log';
 const userLog = log.scope('user');
 
 userLog.info('message with user scope');
 // Prints 12:12:21.962 (user) › message with user scope
 ```
-
-### Web Worker
-
-It's possible to use the module with Web Worker. However, ipc transport is not
-active, so log messages from worker are not displayed in the main app console.
 
 ## Related
 

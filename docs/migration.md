@@ -3,10 +3,67 @@
 You can continue to use some older version or migrate to the latest. Here are
 documentation and code snapshot for older releases:
 [v2](https://github.com/megahertz/electron-log/tree/v2.2.17),
-[v3](https://github.com/megahertz/electron-log/tree/v3.0.9).
+[v3](https://github.com/megahertz/electron-log/tree/v3.0.9),
+[v4](https://github.com/megahertz/electron-log/tree/v4.4.8).
 
 If you would like to upgrade to the latest version, check
 [the changelog](../CHANGELOG.md) and migration guide below.
+
+## Migration from v4 to v5
+
+Node.js 14+ or Electron 13+ is required.
+
+`npm install electron-log@5`
+
+In the latest few years many restrictions were added to a renderer process by
+default. It forces me to rethink electron-log architecture. So now the only
+way of implementing logging in a renderer process is move all the logic to the
+main process. 
+
+So now, the logger should be configured in the main process.
+
+To make it possible for a renderer process to communicate the main process,
+it should be initialized in the main process before the first window is created:
+
+**main.js**
+```js
+import log from 'electron-log';
+
+// It makes a renderer logger available trough a global electronLog instance
+log.initialize({ preload: true });
+````
+
+After that, the `electronLog` global variable is available. If you use some
+bundler or sandbox mode is disabled, you can still require the library:
+
+**renderer.ts**
+```typescript
+import log from 'electron-log';
+
+log.info('Log from the renderer');
+````
+
+See [initialize doc](initialize.md) for more information.
+
+### File transport
+
+To make callback names more obvious, some options where renamed:
+
+ - file.resolvePath -> file.resolvePathFn
+ - file.archiveLog -> file.archiveLogFn
+
+### Remote transport
+
+ - remote.onError -> remote.processErrorFn({ error, message, request })
+ - remote.transformBody -> remote.makeBodyFn({ logger, message, transport })
+
+## Error catching
+
+ - log.catchErrors -> log.errorHandler.startCatching
+
+Now it's called in the main process only. There's new option `includeRenderer`
+which is true by default. When enabled, it also initializes error handler on
+a renderer side under the hood.
 
 ## Migration from v3 to v4
 

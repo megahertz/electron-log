@@ -1,5 +1,36 @@
 # Changelog
 
+## 5.0.0
+
+### Core
+ - Now it's a time to use modern ES instead of ES5. It was a joy to use
+   old-fashioned ES5, but since the library grows it becomes
+   harder to follow its restrictions. Starting from v5 the library
+   requires Node.js 14+ or Electron 13 at least.
+ - Now a renderer process just sends log data to the main through IPC,
+   so only the main logger can be configured. See
+   [initialize](docs/initialize.md) for more information
+ - A new `tranforms` property is added for each transport. It allows to
+   configure transformations preformed on message data. See
+   [transforms](docs/extend.md#transforms) for more information.
+
+### File transport
+ 
+ - `archiveLog` options is renamed to `archiveLogFn`
+ - `resolvePath` options is renamed to `resolvePathFn`
+ - All logs are written to main.log file. If you want to write renderer
+   logs to a separated file, you can do that by overriding `resolvePathFn`
+
+### Console transport
+
+ - `writeFn` callback is added. By default, it just passes `message.data` to
+   `console.log` function
+
+### Remote transport
+
+ - `onError` is renamed to `processErrorFn({ error, message, request })`
+ - `transformBody` is renamed to `makeBodyFn({ logger, message, transport })`
+
 ## 4.4.0 
  - Disable auto-loading of electron-log in the main process for using by ipc
    transport
