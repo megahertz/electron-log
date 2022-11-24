@@ -14,7 +14,6 @@ function remoteTransportFactory(logger) {
     depth: 6,
     level: false,
     requestOptions: {},
-    onError: null,
     transforms: [removeStyles, toJSON, maxDepth],
 
     makeBodyFn({ message }) {
@@ -26,6 +25,16 @@ function remoteTransportFactory(logger) {
         scope: message.scope,
         variables: message.variables,
       });
+    },
+
+    processErrorFn({ error }) {
+      logger.processMessage(
+        {
+          data: [`electron-log: can't POST ${transport.url}`, error],
+          level: 'warn',
+        },
+        { transports: ['console', 'file'] },
+      );
     },
   });
 
@@ -46,17 +55,13 @@ function remoteTransportFactory(logger) {
       Buffer.from(body, 'utf8'),
     );
 
-    request.on('error', transport.onError || onError);
-
-    function onError(error) {
-      logger.processMessage(
-        {
-          data: [`electron-log: can't POST ${transport.url}`, error],
-          level: 'warn',
-        },
-        { transports: ['console', 'file'] },
-      );
-    }
+    request.on('error', (error) => transport.processErrorFn({
+      error,
+      logger,
+      message,
+      request,
+      transport,
+    }));
   }
 }
 
