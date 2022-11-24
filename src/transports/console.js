@@ -38,7 +38,7 @@ function consoleTransportFactory(logger) {
       maxDepth,
       toJSON,
     ],
-    useStyles: Boolean(process.env.FORCE_STYLES),
+    useStyles: process.env.FORCE_STYLES,
 
     writeFn({ message }) {
       const consoleMethod = consoleMethods[message.level || 'info'];
