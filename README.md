@@ -8,9 +8,9 @@ No dependencies. No complicated configuration.
 
 By default, it writes logs to the following locations:
 
- - **on Linux:** `~/.config/{app name}/logs/{process type}.log`
- - **on macOS:** `~/Library/Logs/{app name}/{process type}.log`
- - **on Windows:** `%USERPROFILE%\AppData\Roaming\{app name}\logs\{process type}.log`
+ - **on Linux:** `~/.config/{app name}/logs/main.log`
+ - **on macOS:** `~/Library/Logs/{app name}/main.log`
+ - **on Windows:** `%USERPROFILE%\AppData\Roaming\{app name}\logs\main.log`
 
 ## Installation
 
@@ -29,7 +29,7 @@ Install with [npm](https://npmjs.org/package/electron-log):
 ```js
 import log from 'electron-log';
 
-// Optional, initialize logger for any renderer processses
+// Optional, initialize the logger for any renderer processses
 log.initialize({ preload: true });
 
 log.info('Log from the main process');
@@ -42,6 +42,13 @@ global `electronLog` instance is available inside any renderer process.
 
 ```js
 electronLog.info('Log from the renderer process');
+```
+
+If a bundler is used, you can just import the module:
+
+```typescript
+import log from 'electron-log/renderer';
+log.info('Log from the renderer process');
 ```
 
 There are a few other options how a logger can be initialized for a renderer
