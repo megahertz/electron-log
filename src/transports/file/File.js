@@ -7,7 +7,7 @@ const os = require('os');
 class File extends EventEmitter {
   asyncWriteQueue = [];
   bytesWritten = 0;
-  hasActiveAsyncWritting = false;
+  hasActiveAsyncWriting = false;
   path = null;
   initialSize = undefined;
   writeOptions = null;
@@ -85,15 +85,16 @@ class File extends EventEmitter {
   nextAsyncWrite() {
     const file = this;
 
-    if (this.hasActiveAsyncWritting || this.asyncWriteQueue.length < 1) {
+    if (this.hasActiveAsyncWriting || this.asyncWriteQueue.length === 0) {
       return;
     }
 
-    const text = this.asyncWriteQueue.shift();
-    this.hasActiveAsyncWritting = true;
+    const text = this.asyncWriteQueue.join('');
+    this.asyncWriteQueue = [];
+    this.hasActiveAsyncWriting = true;
 
-    fs.writeFile(this.path, text, this.writeOptions, function (e) {
-      file.hasActiveAsyncWritting = false;
+    fs.writeFile(this.path, text, this.writeOptions, (e) => {
+      file.hasActiveAsyncWriting = false;
 
       if (e) {
         file.emit(
