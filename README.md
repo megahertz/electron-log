@@ -3,6 +3,9 @@
 [![NPM version](https://badge.fury.io/js/electron-log.svg)](https://badge.fury.io/js/electron-log)
 [![Downloads](https://img.shields.io/npm/dw/electron-log)](https://img.shields.io/npm/dw/electron-log)
 
+New v5 beta is ready and I would be grateful
+[for any feedbacks](https://github.com/megahertz/electron-log/discussions/333).
+
 Simple logging module Electron/Node.js/NW.js application.
 No dependencies. No complicated configuration.
 
