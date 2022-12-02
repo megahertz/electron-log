@@ -412,6 +412,7 @@ declare namespace Logger {
     onError?(options: {
       createIssue: (url: string, data: ReportData | any) => void,
       error: Error,
+      errorName: 'Unhandled' | 'Unhandled rejection',
       processType: 'browser' | 'renderer',
       versions: { app: string; electron: string; os: string },
     }): void;
