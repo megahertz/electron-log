@@ -102,8 +102,14 @@ function create({
           level: 'error',
         });
         logger.transports.ipc({
-          cmd: 'catchError',
-          error: error.stack || error,
+          cmd: 'errorHandler',
+          error: {
+            cause: error?.cause,
+            code: error?.code,
+            name: error?.name,
+            message: error?.message,
+            stack: error?.stack,
+          },
           errorName,
           logId,
           showDialog,

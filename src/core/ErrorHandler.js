@@ -25,6 +25,8 @@ class ErrorHandler {
     showDialog = this.showDialog,
     errorName = '',
   } = {}) {
+    error = normalizeError(error);
+
     try {
       if (typeof onError === 'function') {
         const versions = electronApi.getVersions();
@@ -118,6 +120,25 @@ function initializeRendererErrorHandler() {
       });
     }
   `);
+}
+
+function normalizeError(e) {
+  if (e instanceof Error) {
+    return e;
+  }
+
+  if (e && typeof e === 'object') {
+    if (e.message) {
+      return Object.assign(new Error(e.message), e);
+    }
+    try {
+      return new Error(JSON.stringify(e));
+    } catch (serErr) {
+      return new Error(`Couldn't normalize error ${String(e)}: ${serErr}`);
+    }
+  }
+
+  return new Error(`Can't normalize error ${String(e)}`);
 }
 
 module.exports = ErrorHandler;

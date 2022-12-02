@@ -105,7 +105,7 @@ class Logger {
   }
 
   processMessage(message, { transports = this.transports } = {}) {
-    if (message.cmd === 'catchError') {
+    if (message.cmd === 'errorHandler') {
       this.errorHandler.handle(message.error, {
         errorName: message.errorName,
         processType: 'renderer',
