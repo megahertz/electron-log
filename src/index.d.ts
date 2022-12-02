@@ -409,11 +409,11 @@ declare namespace Logger {
      * Attach a custom error handler. If the handler returns false, this error
      * will not be processed
      */
-    onError?(
+    onError?(options: {
       error: Error,
-      versions?: { app: string; electron: string; os: string },
-      submitIssue?: (url: string, data: ReportData | any) => void,
-    ): void;
+      versions: { app: string; electron: string; os: string },
+      createIssue: (url: string, data: ReportData | any) => void,
+    }): void;
   }
 
   interface ErrorHandler {
