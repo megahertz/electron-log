@@ -410,9 +410,10 @@ declare namespace Logger {
      * will not be processed
      */
     onError?(options: {
-      error: Error,
-      versions: { app: string; electron: string; os: string },
       createIssue: (url: string, data: ReportData | any) => void,
+      error: Error,
+      processType: 'browser' | 'renderer',
+      versions: { app: string; electron: string; os: string },
     }): void;
   }
 

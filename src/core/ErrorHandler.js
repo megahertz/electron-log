@@ -31,7 +31,7 @@ class ErrorHandler {
       if (typeof onError === 'function') {
         const versions = electronApi.getVersions();
         const createIssue = this.createIssue;
-        if (onError({ error, versions, createIssue }) === false) {
+        if (onError({ createIssue, error, processType, versions }) === false) {
           return;
         }
       }

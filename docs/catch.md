@@ -35,27 +35,35 @@ shown only when error is thrown in the main process. Errors from a renderer
 process and any rejected promises are ignored. Settings it to false disables
 error dialog for any error.
    
-#### `onError({ error, versions, createIssue }) => void | false`
+#### `onError({ createIssue, error, processType, versions }) => void | false`
    
 Default: `null`
 
 Attach a custom error handler. If the handler returns false, this error will
 not be processed.
 
+`createIssue(url, queryParams)` Open the url with query params appended in a
+browser
+
 `error: Error` - handled error
+
+`processType: 'browser' | 'renderer`
 
 `version: { app: string, electron: string, os: string }` - Version information
 which could be useful for an error report
 
-`createIssue(url, queryParams)` Open the url with query params appended in a
-browser
+
    
 ## Github issue example   
    
 ```js
 log.errorHandler.startCatching({
   showDialog: false,
-  onError({ error, versions, createIssue }) {
+  onError({ createIssue, error, processType, versions }) {
+    if (processType === 'renderer') {
+      return;
+    }
+    
     electron.dialog.showMessageBox({
       title: 'An error occurred',
       message: error.message,
