@@ -13,12 +13,12 @@ try {
 
 module.exports = {
   executeJsInEveryWebContents(jsCode) {
-    electron?.WebContents?.getAllWebContents().forEach((webContents) => {
+    electron?.app?.on('web-contents-created', (_, webContents) => {
       // noinspection JSIgnoredPromiseFromCall
       webContents.executeJavaScript(jsCode);
     });
 
-    electron?.app?.on('web-contents-created', (_, webContents) => {
+    electron?.WebContents?.getAllWebContents().forEach((webContents) => {
       // noinspection JSIgnoredPromiseFromCall
       webContents.executeJavaScript(jsCode);
     });

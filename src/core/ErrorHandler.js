@@ -106,14 +106,15 @@ class ErrorHandler {
 
 function initializeRendererErrorHandler() {
   electronApi.executeJsInEveryWebContents(`
-    if (typeof electronLog === 'object') {
+    if (typeof electronLog === 'object' && !electronLog.errorHandler.attached) {
+      electronLog.errorHandler.attached = true;
       window.addEventListener('error', (event) => {
-        event.preventDefault();
-        electronLog.errorHandler.handleError(event.error);
+        event.preventDefault?.();
+        electronLog.errorHandler.handleError(event.error || event);
       });
       window.addEventListener('unhandledrejection', (event) => {
-        event.preventDefault();
-        electronLog.errorHandler.handleRejection(event.reason);
+        event.preventDefault?.();
+        electronLog.errorHandler.handleRejection(event.reason || event);
       });
     }
   `);
