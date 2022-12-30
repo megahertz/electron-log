@@ -1,9 +1,9 @@
 {
   "name": "electron-log",
-  "version": "5.0.0-beta.6",
+  "version": "5.0.0-beta.9",
   "description": "Just a simple logging module for your Electron application",
   "main": "src/index.js",
-  "browser": "src/renderer.js",
+  "browser": "src/renderer-sandboxed.js",
   "engines": {
     "node": ">= 14",
     "electron": ">= 13"
@@ -21,7 +21,10 @@
   "repository": "megahertz/electron-log",
   "files": [
     "!**/__specs__",
-    "src/*"
+    "src/*",
+    "main.js",
+    "renderer.js",
+    "renderer-sandboxed.js"
   ],
   "keywords": [
     "electron",

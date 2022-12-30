@@ -140,6 +140,10 @@ module.exports = {
 
     dialog.showErrorBox(title, message);
   },
+
+  whenAppReady() {
+    return electron?.app?.whenReady() || Promise.resolve();
+  },
 };
 
 function getApp() {

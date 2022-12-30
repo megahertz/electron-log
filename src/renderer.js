@@ -74,11 +74,12 @@ try {
   // No module available, sandboxed
 }
 
-exposeElectronLog(instances.default);
-
-ipcRenderer?.on('__ELECTRON_LOG_IPC__', (_, message) => {
-  (instances[message.logId] || instances.default).transports.console(message);
-});
+if (typeof electronLog === 'undefined') {
+  exposeElectronLog(instances.default);
+  ipcRenderer?.on('__ELECTRON_LOG_IPC__', (_, message) => {
+    (instances[message.logId] || instances.default).transports.console(message);
+  });
+}
 
 function create({
   levels = ['error', 'warn', 'info', 'verbose', 'debug', 'silly'],
@@ -161,8 +162,15 @@ function exposeElectronLog(logger) {
   }
 
   if (process.contextIsolated) {
-    contextBridge.exposeInMainWorld('electronLog', logger);
-  } else if (typeof window === 'object') {
+    try {
+      contextBridge.exposeInMainWorld('electronLog', logger);
+      return;
+    } catch {
+      // Sometimes this files can be included twice
+    }
+  }
+
+  if (typeof window === 'object') {
     window.electronLog = logger;
   } else if (typeof global === 'object') {
     global.electronLog = logger;
