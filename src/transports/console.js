@@ -41,8 +41,8 @@ function consoleTransportFactory(logger) {
     useStyles: process.env.FORCE_STYLES,
 
     writeFn({ message }) {
-      const consoleMethod = consoleMethods[message.level || 'info'];
-      consoleMethod(...message.data);
+      const consoleLogFn = consoleMethods[message.level] || consoleMethods.info;
+      consoleLogFn(...message.data);
     },
   });
 
