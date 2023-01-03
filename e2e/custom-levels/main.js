@@ -10,11 +10,7 @@ async function createWindow() {
 
   log.notice('log from the main process');
 
-  const win = new BrowserWindow({
-    webPreferences: {
-      contextIsolation: false,
-    },
-  });
+  const win = new BrowserWindow();
 
   const t = process.argv.includes('--test') ? 'true' : 'false';
   await win.loadURL(`file://${path.join(__dirname, 'index.html')}?test=${t}`);

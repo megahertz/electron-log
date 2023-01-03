@@ -120,6 +120,19 @@ function create({
     scope(name) {
       return create({ levels, logId, scope: name });
     },
+
+    logData(data, { level }) {
+      const message = {
+        data,
+        date: new Date(),
+        level,
+        logId,
+        scope,
+        variables: logger.variables,
+      };
+      Object.values(logger.transports)
+        .forEach((t) => t({ ...message, data: [...data] }));
+    },
   };
 
   synchronizeOptionsWithMainProcess(logger);
@@ -131,8 +144,8 @@ function create({
 
   logger.initializeLevels = () => {
     for (const level of logger.levels) {
-      logger.functions[level] = (...args) => log(level, args);
-      logger.functions.log = (...args) => log('info', args);
+      logger.functions[level] = (...arr) => logger.logData(arr, { level });
+      logger.functions.log = (...arr) => logger.logData(arr, { level: 'info' });
     }
 
     Object.assign(logger, logger.functions);
@@ -140,19 +153,6 @@ function create({
 
   logger.initializeLevels();
   instances[logId] = logger;
-
-  function log(level, data) {
-    const message = {
-      data,
-      date: new Date(),
-      level,
-      logId,
-      scope,
-      variables: logger.variables,
-    };
-    Object.values(logger.transports)
-      .forEach((t) => t({ ...message, data: [...data] }));
-  }
 
   return logger;
 }

@@ -8,7 +8,11 @@
 <body>
 
 <script>
-  electronLog.notice('log through global object');
+  // TODO: Looking for a more convenient way. According to context isolation
+  // restrictions, that's not possible to add a new field to electronLog
+  // dynamically
+  electronLog.logData(['log through global object'] , { level: 'notice'});
+
   if (window.location.href.includes('test=true')) {
     setTimeout(() => window.close(), 50);
   }
