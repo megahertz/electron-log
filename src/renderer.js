@@ -181,7 +181,7 @@ function exposeElectronLog(logger) {
 function synchronizeOptionsWithMainProcess(logger) {
   const logId = logger.logId;
 
-  ipcRenderer.invoke('__ELECTRON_LOG__', { cmd: 'getOptions', logId })
+  ipcRenderer?.invoke('__ELECTRON_LOG__', { cmd: 'getOptions', logId })
     .then(({ levels }) => {
       logger.levels = levels;
       logger.initializeLevels();

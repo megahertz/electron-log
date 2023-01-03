@@ -10,5 +10,5 @@ warn('test');
 // Type export
 let transport: FileTransport;
 
-const newInstance = create('test');
+const newInstance = create({ logId: 'test' });
 newInstance.info('test');
