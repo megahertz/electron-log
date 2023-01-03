@@ -122,6 +122,8 @@ function create({
     },
   };
 
+  synchronizeOptionsWithMainProcess(logger);
+
   logger.transports = {
     console: consoleTransportFactory(logger),
     ipc: ipcTransportFactory(logger),
@@ -151,8 +153,6 @@ function create({
     Object.values(logger.transports)
       .forEach((t) => t({ ...message, data: [...data] }));
   }
-
-  synchronizeOptionsWithMainProcess(logger);
 
   return logger;
 }
