@@ -78,10 +78,14 @@ class Logger {
     return this.errorHandler.startCatching(options);
   }
 
-  create(logId) {
+  create(options) {
+    if (typeof options === 'string') {
+      options = { logId: options };
+    }
+
     return new Logger({
+      ...options,
       isDev: this.isDev,
-      logId,
       transportFactories: this.transportFactories,
     });
   }

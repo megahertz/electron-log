@@ -86,16 +86,8 @@ function create({
   logId = 'default',
   scope = undefined,
 } = {}) {
-  const logFunctions = Object.fromEntries(
-    levels.map((level) => [level, (...args) => log(level, args)]),
-  );
-
-  logFunctions.log = (...args) => log('info', args);
-
   const logger = {
-    ...logFunctions,
-    scopeName: scope,
-
+    create,
     errorHandler: new RendererErrorHandler({
       logFn({ error, errorName, showDialog }) {
         logger.transports.console({
@@ -117,17 +109,16 @@ function create({
         });
       },
     }),
-
-    functions: logFunctions,
-
+    functions: {},
+    levels,
+    scopeName: scope,
     transports: {},
+    variables: {
+      processType: 'renderer',
+    },
 
     scope(name) {
       return create({ levels, logId, scope: name });
-    },
-
-    variables: {
-      processType: 'renderer',
     },
   };
 
@@ -136,6 +127,16 @@ function create({
     ipc: ipcTransportFactory(logger),
   };
 
+  logger.initializeLevels = () => {
+    for (const level of logger.levels) {
+      logger.functions[level] = (...args) => log(level, args);
+      logger.functions.log = (...args) => log('info', args);
+    }
+
+    Object.assign(logger, logger.functions);
+  };
+
+  logger.initializeLevels();
   instances[logId] = logger;
 
   function log(level, data) {
@@ -147,11 +148,11 @@ function create({
       scope,
       variables: logger.variables,
     };
-    pingMainProcessOnFirstCall(logId);
-
     Object.values(logger.transports)
       .forEach((t) => t({ ...message, data: [...data] }));
   }
+
+  synchronizeOptionsWithMainProcess(logger);
 
   return logger;
 }
@@ -177,17 +178,17 @@ function exposeElectronLog(logger) {
   }
 }
 
-function pingMainProcessOnFirstCall(logId) {
-  if (pingMainProcessOnFirstCall.wasCalled) {
-    return;
-  }
-
-  pingMainProcessOnFirstCall.wasCalled = true;
+function synchronizeOptionsWithMainProcess(logger) {
+  const logId = logger.logId;
 
   ipcRenderer.invoke('__ELECTRON_LOG__', { cmd: 'getOptions', logId })
+    .then(({ levels }) => {
+      logger.levels = levels;
+      logger.initializeLevels();
+    })
     // eslint-disable-next-line no-console
     .catch((e) => console.error(new Error(
-      'electron-log isn\'t initialized in the renderer process. '
+      'electron-log isn\'t initialized in the main process. '
       + `Please call log.initialize() before. ${e.message}`,
     )));
 }
@@ -249,8 +250,10 @@ function consoleTransportFactory(logger) {
     },
 
     writeFn({ level, data }) {
+      const consoleLogFn = consoleMethods[level] || consoleMethods.info;
+
       // make an empty call stack
-      setTimeout(() => consoleMethods[level || 'info'](...data));
+      setTimeout(() => consoleLogFn(...data));
     },
 
   });

@@ -13,6 +13,7 @@
  - A new `tranforms` property is added for each transport. It allows to
    configure transformations preformed on message data. See
    [transforms](docs/extend.md#transforms) for more information.
+ - `log.create(logId)` is replaced by `log.create({ logId })`
 
 ### File transport
  

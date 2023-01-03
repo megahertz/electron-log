@@ -490,7 +490,7 @@ declare namespace Logger {
     /**
      * Create a new electron-log instance
      */
-    create(logId: string): Logger.Logger;
+    create(options: { logId: string }): Logger.Logger;
 
     initialize(
       options?: { preload?: string | boolean, spyRendererConsole?: boolean },

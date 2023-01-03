@@ -1,0 +1,12 @@
+{
+  "name": "electron-log-e2e-custom-levels",
+  "version": "1.0.0",
+  "private": true,
+  "main": "main.js",
+  "scripts": {
+    "start": "../../node_modules/.bin/electron ."
+  },
+  "devDependencies": {
+    "electron": "*"
+  }
+}

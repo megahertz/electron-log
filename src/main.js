@@ -29,11 +29,13 @@ electronApi.onIpc('__ELECTRON_LOG__', (_, message) => {
   });
 });
 
-electronApi.onIpcInvoke('__ELECTRON_LOG__', (_, { cmd = '' }) => {
+electronApi.onIpcInvoke('__ELECTRON_LOG__', (_, { cmd = '', logId }) => {
   switch (cmd) {
     case 'getOptions': {
-      // Currently, used as a ping response only, TBD
-      return {};
+      const logger = Logger.getInstance({ logId });
+      return {
+        levels: logger.levels,
+      };
     }
 
     default: {
