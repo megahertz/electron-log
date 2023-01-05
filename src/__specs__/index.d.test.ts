@@ -12,3 +12,5 @@ let transport: FileTransport;
 
 const newInstance = create({ logId: 'test' });
 newInstance.info('test');
+
+electronLog.info();

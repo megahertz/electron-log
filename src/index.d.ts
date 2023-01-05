@@ -511,3 +511,11 @@ declare const Logger: Logger.Logger & {
   default: Logger.Logger;
 };
 export = Logger;
+
+declare global {
+  const electronLog: Logger.Logger;
+  interface Window {
+    electronLog: Logger.Logger;
+  }
+}
+
