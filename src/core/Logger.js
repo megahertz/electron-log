@@ -51,7 +51,7 @@ class Logger {
     }
 
     this.errorHandler = errorHandler;
-    errorHandler.setOptions({
+    errorHandler?.setOptions({
       logFn: (...args) => this.error(...args),
     });
 

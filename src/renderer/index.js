@@ -48,21 +48,23 @@ function createLogger() {
     },
   });
 
-  window.addEventListener('message', (event) => {
-    const { cmd, logId, ...message } = event.data || {};
-    const instance = Logger.getInstance({ logId });
+  if (typeof window === 'object') {
+    window.addEventListener('message', (event) => {
+      const { cmd, logId, ...message } = event.data || {};
+      const instance = Logger.getInstance({ logId });
 
-    switch (cmd) {
-      case 'message': {
-        instance.processMessage(message, { transports: ['console'] });
-        break;
-      }
+      switch (cmd) {
+        case 'message': {
+          instance.processMessage(message, { transports: ['console'] });
+          break;
+        }
 
-      default: {
-        consoleError('Unknown message', cmd, message);
+        default: {
+          consoleError('Unknown message', cmd, message);
+        }
       }
-    }
-  });
+    });
+  }
 
   // To support custom levels
   return new Proxy(logger, {

@@ -1,8 +1,8 @@
 'use strict';
 
-const log = require('../preload');
+const log = require('..');
 
-describe('renderer', () => {
+describe('index', () => {
   describe('serialize', () => {
     const serialize = log.transports.ipc.serializeFn;
 
