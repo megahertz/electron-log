@@ -1,7 +1,7 @@
 'use strict';
 
 const consoleTransportFactory = require('../console');
-const Logger = require('../../core/Logger');
+const Logger = require('../../../core/Logger');
 
 describe('Console transport', () => {
   describe('with default template', () => {

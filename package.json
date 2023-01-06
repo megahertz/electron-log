@@ -3,7 +3,7 @@
   "version": "5.0.0-beta.13",
   "description": "Just a simple logging module for your Electron application",
   "main": "src/index.js",
-  "browser": "src/renderer-sandboxed.js",
+  "browser": "src/renderer/index.js",
   "engines": {
     "node": ">= 14",
     "electron": ">= 13"
@@ -23,8 +23,7 @@
     "!**/__specs__",
     "src/*",
     "main.js",
-    "renderer.js",
-    "renderer-sandboxed.js"
+    "renderer.js"
   ],
   "keywords": [
     "electron",

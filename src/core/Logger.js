@@ -1,7 +1,7 @@
 'use strict';
 
-const ErrorHandler = require('./ErrorHandler');
-const { initialize } = require('./initialize');
+const ErrorHandler = require('../main/ErrorHandler');
+const { initialize } = require('../main/initialize');
 const scopeFactory = require('./scope');
 
 /**

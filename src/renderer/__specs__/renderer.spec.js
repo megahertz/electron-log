@@ -1,6 +1,6 @@
 'use strict';
 
-const log = require('../renderer');
+const log = require('../preload');
 
 describe('renderer', () => {
   describe('serialize', () => {

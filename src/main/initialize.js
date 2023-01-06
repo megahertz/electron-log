@@ -27,7 +27,7 @@ module.exports = {
 function initializePreload(preloadOption) {
   const preloadPath = typeof preloadOption === 'string'
     ? preloadOption
-    : path.resolve(__dirname, '../renderer.js');
+    : path.resolve(__dirname, '../renderer/preload.js');
 
   if (!fs.existsSync(preloadPath)) {
     throw new Error(`Preload file ${preloadPath} doesn't exist`);

@@ -2,7 +2,7 @@
 
 const os = require('os');
 const path = require('path');
-const electronApi = require('../../core/electronApi');
+const electronApi = require('../../electronApi');
 const packageJson = require('./packageJson');
 
 module.exports = {

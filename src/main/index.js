@@ -1,10 +1,10 @@
 'use strict';
 
-const electronApi = require('./core/electronApi');
+const electronApi = require('./electronApi');
 const transportConsole = require('./transports/console');
 const transportFile = require('./transports/file');
 const transportRemote = require('./transports/remote');
-const Logger = require('./core/Logger');
+const Logger = require('../core/Logger');
 
 module.exports = new Logger({
   isDev: electronApi.isDev(),

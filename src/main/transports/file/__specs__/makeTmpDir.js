@@ -3,7 +3,7 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { rmDir } = require('../../../__specs__/utils/fsHelpers');
+const { rmDir } = require('../../../../__specs__/utils/fsHelpers');
 
 module.exports = makeTmpDir;
 

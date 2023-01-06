@@ -2,11 +2,11 @@
 
 const os = require('os');
 const path = require('path');
-const TestLogReader = require('../../../__specs__/utils/TestLogReader');
+const TestLogReader = require('../../../../__specs__/utils/TestLogReader');
 const FileRegistry = require('../FileRegistry');
 const fileTransportFactory = require('../index');
 const makeTmpDir = require('./makeTmpDir');
-const Logger = require('../../../core/Logger');
+const Logger = require('../../../../core/Logger');
 
 describe('File transport', () => {
   const TEST_MESSAGE = createMessage('test');

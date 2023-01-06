@@ -7,7 +7,7 @@ const File = require('../File');
 const makeTmpDir = require('./makeTmpDir');
 
 describe('File', () => {
-  const LICENSE_PATH = path.join(__dirname, '../../../../LICENSE');
+  const LICENSE_PATH = path.join(__dirname, '../../../../../LICENSE');
   const LICENSE_FILE_SIZE = 1082;
 
   afterEach(() => {

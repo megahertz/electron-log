@@ -1,6 +1,6 @@
 'use strict';
 
-const electronApi = require('../core/electronApi');
+const electronApi = require('../electronApi');
 const { maxDepth, toJSON } = require('../transforms/object');
 const { transform } = require('../transforms/transform');
 
