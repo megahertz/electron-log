@@ -1,6 +1,6 @@
 # Initialize the logger in a renderer process
 
-Previously, in v4 the logger instances worked independently in 
+Previously in v4, the logger instances worked independently in 
 main and renderer processes. But currently, there are a lot of restrictions
 for code in a renderer processes by default. So now all the logic performed
 in the main process. A logger in the renderer processes just collects the data
@@ -25,7 +25,7 @@ import log from 'electron-log';
 log.info('Log from the renderer');
 ````
 
-If for some reason it doesn't work with your transpiller, try the following
+If for some reason it doesn't work with your bundler, try the following
 import in the renderer process:
 
 `import log from 'electron-log/renderer';`
@@ -44,8 +44,8 @@ log.initialize();
 __electronLog.info('Log from the renderer');
 ````
 
-Please be aware that __electron global variable only exposes log functions in
-that case.
+Please be aware that `__electronLog` global variable only exposes log functions,
+no errorHandler, scope and other members.
 
 ## Spy on `console.log` calls
 
