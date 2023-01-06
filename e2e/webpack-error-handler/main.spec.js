@@ -7,12 +7,13 @@ const app = new E2eApp({ appPath: __dirname });
 
 test(app.appName, async () => {
   const logReader = await app.run();
+
   expect(logReader.format()).toEqual([
     'log from the main process',
     jasmine.stringContaining('Unhandled main rejection'),
     jasmine.stringContaining('Unhandled main error'),
 
-    'log through global object',
+    'log from a renderer process',
     jasmine.stringContaining('Unhandled renderer error'),
     jasmine.stringContaining('Unhandled renderer rejection'),
   ]);

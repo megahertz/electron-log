@@ -8,23 +8,15 @@ and sends it to the main process through IPC.
 
 There are a few ways how a renderer logger could be configured.
 
-## Initialize a global instance
+## 1. Use some bundler and contextIsolation/sandbox enabled
 
-**main.js**
+This way also works without bundler when nodeIntegration is enabled.
+
 ```js
 import log from 'electron-log';
 
-// It makes a renderer logger available trough a global electronLog instance
-log.initialize({ preload: true });
+log.initialize();
 ````
-
-**renderer.js**
-```js
-electronLog.info('Log from the renderer');
-````
-
-if you use a code bundler like webpack, it's possible to use more traditional
-approach in a render process:
 
 **renderer.ts**
 ```typescript
@@ -33,17 +25,27 @@ import log from 'electron-log';
 log.info('Log from the renderer');
 ````
 
-Under the hood, it adds an internal preload script for any WebContents. It
-should be called before the first BrowserWindow is created.
+If for some reason it doesn't work with your transpiller, try the following
+import in the renderer process:
 
-When something goes wrong with a bundler, you can try to import a renderer code
-explicitly:
+`import log from 'electron-log/renderer';`
 
-```typescript
-import log from 'electron-log/renderer';
+## Use a global instance when no bundler used and nodeIntegration is disabled
 
-log.info('Log from the renderer');
+**main.js**
+```js
+import log from 'electron-log';
+
+log.initialize();
 ````
+
+**renderer.js**
+```js
+__electronLog.info('Log from the renderer');
+````
+
+Please be aware that __electron global variable only exposes log functions in
+that case.
 
 ## Spy on `console.log` calls
 
@@ -77,5 +79,4 @@ ipcRenderer.send('__ELECTRON_LOG__', {
   level: 'info',
   // ... some other optional fields like scope, logId and so on
 });
-
 ```

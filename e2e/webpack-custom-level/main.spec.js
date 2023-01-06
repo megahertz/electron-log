@@ -9,6 +9,6 @@ test(app.appName, async () => {
   const logReader = await app.run();
   expect(logReader.format('{level}: {text}')).toEqual([
     'notice: log from the main process',
-    'notice: log through global object',
+    'notice: log from a renderer process',
   ]);
 }, app.timeout);

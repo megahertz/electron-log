@@ -395,11 +395,6 @@ declare namespace Logger {
 
   interface ErrorHandlerOptions {
     /**
-     * If true, error handler is initialized for all renderer processes too
-     */
-    includeRenderer?: boolean;
-
-    /**
      * Default true for the main process. Set it to false to prevent showing a
      * default electron error dialog
      */
@@ -513,9 +508,9 @@ declare const Logger: Logger.Logger & {
 export = Logger;
 
 declare global {
-  const electronLog: Logger.Logger;
+  const __electronLog: Logger.LogFunctions;
   interface Window {
-    electronLog: Logger.Logger;
+    __electronLog: Logger.LogFunctions;
   }
 }
 

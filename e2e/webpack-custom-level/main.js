@@ -5,16 +5,18 @@ const path = require('path');
 const log = require('../..');
 
 async function createWindow() {
-  log.initialize({ preload: true });
-  log.errorHandler.startCatching({ showDialog: false });
+  log.initialize();
+  log.addLevel('notice', 2);
 
-  log.info('log from the main process');
+  log.notice('log from the main process');
 
-  // noinspection ES6MissingAwait
-  Promise.reject(new Error('Unhandled main rejection'));
-  setTimeout(() => { throw new Error('Unhandled main error') }, 0);
-
-  const win = new BrowserWindow();
+  const win = new BrowserWindow({
+    webPreferences: {
+      contextIsolation: false,
+      nodeIntegration: true,
+      sandbox: false,
+    },
+  });
 
   const t = process.argv.includes('--test') ? 'true' : 'false';
   await win.loadURL(`file://${path.join(__dirname, 'index.html')}?test=${t}`);

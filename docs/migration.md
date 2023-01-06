@@ -29,12 +29,11 @@ it should be initialized in the main process before the first window is created:
 ```js
 import log from 'electron-log';
 
-// It makes a renderer logger available trough a global electronLog instance
-log.initialize({ preload: true });
+// It preloads electron-log IPC code in renderer processes
+log.initialize();
 ````
 
-After that, the `electronLog` global variable is available. If you use some
-bundler or sandbox mode is disabled, you can still require the library:
+After that, you can use the library as before.
 
 **renderer.ts**
 ```typescript
@@ -60,10 +59,6 @@ To make callback names more obvious, some options where renamed:
 ## Error catching
 
  - log.catchErrors -> log.errorHandler.startCatching
-
-Now it's called in the main process only. There's new option `includeRenderer`
-which is true by default. When enabled, it also initializes error handler on
-a renderer side under the hood.
 
 ## Migration from v3 to v4
 

@@ -1,7 +1,5 @@
 'use strict';
 
-const ErrorHandler = require('../main/ErrorHandler');
-const { initialize } = require('../main/initialize');
 const scopeFactory = require('./scope');
 
 /**
@@ -22,30 +20,40 @@ class Logger {
   logId = null;
   scope = scopeFactory(this);
   transports = {};
-  variables = { processType: process.type };
+  variables = {};
 
   constructor({
+    allowUnknownLevel = false,
+    errorHandler,
+    initializeFn,
     isDev = false,
     levels = ['error', 'warn', 'info', 'verbose', 'debug', 'silly'],
     logId,
     transportFactories = {},
+    variables,
   } = {}) {
     this.addLevel = this.addLevel.bind(this);
     this.create = this.create.bind(this);
     this.logData = this.logData.bind(this);
     this.processMessage = this.processMessage.bind(this);
 
+    this.allowUnknownLevel = allowUnknownLevel;
+    this.initializeFn = initializeFn;
     this.isDev = isDev;
     this.levels = levels;
     this.logId = logId;
     this.transportFactories = transportFactories;
+    this.variables = variables || {};
 
     this.addLevel('log', false);
     for (const name of this.levels) {
       this.addLevel(name, false);
     }
 
-    this.errorHandler = new ErrorHandler({ logFn: this.error });
+    this.errorHandler = errorHandler;
+    errorHandler.setOptions({
+      logFn: (...args) => this.error(...args),
+    });
 
     for (const [name, factory] of Object.entries(transportFactories)) {
       this.transports[name] = factory(this);
@@ -85,8 +93,11 @@ class Logger {
 
     return new Logger({
       ...options,
+      errorHandler: this.errorHandler,
+      initializeFn: this.initializeFn,
       isDev: this.isDev,
       transportFactories: this.transportFactories,
+      variables: { ...this.variables },
     });
   }
 
@@ -101,7 +112,7 @@ class Logger {
   }
 
   initialize({ preload = true, spyRendererConsole = false } = {}) {
-    initialize({ logger: this, preload, spyRendererConsole });
+    this.initializeFn({ logger: this, preload, spyRendererConsole });
   }
 
   logData(data, options = {}) {
@@ -118,10 +129,15 @@ class Logger {
       return;
     }
 
+    let level = message.level;
+    if (!this.allowUnknownLevel) {
+      level = this.levels.includes(message.level) ? message.level : 'info';
+    }
+
     const normalizedMessage = {
       date: new Date(),
       ...message,
-      level: this.levels.includes(message.level) ? message.level : 'info',
+      level,
       variables: {
         ...this.variables,
         ...message.variables,
@@ -143,7 +159,7 @@ class Logger {
       }, normalizedMessage);
 
       if (transformedMessage) {
-        transFn(transformedMessage);
+        transFn({ ...transformedMessage, data: [...transformedMessage.data] });
       }
     }
   }

@@ -2,6 +2,7 @@
 
 module.exports = {
   extends: 'airbnb-base',
+  root: true,
   env: {
     es6: true,
     jasmine: true,

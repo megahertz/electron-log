@@ -5,7 +5,7 @@ const path = require('path');
 const log = require('../..');
 
 async function createWindow() {
-  log.initialize({ preload: true });
+  log.initialize();
   log.info('log from the main process');
 
   const win = new BrowserWindow();

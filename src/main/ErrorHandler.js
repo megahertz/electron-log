@@ -3,7 +3,6 @@
 const electronApi = require('./electronApi');
 
 class ErrorHandler {
-  includeRenderer = true;
   isActive = false;
   logFn = null;
   onError = null;
@@ -56,11 +55,7 @@ class ErrorHandler {
     }
   }
 
-  setOptions({ includeRenderer, logFn, onError, showDialog }) {
-    if (typeof includeRenderer === 'function') {
-      this.includeRenderer = includeRenderer;
-    }
-
+  setOptions({ logFn, onError, showDialog }) {
     if (typeof logFn === 'function') {
       this.logFn = logFn;
     }
@@ -74,19 +69,15 @@ class ErrorHandler {
     }
   }
 
-  startCatching({ onError, showDialog, includeRenderer } = {}) {
+  startCatching({ onError, showDialog } = {}) {
     if (this.isActive) {
       return;
     }
 
     this.isActive = true;
-    this.setOptions({ includeRenderer, onError, showDialog });
+    this.setOptions({ onError, showDialog });
     process.on('uncaughtException', this.handleError);
     process.on('unhandledRejection', this.handleRejection);
-
-    if (this.includeRenderer) {
-      initializeRendererErrorHandler();
-    }
   }
 
   stopCatching() {
@@ -111,22 +102,6 @@ class ErrorHandler {
       : new Error(JSON.stringify(reason));
     this.handle(error, { errorName: 'Unhandled rejection' });
   }
-}
-
-function initializeRendererErrorHandler() {
-  electronApi.executeJsInEveryWebContents(`
-    if (typeof electronLog === 'object' && !electronLog.errorHandler.attached) {
-      electronLog.errorHandler.attached = true;
-      window.addEventListener('error', (event) => {
-        event.preventDefault?.();
-        electronLog.errorHandler.handleError(event.error || event);
-      });
-      window.addEventListener('unhandledrejection', (event) => {
-        event.preventDefault?.();
-        electronLog.errorHandler.handleRejection(event.reason || event);
-      });
-    }
-  `);
 }
 
 function normalizeError(e) {

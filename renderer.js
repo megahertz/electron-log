@@ -1,5 +1,5 @@
 'use strict';
 
-const renderer = require('./src/renderer/preload');
+const renderer = require('./src/renderer');
 
 module.exports = renderer;

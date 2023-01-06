@@ -21,6 +21,7 @@
   "repository": "megahertz/electron-log",
   "files": [
     "!**/__specs__",
+    "!**/.*",
     "src/*",
     "main.js",
     "renderer.js"

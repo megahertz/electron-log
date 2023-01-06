@@ -8,7 +8,7 @@
 <body>
 
 <script>
-  electronLog.warn('log from the second renderer process');
+  __electronLog.warn('log from the second renderer process');
 
   if (window.location.href.includes('test=true')) {
     setTimeout(() => window.close(), 50);

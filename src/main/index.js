@@ -1,18 +1,25 @@
 'use strict';
 
 const electronApi = require('./electronApi');
+const { initialize } = require('./initialize');
 const transportConsole = require('./transports/console');
 const transportFile = require('./transports/file');
 const transportRemote = require('./transports/remote');
 const Logger = require('../core/Logger');
+const ErrorHandler = require('./ErrorHandler');
 
 module.exports = new Logger({
+  errorHandler: new ErrorHandler(),
+  initializeFn: initialize,
   isDev: electronApi.isDev(),
   logId: 'default',
   transportFactories: {
     console: transportConsole,
     file: transportFile,
     remote: transportRemote,
+  },
+  variables: {
+    processType: 'main',
   },
 });
 module.exports.default = module.exports;
@@ -35,6 +42,7 @@ electronApi.onIpcInvoke('__ELECTRON_LOG__', (_, { cmd = '', logId }) => {
       const logger = Logger.getInstance({ logId });
       return {
         levels: logger.levels,
+        logId,
       };
     }
 

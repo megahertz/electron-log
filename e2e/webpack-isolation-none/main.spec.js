@@ -10,6 +10,5 @@ test(app.appName, async () => {
   expect(logReader.format()).toEqual([
     'log from the main process',
     'log from renderer',
-    'log through global object',
   ]);
 }, app.timeout);

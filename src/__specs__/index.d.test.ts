@@ -1,5 +1,5 @@
 import defaultLog from '../index';
-import { create, FileTransport, warn } from '../index';
+import { create, ConsoleTransport, warn } from '../index';
 
 // Default module export
 defaultLog.warn('test');
@@ -8,9 +8,10 @@ defaultLog.warn('test');
 warn('test');
 
 // Type export
-let transport: FileTransport;
+const transport: ConsoleTransport = defaultLog.transports.console
+transport({ data: [], date: new Date(), level: 'info' })
 
 const newInstance = create({ logId: 'test' });
 newInstance.info('test');
 
-electronLog.info();
+__electronLog.info();

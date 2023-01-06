@@ -2,9 +2,9 @@
 
 electron-log can be used to collect all unhandled errors/rejections
 
-To initialize catching, call the `log.errorHandler.startCatching` method in
-the main process. It initializes catching for both main and renderer processes
-at once.
+To initialize catching, call the `log.errorHandler.startCatching` method. It
+should be done in both main and renderer processes if you want to collect logs
+on both sides.
 
 #### `log.errorHandler.startCatching(options?)`
 
@@ -19,12 +19,6 @@ Stop error catching
 Process an error. Works even if catching isn't started.
 
 ## Options
-   
-#### `includeRenderer` {boolean}
-
-Catch errors from renderer processes
-
-Default: `true`
 
 #### `showDialog` {boolean}
 
@@ -40,7 +34,7 @@ error dialog for any error.
 Default: `null`
 
 Attach a custom error handler. If the handler returns false, this error will
-not be processed.
+not be processed. In a renderer process only the `error` property available.
 
 `createIssue(url, queryParams)` Open the url with query params appended in a
 browser

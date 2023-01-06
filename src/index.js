@@ -6,7 +6,9 @@ const isRenderer = typeof process === 'undefined'
   || (process.type === 'renderer' || process.type === 'worker');
 
 if (isRenderer) {
-  module.exports = require('./renderer/preload');
+  // Makes sense when contextIsolation/sandbox disabled
+  require('./renderer/preload');
+  module.exports = require('./renderer');
 } else {
   module.exports = require('./main');
 }
