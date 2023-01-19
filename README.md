@@ -40,19 +40,15 @@ log.info('Log from the main process');
 
 ### Renderer process
 
-Once the logger initialized in the main process using `log.initialize`, a
-global `electronLog` instance is available inside any renderer process.
-
-```js
-electronLog.info('Log from the renderer process');
-```
-
 If a bundler is used, you can just import the module:
 
 ```typescript
 import log from 'electron-log/renderer';
 log.info('Log from the renderer process');
 ```
+
+Without a bundler, you can use a global variable `__electronLog`. It contains
+only log functions like `info`, `warn` and so on.
 
 There are a few other options how a logger can be initialized for a renderer
 process. [Read more](docs/initialize.md).
