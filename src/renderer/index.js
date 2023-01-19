@@ -1,8 +1,5 @@
 'use strict';
 
-// eslint-disable-next-line no-console
-const consoleError = console.error;
-
 const Logger = require('../core/Logger');
 const RendererErrorHandler = require('./lib/RendererErrorHandler');
 const transportConsole = require('./lib/transports/console');
@@ -53,15 +50,8 @@ function createLogger() {
       const { cmd, logId, ...message } = event.data || {};
       const instance = Logger.getInstance({ logId });
 
-      switch (cmd) {
-        case 'message': {
-          instance.processMessage(message, { transports: ['console'] });
-          break;
-        }
-
-        default: {
-          consoleError('Unknown message', cmd, message);
-        }
+      if (cmd === 'message') {
+        instance.processMessage(message, { transports: ['console'] });
       }
     });
   }
