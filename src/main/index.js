@@ -8,7 +8,7 @@ const transportRemote = require('./transports/remote');
 const Logger = require('../core/Logger');
 const ErrorHandler = require('./ErrorHandler');
 
-module.exports = new Logger({
+const defaultLogger = new Logger({
   errorHandler: new ErrorHandler(),
   initializeFn: initialize,
   isDev: electronApi.isDev(),
@@ -22,6 +22,15 @@ module.exports = new Logger({
     processType: 'main',
   },
 });
+
+defaultLogger.processInternalErrorFn = (e) => {
+  defaultLogger.transports.console.writeFn({
+    data: ['Unhandled electron-log error', e],
+    level: 'error',
+  });
+};
+
+module.exports = defaultLogger;
 module.exports.default = module.exports;
 
 electronApi.onIpc('__ELECTRON_LOG__', (_, message) => {

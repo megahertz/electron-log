@@ -35,6 +35,13 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-restricted-syntax': 'off',
     'no-unused-expressions': 'off',
+    'no-unused-vars': ['warn', {
+      argsIgnorePattern: '^_',
+      varsIgnorePattern: '^_',
+      vars: 'all',
+      args: 'after-used',
+      ignoreRestSiblings: true,
+    }],
     'no-use-before-define': 'off',
     'object-curly-newline': 'off',
     'prefer-destructuring': 'off',

@@ -35,7 +35,18 @@ function initialize({ contextBridge, ipcRenderer }) {
 
   const __electronLog = {
     sendToMain(message) {
-      ipcRenderer.send('__ELECTRON_LOG__', message);
+      try {
+        ipcRenderer.send('__ELECTRON_LOG__', message);
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.error('electronLog.sendToMain ', e, 'data:', message);
+
+        ipcRenderer.send('__ELECTRON_LOG__', {
+          cmd: 'errorHandler',
+          error: { message: e?.message, stack: e?.stack },
+          errorName: 'sendToMain',
+        });
+      }
     },
 
     log(...data) {

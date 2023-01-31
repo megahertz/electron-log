@@ -87,8 +87,15 @@ function ipcTransportRendererFactory(logger) {
       return;
     }
 
-    __electronLog.sendToMain(transport.serializeFn(message, {
-      depth: transport.depth,
-    }));
+    try {
+      __electronLog.sendToMain(transport.serializeFn(message, {
+        depth: transport.depth,
+      }));
+    } catch (e) {
+      logger.transports.console({
+        data: ['electronLog.transports.ipc', e, 'data:', message.data],
+        level: 'error',
+      });
+    }
   }
 }

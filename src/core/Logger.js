@@ -153,15 +153,23 @@ class Logger {
         continue;
       }
 
-      // eslint-disable-next-line arrow-body-style
-      const transformedMessage = this.hooks.reduce((msg, hook) => {
-        return msg ? hook(msg, transFn, transName) : msg;
-      }, normalizedMessage);
+      try {
+        // eslint-disable-next-line arrow-body-style
+        const transformedMsg = this.hooks.reduce((msg, hook) => {
+          return msg ? hook(msg, transFn, transName) : msg;
+        }, normalizedMessage);
 
-      if (transformedMessage) {
-        transFn({ ...transformedMessage, data: [...transformedMessage.data] });
+        if (transformedMsg) {
+          transFn({ ...transformedMsg, data: [...transformedMsg.data] });
+        }
+      } catch (e) {
+        this.processInternalErrorFn(e);
       }
     }
+  }
+
+  processInternalErrorFn(_e) {
+    // Do nothing by default
   }
 
   transportEntries(transports = this.transports) {
