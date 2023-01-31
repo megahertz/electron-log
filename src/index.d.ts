@@ -457,6 +457,11 @@ declare namespace Logger {
     levels: string[];
 
     /**
+     * ID of the current logger instance
+     */
+    logId: string;
+
+    /**
      * Create a new scope
      */
     scope: Scope;
