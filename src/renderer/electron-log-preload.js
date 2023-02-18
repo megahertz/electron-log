@@ -1,7 +1,5 @@
 'use strict';
 
-// eslint-disable-next-line no-console
-const consoleError = console.error;
 let electron = {};
 
 try {
@@ -11,7 +9,13 @@ try {
   // require isn't available, not from a preload script
 }
 
-initialize(electron);
+if (electron.ipcRenderer) {
+  initialize(electron);
+}
+
+if (typeof module === 'object') {
+  module.exports = initialize;
+}
 
 /**
  * @param {Electron.ContextBridge} contextBridge
@@ -28,7 +32,8 @@ function initialize({ contextBridge, ipcRenderer }) {
 
   ipcRenderer
     .invoke('__ELECTRON_LOG__', { cmd: 'getOptions' })
-    .catch((e) => consoleError(new Error(
+    // eslint-disable-next-line no-console
+    .catch((e) => console.error(new Error(
       'electron-log isn\'t initialized in the main process. '
       + `Please call log.initialize() before. ${e.message}`,
     )));

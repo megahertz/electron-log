@@ -1,15 +1,13 @@
 'use strict';
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const electronApi = require('./electronApi');
+const preloadInitializeFn = require('../renderer/electron-log-preload');
 
 module.exports = {
   initialize({ logger, preload = true, spyRendererConsole = false }) {
-    if (preload && spyRendererConsole) {
-      throw new Error('Either preload or spyRendererConsole should be set');
-    }
-
     electronApi.whenAppReady()
       .then(() => {
         if (preload) {
@@ -25,12 +23,23 @@ module.exports = {
 };
 
 function initializePreload(preloadOption) {
-  const preloadPath = typeof preloadOption === 'string'
+  let preloadPath = typeof preloadOption === 'string'
     ? preloadOption
-    : path.resolve(__dirname, '../renderer/preload.js');
+    : path.resolve(__dirname, '../renderer/electron-log-preload.js');
 
   if (!fs.existsSync(preloadPath)) {
-    throw new Error(`Preload file ${preloadPath} doesn't exist`);
+    preloadPath = path.join(
+      electronApi.getAppUserDataPath() || os.tmpdir(),
+      'electron-log-preload.js',
+    );
+    const preloadCode = `
+      try {
+        (${preloadInitializeFn.toString()})(require('electron'));
+      } catch(e) {
+        console.error(e);
+      }
+    `;
+    fs.writeFileSync(preloadPath, preloadCode, 'utf8');
   }
 
   electronApi.setPreloadFileForSessions({ filePath: preloadPath });

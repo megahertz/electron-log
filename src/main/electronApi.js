@@ -12,30 +12,13 @@ try {
 }
 
 module.exports = {
-  executeJsInEveryWebContents(jsCode) {
-    electron?.app?.on('web-contents-created', (_, webContents) => {
-      // noinspection JSIgnoredPromiseFromCall
-      webContents.executeJavaScript(jsCode);
-    });
-
-    electron?.WebContents?.getAllWebContents().forEach((webContents) => {
-      // noinspection JSIgnoredPromiseFromCall
-      webContents.executeJavaScript(jsCode);
-    });
+  getAppUserDataPath() {
+    return getPath('userData');
   },
 
   getName,
 
-  getPath(name) {
-    const app = getApp();
-    if (!app) return null;
-
-    try {
-      return app.getPath(name);
-    } catch (e) {
-      return null;
-    }
-  },
+  getPath,
 
   getVersion,
 
@@ -199,6 +182,17 @@ function getMacOsVersion() {
   }
 
   return release - 9;
+}
+
+function getPath(name) {
+  const app = getApp();
+  if (!app) return null;
+
+  try {
+    return app.getPath(name);
+  } catch (e) {
+    return null;
+  }
 }
 
 function sendIpcToMain(channel, message) {

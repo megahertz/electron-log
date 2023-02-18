@@ -7,7 +7,7 @@ const isRenderer = typeof process === 'undefined'
 
 if (isRenderer) {
   // Makes sense when contextIsolation/sandbox disabled
-  require('./renderer/preload');
+  require('./renderer/electron-log-preload');
   module.exports = require('./renderer');
 } else {
   module.exports = require('./main');
