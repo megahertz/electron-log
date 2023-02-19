@@ -1,0 +1,14 @@
+{
+  "name": "electron-log-e2e-vite-isolation-context-sandbox",
+  "version": "1.0.0",
+  "private": true,
+  "main": "dist/main.js",
+  "type": "commonjs",
+  "scripts": {
+    "build": "../../node_modules/.bin/vite build",
+    "start": "npm run build && ../../node_modules/.bin/electron ."
+  },
+  "devDependencies": {
+    "electron": "*"
+  }
+}
