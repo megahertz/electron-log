@@ -1,4 +1,4 @@
-import { RequestOptions } from 'http';
+import { ClientRequest, RequestOptions } from 'http';
 import { InspectOptions } from 'util';
 
 declare namespace Logger {
@@ -290,11 +290,23 @@ declare namespace Logger {
     requestOptions?: RequestOptions;
 
     /**
+     * Callback which is called on request error
+     */
+    processErrorFn: (error: Error) => void;
+
+    /**
      * Callback which transforms request body to string
      */
     makeBodyFn: (
       options: { logger: Logger, message: LogMessage, transport: Transport },
-    ) => string;
+    ) => any;
+
+    /**
+     * Callback which allows to customize request sending
+     */
+    sendRequestFn: (
+      options: { serverUrl: string, requestOptions: RequestOptions, body: any }
+    ) => ClientRequest;
 
     /**
      * Server URL

@@ -36,6 +36,25 @@ function remoteTransportFactory(logger) {
         { transports: ['console', 'file'] },
       );
     },
+
+    sendRequestFn({ serverUrl, requestOptions, body }) {
+      const httpTransport = serverUrl.startsWith('https:') ? https : http;
+
+      const request = httpTransport.request(serverUrl, {
+        method: 'POST',
+        ...requestOptions,
+        headers: {
+          'Content-Type': 'application/json',
+          'Content-Length': body.length,
+          ...requestOptions.headers,
+        },
+      });
+
+      request.write(body);
+      request.end();
+
+      return request;
+    },
   });
 
   function transport(message) {
@@ -49,11 +68,11 @@ function remoteTransportFactory(logger) {
       transport,
     });
 
-    const request = post(
-      transport.url,
-      transport.requestOptions,
-      Buffer.from(body, 'utf8'),
-    );
+    const request = transport.sendRequestFn({
+      serverUrl: transport.url,
+      requestOptions: transport.requestOptions,
+      body: Buffer.from(body, 'utf8'),
+    });
 
     request.on('error', (error) => transport.processErrorFn({
       error,
@@ -63,23 +82,4 @@ function remoteTransportFactory(logger) {
       transport,
     }));
   }
-}
-
-function post(serverUrl, requestOptions, body) {
-  const httpTransport = serverUrl.startsWith('https:') ? https : http;
-
-  const request = httpTransport.request(serverUrl, {
-    method: 'POST',
-    ...requestOptions,
-    headers: {
-      'Content-Type': 'application/json',
-      'Content-Length': body.length,
-      ...requestOptions.headers,
-    },
-  });
-
-  request.write(body);
-  request.end();
-
-  return request;
 }
