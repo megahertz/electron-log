@@ -6,6 +6,7 @@ const transportConsole = require('./lib/transports/console');
 const transportIpc = require('./lib/transports/ipc');
 
 module.exports = createLogger();
+module.exports.Logger = Logger;
 module.exports.default = module.exports;
 
 function createLogger() {

@@ -314,7 +314,7 @@ declare namespace Logger {
     url: string;
   }
 
-  interface Transports {
+  interface MainTransports {
     /**
      * Writes logs to console
      */
@@ -334,6 +334,20 @@ declare namespace Logger {
      * Sends a JSON POST request with LogMessage in the body to the specified url
      */
     remote: RemoteTransport;
+
+    [key: string]: Transport | null;
+  }
+
+  interface RendererTransports {
+    /**
+     * Writes logs to console
+     */
+    console: ConsoleTransport;
+
+    /**
+     * Communicates with a main process logger
+     */
+    ipc: Transport;
 
     [key: string]: Transport | null;
   }
@@ -481,7 +495,7 @@ declare namespace Logger {
     /**
      * Transport instances
      */
-    transports: Transports;
+    transports: { [key: string]: Transport | null; };
 
     /**
      * Variables used by formatters
@@ -504,10 +518,6 @@ declare namespace Logger {
      */
     create(options: { logId: string }): Logger.Logger;
 
-    initialize(
-      options?: { preload?: string | boolean, spyRendererConsole?: boolean },
-    ): void;
-
     /**
      * Low level method which logs the message using specified transports
      */
@@ -516,11 +526,23 @@ declare namespace Logger {
       options?: { transports?: Transport[] | string[] },
     ): void;
   }
+
+  interface MainLogger extends Logger {
+    initialize(
+      options?: { preload?: string | boolean, spyRendererConsole?: boolean },
+    ): void;
+
+    transports: MainTransports;
+  }
+
+  interface RendererLogger extends Logger {
+    transports: RendererTransports;
+  }
 }
 
 // Merge namespace with interface
-declare const Logger: Logger.Logger & {
-  default: Logger.Logger;
+declare const Logger: Logger.MainLogger & {
+  default: Logger.MainLogger;
 };
 export = Logger;
 

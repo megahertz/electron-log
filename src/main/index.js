@@ -31,6 +31,7 @@ defaultLogger.processInternalErrorFn = (e) => {
 };
 
 module.exports = defaultLogger;
+module.exports.Logger = Logger;
 module.exports.default = module.exports;
 
 electronApi.onIpc('__ELECTRON_LOG__', (_, message) => {
