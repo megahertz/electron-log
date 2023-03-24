@@ -17,6 +17,7 @@ module.exports = {
   ignorePatterns: [
     '*.ts',
     '**/dist/**',
+    '**/e2e/local*/**',
     '**/node_modules/**',
   ],
 
