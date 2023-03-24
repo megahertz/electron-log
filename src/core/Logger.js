@@ -18,7 +18,7 @@ class Logger {
   isDev = false;
   levels = null;
   logId = null;
-  scope = scopeFactory(this);
+  scope = null;
   transports = {};
   variables = {};
 
@@ -44,6 +44,7 @@ class Logger {
     this.logId = logId;
     this.transportFactories = transportFactories;
     this.variables = variables || {};
+    this.scope = scopeFactory(this);
 
     this.addLevel('log', false);
     for (const name of this.levels) {

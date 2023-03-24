@@ -1,6 +1,6 @@
 .idea
 .vscode
 dist
-e2e/local
+e2e/local*
 node_modules
 todo.md
