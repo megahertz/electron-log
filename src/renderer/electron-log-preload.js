@@ -38,7 +38,9 @@ function initialize({ contextBridge, ipcRenderer }) {
       + `Please call log.initialize() before. ${e.message}`,
     )));
 
-  const __electronLog = {
+  // Make a global variable __electronLog
+  // noinspection JSConstantReassignment
+  __electronLog = {
     sendToMain(message) {
       try {
         ipcRenderer.send('__ELECTRON_LOG__', message);
@@ -76,7 +78,5 @@ function initialize({ contextBridge, ipcRenderer }) {
 
   if (typeof window === 'object') {
     window.__electronLog = __electronLog;
-  } else if (typeof global === 'object') {
-    global.__electronLog = __electronLog;
   }
 }
