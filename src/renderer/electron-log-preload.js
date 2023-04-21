@@ -38,9 +38,7 @@ function initialize({ contextBridge, ipcRenderer }) {
       + `Please call log.initialize() before. ${e.message}`,
     )));
 
-  // Make a global variable __electronLog
-  // noinspection JSConstantReassignment
-  __electronLog = {
+  const electronLog = {
     sendToMain(message) {
       try {
         ipcRenderer.send('__ELECTRON_LOG__', message);
@@ -57,12 +55,12 @@ function initialize({ contextBridge, ipcRenderer }) {
     },
 
     log(...data) {
-      __electronLog.sendToMain({ data, level: 'info' });
+      electronLog.sendToMain({ data, level: 'info' });
     },
   };
 
   for (const level of ['error', 'warn', 'info', 'verbose', 'debug', 'silly']) {
-    __electronLog[level] = (...data) => __electronLog.sendToMain({
+    electronLog[level] = (...data) => electronLog.sendToMain({
       data,
       level,
     });
@@ -70,13 +68,16 @@ function initialize({ contextBridge, ipcRenderer }) {
 
   if (contextBridge && process.contextIsolated) {
     try {
-      contextBridge.exposeInMainWorld('__electronLog', __electronLog);
+      contextBridge.exposeInMainWorld('__electronLog', electronLog);
     } catch {
       // Sometimes this files can be included twice
     }
   }
 
   if (typeof window === 'object') {
-    window.__electronLog = __electronLog;
+    window.__electronLog = electronLog;
+  } else {
+    // noinspection JSConstantReassignment
+    __electronLog = electronLog;
   }
 }
