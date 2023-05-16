@@ -3,6 +3,7 @@
 const os = require('os');
 const path = require('path');
 
+/** @type {Electron.Main} */
 let electron;
 try {
   // eslint-disable-next-line global-require,import/no-extraneous-dependencies
@@ -51,7 +52,7 @@ module.exports = {
   },
 
   onEveryWebContentsEvent(message, handler) {
-    electron?.WebContents?.getAllWebContents().forEach((webContents) => {
+    electron?.webContents?.getAllWebContents().forEach((webContents) => {
       webContents.on(message, handler);
     });
 

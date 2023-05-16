@@ -50,7 +50,11 @@ function initializeSpyRendererConsole(logger) {
   electronApi.onEveryWebContentsEvent(
     'console-message',
     (event, level, message) => {
-      logger.processMessage({ data: [message], level: levels[level] });
+      logger.processMessage({
+        data: [message],
+        level: levels[level],
+        variables: { processType: 'renderer' },
+      });
     },
   );
 }
