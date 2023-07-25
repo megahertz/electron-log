@@ -55,8 +55,6 @@ function fileTransportFactory(logger, registry = globalRegistry) {
   });
 
   function transport(message) {
-    initializeOnFirstLogging();
-
     const file = getFile(message);
 
     const needLogRotation = transport.maxSize > 0
@@ -71,7 +69,7 @@ function fileTransportFactory(logger, registry = globalRegistry) {
     file.writeLine(content);
   }
 
-  function initializeOnFirstLogging() {
+  function initializeOnFirstAccess() {
     if (pathVariables) {
       return;
     }
@@ -100,6 +98,8 @@ function fileTransportFactory(logger, registry = globalRegistry) {
   }
 
   function getFile(msg) {
+    initializeOnFirstAccess();
+
     const vars = { ...pathVariables, fileName: transport.fileName };
 
     const filePath = transport.resolvePathFn(vars, msg);
