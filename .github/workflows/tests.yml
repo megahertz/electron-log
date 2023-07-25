@@ -18,7 +18,7 @@ jobs:
         include:
           # Different node version
           - os: ubuntu-latest
-            node_version: 18
+            node_version: latest
             electron_version: latest
             experimental: false
           - os: ubuntu-latest
