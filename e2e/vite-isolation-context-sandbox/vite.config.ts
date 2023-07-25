@@ -5,7 +5,6 @@ import electronPlugin from 'vite-plugin-electron'
 import electronRendererPlugin from 'vite-plugin-electron-renderer'
 
 const commonConfig: UserConfig = {
-  base: path.join(__dirname, 'dist'),
   resolve: {
     alias: {
       'electron-log': path.resolve(__dirname, '../..'),
