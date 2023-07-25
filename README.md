@@ -30,9 +30,9 @@ Install with [npm](https://npmjs.org/package/electron-log):
 ### Main process
 
 ```js
-import log from 'electron-log';
+import log from 'electron-log/main';
 
-// Optional, initialize the logger for any renderer processses
+// Optional, initialize the logger for any renderer process
 log.initialize({ preload: true });
 
 log.info('Log from the main process');
@@ -205,7 +205,10 @@ You can create multiple logger instances with different settings:
 import log from 'electron-log';
 
 const anotherLogger = log.create('anotherInstance');
-````
+```
+
+Be aware that you need to configure each instance (e.g. log file path) 
+separately.
 
 ### Logging scopes
 
