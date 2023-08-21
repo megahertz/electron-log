@@ -7,6 +7,7 @@ class RendererErrorHandler {
   logFn = null;
   onError = null;
   showDialog = false;
+  preventDefault = true;
 
   constructor({ logFn = null } = {}) {
     this.handleError = this.handleError.bind(this);
@@ -22,7 +23,7 @@ class RendererErrorHandler {
     showDialog = this.showDialog,
   } = {}) {
     try {
-      if (onError?.({ error }) !== false) {
+      if (onError?.({ error, errorName, processType: 'renderer' }) !== false) {
         logFn({ error, errorName, showDialog });
       }
     } catch {
@@ -30,13 +31,17 @@ class RendererErrorHandler {
     }
   }
 
-  setOptions({ logFn, onError, showDialog }) {
+  setOptions({ logFn, onError, preventDefault, showDialog }) {
     if (typeof logFn === 'function') {
       this.logFn = logFn;
     }
 
     if (typeof onError === 'function') {
       this.onError = onError;
+    }
+
+    if (typeof preventDefault === 'boolean') {
+      this.preventDefault = preventDefault;
     }
 
     if (typeof showDialog === 'boolean') {
@@ -53,11 +58,11 @@ class RendererErrorHandler {
     this.setOptions({ onError, showDialog });
 
     window.addEventListener('error', (event) => {
-      event.preventDefault?.();
+      this.preventDefault && event.preventDefault?.();
       this.handleError(event.error || event);
     });
     window.addEventListener('unhandledrejection', (event) => {
-      event.preventDefault?.();
+      this.preventDefault && event.preventDefault?.();
       this.handleRejection(event.reason || event);
     });
   }

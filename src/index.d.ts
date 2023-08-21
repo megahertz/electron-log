@@ -439,21 +439,53 @@ declare namespace Logger {
     }): void;
   }
 
-  interface ErrorHandler {
+  interface MainErrorHandlerOptions extends ErrorHandlerOptions {
+    /**
+     * Attach a custom error handler. If the handler returns false, this error
+     * will not be processed
+     */
+    onError?(options: {
+      createIssue: (url: string, data: ReportData | any) => void,
+      error: Error,
+      errorName: 'Unhandled' | 'Unhandled rejection',
+      processType: 'browser' | 'renderer',
+      versions: { app: string; electron: string; os: string },
+    }): void;
+  }
+
+  interface RendererErrorHandlerOptions extends ErrorHandlerOptions {
+    /**
+     * Attach a custom error handler. If the handler returns false, this error
+     * will not be processed
+     */
+    onError?(options: {
+      error: Error,
+      errorName: 'Unhandled' | 'Unhandled rejection',
+      processType: 'browser' | 'renderer',
+    }): void;
+
+    /**
+     * By default, error and unhandledrejection handlers call preventDefault to
+     * prevent error duplicating in console. Set false to disable it
+     */
+    preventDefault?: boolean;
+  }
+
+  interface ErrorHandler<T = ErrorHandlerOptions> {
     /**
      * Process an error by the ErrorHandler
      */
-    handle(error: Error, options?: ErrorHandlerOptions): void;
+    handle(error: Error, options?: T): void;
 
     /**
      * Change some options
      */
-    setOptions(options: ErrorHandlerOptions): void;
+    setOptions(options: T): void;
 
     /**
      * Start catching unhandled errors and rejections
      */
-    startCatching(options?: ErrorHandlerOptions): void;
+    startCatching(options?: T): void;
 
     /**
      * Stop catching unhandled errors and rejections
@@ -532,10 +564,12 @@ declare namespace Logger {
       options?: { preload?: string | boolean, spyRendererConsole?: boolean },
     ): void;
 
+    errorHandler: ErrorHandler<MainErrorHandlerOptions>;
     transports: MainTransports;
   }
 
   interface RendererLogger extends Logger {
+    errorHandler: ErrorHandler<RendererErrorHandlerOptions>;
     transports: RendererTransports;
   }
 }
