@@ -543,7 +543,7 @@ declare namespace Logger {
     scope?: string;
   }
 
-  interface EventLogger {
+  interface EventLogger extends Required<EventLoggerOptions> {
     setOptions(options: EventLoggerOptions): void;
     startLogging(options?: EventLoggerOptions): void;
     stopLogging(): void;
