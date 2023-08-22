@@ -55,7 +55,7 @@ class Logger {
     }
 
     this.errorHandler = errorHandler;
-    errorHandler?.setOptions({ logFns: this.functions });
+    errorHandler?.setOptions({ logFn: this.error });
 
     this.eventLogger = eventLogger;
     eventLogger?.setOptions({ logger: this });
