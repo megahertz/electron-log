@@ -26,7 +26,8 @@ class EventLogger {
 
     webContents: {
       'console-message': ({ args: [level, message, line, sourceId] }) => {
-        if (level > 2) {
+        // 0: debug, 1: info, 2: warning, 3: error
+        if (level < 3) {
           return undefined;
         }
 
