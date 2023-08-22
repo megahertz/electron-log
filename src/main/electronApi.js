@@ -51,14 +51,32 @@ module.exports = {
     return Boolean(process.versions.electron);
   },
 
-  onEveryWebContentsEvent(message, handler) {
+  onAppEvent(eventName, handler) {
+    electron?.app?.on(eventName, handler);
+
+    return () => {
+      electron?.app?.off(eventName, handler);
+    };
+  },
+
+  onEveryWebContentsEvent(eventName, handler) {
     electron?.webContents?.getAllWebContents().forEach((webContents) => {
-      webContents.on(message, handler);
+      webContents.on(eventName, handler);
     });
 
-    electron?.app?.on('web-contents-created', (_, webContents) => {
-      webContents.on(message, handler);
-    });
+    electron?.app?.on('web-contents-created', onWebContentsCreated);
+
+    return () => {
+      electron?.webContents?.getAllWebContents().forEach((webContents) => {
+        webContents.off(eventName, handler);
+      });
+
+      electron?.app?.off('web-contents-created', onWebContentsCreated);
+    };
+
+    function onWebContentsCreated(_, webContents) {
+      webContents.on(eventName, handler);
+    }
   },
 
   /**
@@ -76,7 +94,7 @@ module.exports = {
 
   /**
    * @param {string} url
-   * @param {Function} [logFunction?]
+   * @param {Function} [logFunction]
    */
   openUrl(url, logFunction = console.error) { // eslint-disable-line no-console
     getElectronModule('shell')?.openExternal(url).catch(logFunction);

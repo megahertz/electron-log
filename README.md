@@ -180,13 +180,27 @@ Available colors:
  
 For DevTools console you can use other CSS properties.
 
-### [Catch errors](docs/catch.md)
+### [Catch errors](docs/errors.md)
 
 electron-log can catch and log unhandled errors/rejected promises:
 
 `log.errorHandler.startCatching(options?)`;
 
-[More info](docs/catch.md).
+[More info](docs/errors.md).
+
+#### Electron events logging
+
+Sometimes it's helpful to save critical electron events to the log file.
+
+`log.eventLogger.startLogging(options?)`;
+
+By default, it save the following events:
+ - `certificate-error`, `child-process-gone`, `render-process-gone` of `app`
+ - `crashed`, `gpu-process-crashed` of `webContents`
+ - `did-fail-load`, `did-fail-provisional-load`, `plugin-crashed`,
+   `preload-error` of every WebContents. You can switch any event on/off.
+
+[More info](docs/events.md).
 
 ### [Hooks](docs/extend.md#hooks)
 

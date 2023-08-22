@@ -13,6 +13,8 @@ const scopeFactory = require('./scope');
 class Logger {
   static instances = {};
 
+  errorHandler = null;
+  eventLogger = null;
   functions = {};
   hooks = [];
   isDev = false;
@@ -25,6 +27,7 @@ class Logger {
   constructor({
     allowUnknownLevel = false,
     errorHandler,
+    eventLogger,
     initializeFn,
     isDev = false,
     levels = ['error', 'warn', 'info', 'verbose', 'debug', 'silly'],
@@ -52,9 +55,10 @@ class Logger {
     }
 
     this.errorHandler = errorHandler;
-    errorHandler?.setOptions({
-      logFn: (...args) => this.error(...args),
-    });
+    errorHandler?.setOptions({ logFns: this.functions });
+
+    this.eventLogger = eventLogger;
+    eventLogger?.setOptions({ logger: this });
 
     for (const [name, factory] of Object.entries(transportFactories)) {
       this.transports[name] = factory(this);

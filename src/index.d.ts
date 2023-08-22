@@ -493,6 +493,62 @@ declare namespace Logger {
     stopCatching(): void;
   }
 
+  type EventSource = 'app' | 'webContents';
+
+  interface EventLoggerOptions {
+    /**
+     * String template or function which prepares event data for logging
+     */
+    format?:
+      | string
+      | ((
+          args: {
+            eventName: string;
+            eventSource: EventSource;
+            handlerArgs: unknown[];
+          }
+        ) => unknown[]);
+
+    /**
+     * Formatter callbacks for a specific event
+     */
+    formatters?: Record<
+      EventSource,
+      Record<
+        string,
+        (
+          args: {
+            args: unknown[];
+            event: object;
+            eventName: string;
+            eventSource: string;
+          }
+        ) => unknown
+      >
+    >;
+
+    /**
+     * Allow to switch specific events on/off easily
+     */
+    events?: Record<EventSource, Record<string, boolean>>;
+
+    /**
+     * Which log level is used for logging. Default warn
+     */
+    level?: LogLevel;
+
+    /**
+     * Which log scope is used for logging. Default '' (none)
+     */
+    scope?: string;
+  }
+
+  interface EventLogger {
+    setOptions(options: EventLoggerOptions): void;
+    startLogging(options?: EventLoggerOptions): void;
+    stopLogging(): void;
+  }
+
   interface Logger extends LogFunctions {
     /**
      * Error handling helper
@@ -565,6 +621,7 @@ declare namespace Logger {
     ): void;
 
     errorHandler: ErrorHandler<MainErrorHandlerOptions>;
+    eventLogger: EventLogger;
     transports: MainTransports;
   }
 

@@ -7,9 +7,11 @@ const transportFile = require('./transports/file');
 const transportRemote = require('./transports/remote');
 const Logger = require('../core/Logger');
 const ErrorHandler = require('./ErrorHandler');
+const EventLogger = require('./EventLogger');
 
 const defaultLogger = new Logger({
   errorHandler: new ErrorHandler(),
+  eventLogger: new EventLogger(),
   initializeFn: initialize,
   isDev: electronApi.isDev(),
   logId: 'default',
