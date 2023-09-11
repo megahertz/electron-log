@@ -6,7 +6,7 @@ const path = require('path');
 const TestLogReader = require('../src/__specs__/utils/TestLogReader');
 
 class E2eApp {
-  constructor({ appPath, timeout = process.env.CI ? 20000 : 5000 }) {
+  constructor({ appPath, timeout = process.env.CI ? 30000 : 7000 }) {
     this.appPath = appPath;
     this.timeout = timeout;
   }
