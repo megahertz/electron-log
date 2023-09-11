@@ -70,7 +70,7 @@ function consoleTransportRendererFactory(logger) {
       return data;
     },
 
-    writeFn({ level, data }) {
+    writeFn({ message: { level, data } }) {
       const consoleLogFn = consoleMethods[level] || consoleMethods.info;
 
       // make an empty call stack
@@ -80,6 +80,8 @@ function consoleTransportRendererFactory(logger) {
   });
 
   function transport(message) {
-    transport.writeFn({ ...message, data: transport.formatDataFn(message) });
+    transport.writeFn({
+      message: { ...message, data: transport.formatDataFn(message) },
+    });
   }
 }
