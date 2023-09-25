@@ -100,7 +100,9 @@ function getPathVariables(platform) {
     appData: getAppData(platform),
     appName,
     appVersion,
-    electronDefaultDir: electronApi.getPath('logs'),
+    get electronDefaultDir() {
+      return electronApi.getPath('logs');
+    },
     home: getHome(),
     libraryDefaultDir: getLibraryDefaultDir(platform, appName),
     libraryTemplate: getLibraryTemplate(platform),

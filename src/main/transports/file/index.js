@@ -74,7 +74,21 @@ function fileTransportFactory(logger, registry = globalRegistry) {
       return;
     }
 
-    pathVariables = variables.getPathVariables(process.platform);
+    // Make a shallow copy of pathVariables to keep getters intact
+    pathVariables = Object.create(
+      Object.prototype,
+      {
+        ...Object.getOwnPropertyDescriptors(
+          variables.getPathVariables(process.platform),
+        ),
+        fileName: {
+          get() {
+            return transport.fileName;
+          },
+          enumerable: true,
+        },
+      },
+    );
 
     if (typeof transport.archiveLog === 'function') {
       transport.archiveLogFn = transport.archiveLog;
@@ -100,9 +114,7 @@ function fileTransportFactory(logger, registry = globalRegistry) {
   function getFile(msg) {
     initializeOnFirstAccess();
 
-    const vars = { ...pathVariables, fileName: transport.fileName };
-
-    const filePath = transport.resolvePathFn(vars, msg);
+    const filePath = transport.resolvePathFn(pathVariables, msg);
     return registry.provide({
       filePath,
       writeAsync: !transport.sync,
@@ -111,8 +123,7 @@ function fileTransportFactory(logger, registry = globalRegistry) {
   }
 
   function readAllLogs({ fileFilter = (f) => f.endsWith('.log') } = {}) {
-    const vars = { ...pathVariables, fileName: transport.fileName };
-    const logsPath = path.dirname(transport.resolvePathFn(vars));
+    const logsPath = path.dirname(transport.resolvePathFn(pathVariables));
 
     return fs.readdirSync(logsPath)
       .map((fileName) => path.join(logsPath, fileName))
