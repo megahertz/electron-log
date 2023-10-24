@@ -32,6 +32,12 @@
  - `onError` is renamed to `processErrorFn({ error, message, request })`
  - `transformBody` is renamed to `makeBodyFn({ logger, message, transport })`
 
+### Electron event logger
+
+To simplify app debugging the 
+[Electron event logging](https://github.com/megahertz/electron-log/blob/master/docs/events.md)
+was implemented.
+
 ## 4.4.0 
  - Disable auto-loading of electron-log in the main process for using by ipc
    transport
