@@ -27,7 +27,7 @@ it should be initialized in the main process before the first window is created:
 
 **main.js**
 ```js
-import log from 'electron-log';
+import log from 'electron-log/main';
 
 // It preloads electron-log IPC code in renderer processes
 log.initialize();
@@ -37,7 +37,7 @@ After that, you can use the library as before.
 
 **renderer.ts**
 ```typescript
-import log from 'electron-log';
+import log from 'electron-log/renderer';
 
 log.info('Log from the renderer');
 ````
@@ -56,7 +56,7 @@ To make callback names more obvious, some options where renamed:
  - remote.onError -> remote.processErrorFn({ error, message, request })
  - remote.transformBody -> remote.makeBodyFn({ logger, message, transport })
 
-## Error catching
+### Error catching
 
  - log.catchErrors -> log.errorHandler.startCatching
 

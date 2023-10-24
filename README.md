@@ -3,9 +3,6 @@
 [![NPM version](https://badge.fury.io/js/electron-log.svg)](https://badge.fury.io/js/electron-log)
 [![Downloads](https://img.shields.io/npm/dw/electron-log)](https://img.shields.io/npm/dw/electron-log)
 
-New v5 beta is ready and I would be grateful
-[for any feedbacks](https://github.com/megahertz/electron-log/discussions/333).
-
 Simple logging module Electron/Node.js/NW.js application.
 No dependencies. No complicated configuration.
 
@@ -17,13 +14,13 @@ By default, it writes logs to the following locations:
 
 ## Installation
 
-Currently, electron-log v5 is in a beta phase. It requires Electron 13+ or
+Starts from v5, electron-log requires Electron 13+ or
 Node.js 14+. Feel free to use electron-log v4 for older runtime. v4
 supports Node.js 0.10+ and almost any Electron build.
 
 Install with [npm](https://npmjs.org/package/electron-log):
 
-    npm install electron-log@beta
+    npm install electron-log
     
 ## Usage
 
@@ -216,7 +213,7 @@ is a function which is called on each transport call.
 You can create multiple logger instances with different settings:
 
 ```js
-import log from 'electron-log';
+import log from 'electron-log/main';
 
 const anotherLogger = log.create('anotherInstance');
 ```
@@ -227,7 +224,7 @@ separately.
 ### Logging scopes
 
 ```js
-import log from 'electron-log';
+import log from 'electron-log/main';
 const userLog = log.scope('user');
 
 userLog.info('message with user scope');
