@@ -143,8 +143,14 @@ module.exports = {
     dialog.showErrorBox(title, message);
   },
 
-  whenAppReady() {
-    return electron?.app?.whenReady() || Promise.resolve();
+  whenAppReady(callback) {
+    if (electron?.app?.isReady()) {
+      callback();
+    } else if (electron?.app?.once) {
+      electron?.app?.once('ready', callback);
+    } else {
+      callback();
+    }
   },
 };
 

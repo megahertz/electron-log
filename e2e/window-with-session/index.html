@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>E2E Test</title>
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';">
+</head>
+<body>
+
+<script>
+  __electronLog.info('log through global object');
+  if (window.location.href.includes('test=true')) {
+    setTimeout(() => window.close(), 50);
+  }
+</script>
+
+</body>
+</html>
