@@ -604,7 +604,7 @@ declare namespace Logger {
     /**
      * Create a new electron-log instance
      */
-    create(options: { logId: string }): Logger.Logger;
+    create(options: { logId: string }): this;
 
     /**
      * Low level method which logs the message using specified transports
