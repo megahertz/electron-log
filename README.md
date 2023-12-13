@@ -215,7 +215,7 @@ You can create multiple logger instances with different settings:
 ```js
 import log from 'electron-log/main';
 
-const anotherLogger = log.create('anotherInstance');
+const anotherLogger = log.create({ logId: 'anotherInstance' });
 ```
 
 Be aware that you need to configure each instance (e.g. log file path) 
@@ -235,3 +235,4 @@ userLog.info('message with user scope');
 
  - [electron-cfg](https://github.com/megahertz/electron-cfg) -
    Settings for your Electron application.
+♑
