@@ -235,4 +235,3 @@ userLog.info('message with user scope');
 
  - [electron-cfg](https://github.com/megahertz/electron-cfg) -
    Settings for your Electron application.
-♑
