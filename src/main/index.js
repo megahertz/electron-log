@@ -27,8 +27,10 @@ const defaultLogger = new Logger({
 
 defaultLogger.processInternalErrorFn = (e) => {
   defaultLogger.transports.console.writeFn({
-    data: ['Unhandled electron-log error', e],
-    level: 'error',
+    message: {
+      data: ['Unhandled electron-log error', e],
+      level: 'error',
+    },
   });
 };
 
