@@ -1,5 +1,5 @@
 {
-  "name": "electron-log-e2e-window-with-session",
+  "name": "electron-log-e2e-custom-session",
   "version": "1.0.0",
   "private": true,
   "main": "main.js",

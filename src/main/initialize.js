@@ -8,7 +8,7 @@ const preloadInitializeFn = require('../renderer/electron-log-preload');
 
 module.exports = {
   initialize({ logger, preload = true, spyRendererConsole = false }) {
-    electronApi.whenAppReady(() => {
+    electronApi.onAppReady(() => {
       try {
         if (preload) {
           initializePreload(preload);

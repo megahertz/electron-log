@@ -59,6 +59,16 @@ module.exports = {
     };
   },
 
+  onAppReady(handler) {
+    if (electron?.app?.isReady()) {
+      handler();
+    } else if (electron?.app?.once) {
+      electron?.app?.once('ready', handler);
+    } else {
+      handler();
+    }
+  },
+
   onEveryWebContentsEvent(eventName, handler) {
     electron?.webContents?.getAllWebContents().forEach((webContents) => {
       webContents.on(eventName, handler);
@@ -141,16 +151,6 @@ module.exports = {
     if (!dialog) return;
 
     dialog.showErrorBox(title, message);
-  },
-
-  whenAppReady(callback) {
-    if (electron?.app?.isReady()) {
-      callback();
-    } else if (electron?.app?.once) {
-      electron?.app?.once('ready', callback);
-    } else {
-      callback();
-    }
   },
 };
 
