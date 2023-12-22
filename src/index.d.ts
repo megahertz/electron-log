@@ -617,7 +617,12 @@ declare namespace Logger {
 
   interface MainLogger extends Logger {
     initialize(
-      options?: { preload?: string | boolean, spyRendererConsole?: boolean },
+      options?: {
+        getSessions?: () => object[];
+        includeFutureSessions?: boolean;
+        preload?: string | boolean;
+        spyRendererConsole?: boolean;
+      },
     ): void;
 
     errorHandler: ErrorHandler<MainErrorHandlerOptions>;

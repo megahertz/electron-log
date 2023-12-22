@@ -116,8 +116,8 @@ class Logger {
     return check <= pass;
   }
 
-  initialize({ preload = true, spyRendererConsole = false } = {}) {
-    this.initializeFn({ logger: this, preload, spyRendererConsole });
+  initialize(options = {}) {
+    this.initializeFn({ logger: this, ...options });
   }
 
   logData(data, options = {}) {

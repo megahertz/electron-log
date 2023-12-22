@@ -113,9 +113,9 @@ module.exports = {
   setPreloadFileForSessions({
     filePath,
     includeFutureSession = true,
-    sessions = [electron?.session?.defaultSession],
+    getSessions = () => [electron?.session?.defaultSession],
   }) {
-    for (const session of sessions.filter(Boolean)) {
+    for (const session of getSessions().filter(Boolean)) {
       setPreload(session);
     }
 
