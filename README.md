@@ -30,7 +30,7 @@ Install with [npm](https://npmjs.org/package/electron-log):
 import log from 'electron-log/main';
 
 // Optional, initialize the logger for any renderer process
-log.initialize({ preload: true });
+log.initialize();
 
 log.info('Log from the main process');
 ```
@@ -44,10 +44,13 @@ import log from 'electron-log/renderer';
 log.info('Log from the renderer process');
 ```
 
+This function uses sessions to inject a preload script to make the logger
+available in a renderer process.
+
 Without a bundler, you can use a global variable `__electronLog`. It contains
 only log functions like `info`, `warn` and so on.
 
-There are a few other options how a logger can be initialized for a renderer
+There are a few other ways how a logger can be initialized for a renderer
 process. [Read more](docs/initialize.md).
 
 ### electron-log v2.x, v3.x, v4.x

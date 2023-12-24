@@ -8,33 +8,42 @@ and sends it to the main process through IPC.
 
 There are a few ways how a renderer logger could be configured.
 
-## 1. Use some bundler and contextIsolation/sandbox enabled
-
-This way also works without bundler when nodeIntegration is enabled.
+## 1. Most common case. Use some bundler and contextIsolation/sandbox enabled
 
 ```js
-import log from 'electron-log';
+import log from 'electron-log/main';
 
 log.initialize();
 ````
 
 **renderer.ts**
 ```typescript
-import log from 'electron-log';
+import log from 'electron-log/renderer';
 
 log.info('Log from the renderer');
 ````
 
-If for some reason it doesn't work with your bundler, try the following
-import in the renderer process:
+This method injects a built-in preload script into a renderer process through
+sessions. The preload script is injected into the default session and any
+sessions created after a `log.initizlie()` call.
 
-`import log from 'electron-log/renderer';`
+### Using custom sessions
+
+If you use another session, make sure it's initialized
+after `log.initialize()` call or pass your sessions to the function:
+
+```js
+log.initialize({ getSessions: () => [customSession] });
+````
+
+To disable preload script injection, pass `includeFutureSession: false` option
+to the `initizlize` function.
 
 ## Use a global instance when no bundler used and nodeIntegration is disabled
 
 **main.js**
 ```js
-import log from 'electron-log';
+import log from 'electron-log/main';
 
 log.initialize();
 ````
@@ -53,7 +62,7 @@ It's possible to collect logs written by `console.log` in the renderer process
 
 **main.js**
 ```js
-import log from 'electron-log';
+import log from 'electron-log/main';
 
 // It makes a renderer logger available trough a global electronLog instance
 log.initialize({ spyRendererConsole: true });

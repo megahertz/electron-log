@@ -59,6 +59,16 @@ module.exports = {
     };
   },
 
+  onAppReady(handler) {
+    if (electron?.app?.isReady()) {
+      handler();
+    } else if (electron?.app?.once) {
+      electron?.app?.once('ready', handler);
+    } else {
+      handler();
+    }
+  },
+
   onEveryWebContentsEvent(eventName, handler) {
     electron?.webContents?.getAllWebContents().forEach((webContents) => {
       webContents.on(eventName, handler);
@@ -103,9 +113,9 @@ module.exports = {
   setPreloadFileForSessions({
     filePath,
     includeFutureSession = true,
-    sessions = [electron?.session?.defaultSession],
+    getSessions = () => [electron?.session?.defaultSession],
   }) {
-    for (const session of sessions.filter(Boolean)) {
+    for (const session of getSessions().filter(Boolean)) {
       setPreload(session);
     }
 
@@ -141,10 +151,6 @@ module.exports = {
     if (!dialog) return;
 
     dialog.showErrorBox(title, message);
-  },
-
-  whenAppReady() {
-    return electron?.app?.whenReady() || Promise.resolve();
   },
 };
 
