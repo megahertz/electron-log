@@ -35,7 +35,7 @@ function ipcTransportRendererFactory(logger) {
       if (Array.isArray(data)) {
         return data.map((item) => transport.serializeFn(
           item,
-          { level: depth - 1, seen },
+          { depth: depth - 1, seen },
         ));
       }
 
@@ -48,8 +48,8 @@ function ipcTransportRendererFactory(logger) {
           Array
             .from(data)
             .map(([key, value]) => [
-              transport.serializeFn(key, { level: depth - 1, seen }),
-              transport.serializeFn(value, { level: depth - 1, seen }),
+              transport.serializeFn(key, { depth: depth - 1, seen }),
+              transport.serializeFn(value, { depth: depth - 1, seen }),
             ]),
         );
       }
@@ -57,7 +57,7 @@ function ipcTransportRendererFactory(logger) {
       if (data instanceof Set) {
         return new Set(
           Array.from(data).map(
-            (val) => transport.serializeFn(val, { level: depth - 1, seen }),
+            (val) => transport.serializeFn(val, { depth: depth - 1, seen }),
           ),
         );
       }
@@ -68,7 +68,7 @@ function ipcTransportRendererFactory(logger) {
         Object.entries(data).map(
           ([key, value]) => [
             key,
-            transport.serializeFn(value, { level: depth - 1, seen }),
+            transport.serializeFn(value, { depth: depth - 1, seen }),
           ],
         ),
       );
