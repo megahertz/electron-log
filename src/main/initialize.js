@@ -41,9 +41,18 @@ function initializePreload({
 }) {
   let preloadPath = typeof preloadOption === 'string'
     ? preloadOption
-    : path.resolve(__dirname, '../renderer/electron-log-preload.js');
+    : undefined;
 
-  if (!fs.existsSync(preloadPath)) {
+  try {
+    preloadPath = path.resolve(
+      __dirname,
+      '../renderer/electron-log-preload.js',
+    );
+  } catch {
+    // Ignore, the file is bundled to ESM
+  }
+
+  if (!preloadPath || !fs.existsSync(preloadPath)) {
     preloadPath = path.join(
       electronApi.getAppUserDataPath() || os.tmpdir(),
       'electron-log-preload.js',

@@ -14,7 +14,7 @@ module.exports = {
  * @return {{ name?: string, version?: string}}
  */
 function readPackageJson() {
-  return tryReadJsonAt(require.main && require.main.filename)
+  return tryReadJsonAt(getMainModulePath())
     || tryReadJsonAt(extractPathFromArgs())
     || tryReadJsonAt(process.resourcesPath, 'app.asar')
     || tryReadJsonAt(process.resourcesPath, 'app')
@@ -95,4 +95,12 @@ function extractPathFromArgs() {
 
   const userDataDir = matchedArgs[0];
   return userDataDir.replace('--user-data-dir=', '');
+}
+
+function getMainModulePath() {
+  if (typeof require === 'function') {
+    return require.main?.filename;
+  }
+
+  return undefined;
 }
