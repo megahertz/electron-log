@@ -7,7 +7,7 @@ const app = new E2eApp({ appPath: __dirname });
 
 test(app.appName, async () => {
   if (!app.isSupportEsm()) {
-    console.info(`Skipping ESM test for Electron ${app.electronVersion}`);
+    app.log(`Skipping ESM test for Electron ${app.electronVersion}`);
     return;
   }
 
@@ -17,7 +17,3 @@ test(app.appName, async () => {
     'log from renderer',
   ]);
 }, app.timeout);
-
-function electronSupportsEsm() {
-
-}

@@ -26,8 +26,16 @@ class E2eApp {
     return Number.parseInt(electronPackageJson.version, 10);
   }
 
+  get nodeVersion() {
+    return Number.parseInt(process.version.replace('v', ''), 10);
+  }
+
   isSupportEsm() {
     return this.electronVersion >= 28;
+  }
+
+  log(...args) {
+    console.info('E2E:', ...args); // eslint-disable-line no-console
   }
 
   async run({ clearLogs = true } = {}) {
@@ -91,6 +99,8 @@ class E2eApp {
           .replace(/^Fontconfig.*$/mg, '')
           .replace(/^.*Desktop Identity.*$/mg, '')
           .replace(/^.*Gtk-WARNING.*$/mg, '')
+          .replace(/^.*bus.cc.*$/mg, '')
+          .replace(/^.*viz_main_impl.cc.*$/mg, '')
           .replace(/^\n/mg, '');
 
         // eslint-disable-next-line no-console
