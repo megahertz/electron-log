@@ -2,5 +2,6 @@
 .vscode
 dist
 e2e/local*
+e2e/vite-esm
 node_modules
 todo.md

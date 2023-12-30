@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "paths": {
+      "electron-log/*": ["../../*"]
+    },
+    "outDir": "dist",
+  },
+  "include": ["src"]
+}
