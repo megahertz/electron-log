@@ -225,7 +225,3 @@ function sendIpcToRenderer(channel, message) {
     }
   });
 }
-
-function loadElectron() {
-
-}

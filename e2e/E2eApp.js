@@ -1,6 +1,7 @@
 'use strict';
 
 const { exec } = require('child_process');
+const electronPackageJson = require('electron/package.json');
 const fs = require('fs');
 const path = require('path');
 const TestLogReader = require('../src/__specs__/utils/TestLogReader');
@@ -19,6 +20,14 @@ class E2eApp {
     }
 
     return this.appNameCache;
+  }
+
+  get electronVersion() {
+    return Number.parseInt(electronPackageJson.version, 10);
+  }
+
+  isSupportEsm() {
+    return this.electronVersion >= 28;
   }
 
   async run({ clearLogs = true } = {}) {
