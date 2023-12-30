@@ -81,6 +81,7 @@ class E2eApp {
           .join('\n')
           .replace(/^Fontconfig.*$/mg, '')
           .replace(/^.*Desktop Identity.*$/mg, '')
+          .replace(/^.*Gtk-WARNING.*$/mg, '')
           .replace(/^\n/mg, '');
 
         // eslint-disable-next-line no-console

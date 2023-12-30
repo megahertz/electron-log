@@ -1,0 +1,15 @@
+{
+  "name": "electron-log-e2e-esbuild-cjs",
+  "version": "1.0.0",
+  "private": true,
+  "main": "dist/main.js",
+  "type": "commonjs",
+  "scripts": {
+    "build": "node esbuild.js",
+    "start": "npm run build && ../../node_modules/.bin/electron .",
+    "test": "humile main.spec.js"
+  },
+  "devDependencies": {
+    "electron": "*"
+  }
+}

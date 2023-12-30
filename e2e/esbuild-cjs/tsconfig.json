@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "paths": {
+      "electron-log/*": ["../../*"]
+    },
+  },
+  "include": ["src"]
+}
