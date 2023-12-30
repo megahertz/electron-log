@@ -1,16 +1,10 @@
 'use strict';
 
+require('./electronApiLoader');
+
+const electron = require('electron');
 const os = require('os');
 const path = require('path');
-
-/** @type {Electron.Main} */
-let electron;
-try {
-  // eslint-disable-next-line global-require,import/no-extraneous-dependencies
-  electron = require('electron');
-} catch {
-  electron = null;
-}
 
 module.exports = {
   getAppUserDataPath() {
@@ -230,4 +224,8 @@ function sendIpcToRenderer(channel, message) {
       wnd.webContents.send(channel, message);
     }
   });
+}
+
+function loadElectron() {
+
 }

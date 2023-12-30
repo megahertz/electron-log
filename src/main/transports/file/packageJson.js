@@ -98,9 +98,10 @@ function extractPathFromArgs() {
 }
 
 function getMainModulePath() {
-  if (typeof require === 'function') {
+  try {
+    // Requires isn't available in ESM
     return require.main?.filename;
+  } catch {
+    return undefined;
   }
-
-  return undefined;
 }
