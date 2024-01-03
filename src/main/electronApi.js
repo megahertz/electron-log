@@ -1,7 +1,5 @@
 'use strict';
 
-require('./electronApiLoader');
-
 const electron = require('electron');
 const os = require('os');
 const path = require('path');
