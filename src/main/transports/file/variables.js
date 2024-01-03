@@ -9,7 +9,7 @@ module.exports = {
   getAppData,
   getLibraryDefaultDir,
   getLibraryTemplate,
-  getNameAndVersion,
+  getAppNameAndVersion,
   getPathVariables,
   getUserData,
 };
@@ -57,9 +57,9 @@ function getLibraryTemplate(platform) {
   return path.join(getAppData(platform), '{appName}', 'logs');
 }
 
-function getNameAndVersion() {
-  let name = electronApi.getName() || '';
-  let version = electronApi.getVersion();
+function getAppNameAndVersion() {
+  let name = electronApi.getAppName() || '';
+  let version = electronApi.getAppVersion();
 
   if (name.toLowerCase() === 'electron') {
     name = '';
@@ -92,7 +92,7 @@ function getNameAndVersion() {
  * @return {PathVariables}
  */
 function getPathVariables(platform) {
-  const nameAndVersion = getNameAndVersion();
+  const nameAndVersion = getAppNameAndVersion();
   const appName = nameAndVersion.name;
   const appVersion = nameAndVersion.version;
 
@@ -112,7 +112,7 @@ function getPathVariables(platform) {
 }
 
 function getUserData(platform, appName) {
-  if (electronApi.getName() !== appName) {
+  if (electronApi.getAppName() !== appName) {
     return path.join(getAppData(platform), appName);
   }
 

@@ -66,8 +66,8 @@ describe('transports/file/variables', () => {
     });
   });
 
-  it('getNameAndVersion', () => {
-    const nameAndVersion = variables.getNameAndVersion();
+  it('getAppNameAndVersion', () => {
+    const nameAndVersion = variables.getAppNameAndVersion();
 
     expect(nameAndVersion.name).toBe('humile');
     expect(nameAndVersion.version).toMatch(/\d+\.\d+\.\d+/);

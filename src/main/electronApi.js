@@ -9,15 +9,15 @@ module.exports = {
     return getPath('userData');
   },
 
-  getName,
+  getAppName,
 
   getPath,
 
-  getVersion,
+  getAppVersion,
 
   getVersions() {
     return {
-      app: `${getName()} ${getVersion()}`,
+      app: `${getAppName()} ${getAppVersion()}`,
       electron: `Electron ${process.versions.electron}`,
       os: getOsVersion(),
     };
@@ -150,11 +150,11 @@ function getApp() {
   return getElectronModule('app');
 }
 
-function getName() {
+function getAppName() {
   const app = getApp();
   if (!app) return null;
 
-  return 'name' in app ? app.name : app.getName();
+  return 'name' in app ? app.name : app.getAppName();
 }
 
 function getElectronModule(name) {
@@ -173,11 +173,11 @@ function getIpc() {
   return null;
 }
 
-function getVersion() {
+function getAppVersion() {
   const app = getApp();
   if (!app) return null;
 
-  return 'version' in app ? app.version : app.getVersion();
+  return 'version' in app ? app.version : app.getAppVersion();
 }
 
 function getOsVersion() {
