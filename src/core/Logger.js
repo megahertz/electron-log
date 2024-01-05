@@ -13,6 +13,7 @@ const scopeFactory = require('./scope');
 class Logger {
   static instances = {};
 
+  dependencies = {};
   errorHandler = null;
   eventLogger = null;
   functions = {};
@@ -26,6 +27,7 @@ class Logger {
 
   constructor({
     allowUnknownLevel = false,
+    dependencies = {},
     errorHandler,
     eventLogger,
     initializeFn,
@@ -37,10 +39,12 @@ class Logger {
   } = {}) {
     this.addLevel = this.addLevel.bind(this);
     this.create = this.create.bind(this);
+    this.initialize = this.initialize.bind(this);
     this.logData = this.logData.bind(this);
     this.processMessage = this.processMessage.bind(this);
 
     this.allowUnknownLevel = allowUnknownLevel;
+    this.dependencies = dependencies;
     this.initializeFn = initializeFn;
     this.isDev = isDev;
     this.levels = levels;
@@ -55,13 +59,13 @@ class Logger {
     }
 
     this.errorHandler = errorHandler;
-    errorHandler?.setOptions({ logFn: this.error });
+    errorHandler?.setOptions({ ...dependencies, logFn: this.error });
 
     this.eventLogger = eventLogger;
-    eventLogger?.setOptions({ logger: this });
+    eventLogger?.setOptions({ ...dependencies, logger: this });
 
     for (const [name, factory] of Object.entries(transportFactories)) {
-      this.transports[name] = factory(this);
+      this.transports[name] = factory(this, dependencies);
     }
 
     Logger.instances[logId] = this;
@@ -97,12 +101,13 @@ class Logger {
     }
 
     return new Logger({
-      ...options,
+      dependencies: this.dependencies,
       errorHandler: this.errorHandler,
       initializeFn: this.initializeFn,
       isDev: this.isDev,
       transportFactories: this.transportFactories,
       variables: { ...this.variables },
+      ...options,
     });
   }
 
@@ -117,7 +122,7 @@ class Logger {
   }
 
   initialize(options = {}) {
-    this.initializeFn({ logger: this, ...options });
+    this.initializeFn({ logger: this, ...this.dependencies, ...options });
   }
 
   logData(data, options = {}) {

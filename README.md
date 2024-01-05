@@ -53,6 +53,13 @@ only log functions like `info`, `warn` and so on.
 There are a few other ways how a logger can be initialized for a renderer
 process. [Read more](docs/initialize.md).
 
+### Node.js and NW.js
+
+```typescript
+import log from 'electron-log/node';
+log.info('Log from the nw.js or node.js');
+```
+
 ### electron-log v2.x, v3.x, v4.x
 
 If you would like to upgrade to the latest version, read

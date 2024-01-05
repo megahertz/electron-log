@@ -2,7 +2,7 @@
 
 const log = require('../index');
 
-describe('main/index', () => {
+describe('node/index', () => {
   it('should contain all methods of Console API', () => {
     const levels = [
       'error',

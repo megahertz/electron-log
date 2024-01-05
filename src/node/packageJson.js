@@ -1,57 +1,54 @@
 'use strict';
 
-/* eslint-disable consistent-return */
-
 const fs = require('fs');
 const path = require('path');
 
 module.exports = {
-  readPackageJson,
+  findAndReadPackageJson,
   tryReadJsonAt,
 };
 
 /**
  * @return {{ name?: string, version?: string}}
  */
-function readPackageJson() {
+function findAndReadPackageJson() {
   return tryReadJsonAt(getMainModulePath())
     || tryReadJsonAt(extractPathFromArgs())
     || tryReadJsonAt(process.resourcesPath, 'app.asar')
     || tryReadJsonAt(process.resourcesPath, 'app')
     || tryReadJsonAt(process.cwd())
-    || { name: null, version: null };
+    || { name: undefined, version: undefined };
 }
 
 /**
  * @param {...string} searchPaths
- * @return {{ name?: string, version?: string } | null}
+ * @return {{ name?: string, version?: string } | undefined}
  */
 function tryReadJsonAt(...searchPaths) {
   if (!searchPaths[0]) {
-    return null;
+    return undefined;
   }
 
   try {
     const searchPath = path.join(...searchPaths);
     const fileName = findUp('package.json', searchPath);
     if (!fileName) {
-      return null;
+      return undefined;
     }
 
     const json = JSON.parse(fs.readFileSync(fileName, 'utf8'));
-    const name = json.productName || json.name;
+    const name = json?.productName || json?.name;
     if (!name || name.toLowerCase() === 'electron') {
-      return null;
+      return undefined;
     }
 
-    if (json.productName || json.name) {
-      return {
-        name,
-        version: json.version,
-      };
+    if (name) {
+      return { name, version: json?.version };
     }
+
+    return undefined;
   } catch (e) {
-    return null;
+    return undefined;
   }
 }
 

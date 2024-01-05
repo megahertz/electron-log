@@ -1,6 +1,6 @@
 {
   "name": "electron-log",
-  "version": "5.0.5-beta.2",
+  "version": "5.1.0-beta.1",
   "description": "Just a simple logging module for your Electron application",
   "main": "src/index.js",
   "browser": "src/renderer/index.js",
@@ -24,6 +24,8 @@
     "src/*",
     "main.js",
     "main.d.ts",
+    "node.js",
+    "node.d.ts",
     "preload.js",
     "renderer.js",
     "renderer.d.ts"

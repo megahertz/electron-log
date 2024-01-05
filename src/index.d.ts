@@ -615,7 +615,13 @@ declare namespace Logger {
     ): void;
   }
 
-  interface MainLogger extends Logger {
+  interface NodeLogger extends Logger {
+    errorHandler: ErrorHandler<MainErrorHandlerOptions>;
+    eventLogger: EventLogger;
+    transports: MainTransports;
+  }
+
+  interface MainLogger extends NodeLogger {
     initialize(
       options?: {
         getSessions?: () => object[];
@@ -624,10 +630,6 @@ declare namespace Logger {
         spyRendererConsole?: boolean;
       },
     ): void;
-
-    errorHandler: ErrorHandler<MainErrorHandlerOptions>;
-    eventLogger: EventLogger;
-    transports: MainTransports;
   }
 
   interface RendererLogger extends Logger {
