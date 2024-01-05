@@ -39,6 +39,7 @@ class Logger {
   } = {}) {
     this.addLevel = this.addLevel.bind(this);
     this.create = this.create.bind(this);
+    this.initialize = this.initialize.bind(this);
     this.logData = this.logData.bind(this);
     this.processMessage = this.processMessage.bind(this);
 
