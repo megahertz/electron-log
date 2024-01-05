@@ -1,29 +1,29 @@
 'use strict';
 
 const path = require('path');
-const packageJsonSpec = require('../packageJson');
+const { tryReadJsonAt } = require('../packageJson');
 
-describe('transports/file/packageJson', () => {
-  describe('tryReadJsonAt', () => {
+describe('node/packageJson', () => {
+  describe(tryReadJsonAt.name, () => {
     it('should resolve data when child path specified', () => {
-      const json = packageJsonSpec.tryReadJsonAt(__filename);
+      const json = tryReadJsonAt(__filename);
 
       expect(json.name).toBe('electron-log');
       expect(json.version).toMatch(/\d+\.\d+\.\d+/);
     });
 
     it('should resolve data when root specified', () => {
-      const rootPath = path.join(__dirname, '../../../..');
-      const json = packageJsonSpec.tryReadJsonAt(rootPath);
+      const rootPath = path.join(__dirname, '../..');
+      const json = tryReadJsonAt(rootPath);
 
       expect(json.name).toBe('electron-log');
       expect(json.version).toMatch(/\d+\.\d+\.\d+/);
     });
 
     it('should return null on fail', () => {
-      const json = packageJsonSpec.tryReadJsonAt('/');
+      const json = tryReadJsonAt('/');
 
-      expect(json).toBe(null);
+      expect(json).toBe(undefined);
     });
   });
 });

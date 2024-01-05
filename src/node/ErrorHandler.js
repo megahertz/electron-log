@@ -1,18 +1,22 @@
 'use strict';
 
-const electronApi = require('./electronApi');
-
 class ErrorHandler {
+  externalApi = undefined;
   isActive = false;
-  logFn = null;
-  onError = null;
+  logFn = undefined;
+  onError = undefined;
   showDialog = true;
 
-  constructor({ logFn = null, onError = null, showDialog = true } = {}) {
+  constructor({
+    externalApi,
+    logFn = undefined,
+    onError = undefined,
+    showDialog = undefined,
+  } = {}) {
     this.createIssue = this.createIssue.bind(this);
     this.handleError = this.handleError.bind(this);
     this.handleRejection = this.handleRejection.bind(this);
-    this.setOptions({ logFn, onError, showDialog });
+    this.setOptions({ externalApi, logFn, onError, showDialog });
     this.startCatching = this.startCatching.bind(this);
     this.stopCatching = this.stopCatching.bind(this);
   }
@@ -28,7 +32,7 @@ class ErrorHandler {
 
     try {
       if (typeof onError === 'function') {
-        const versions = electronApi.getVersions();
+        const versions = this.externalApi?.getVersions() || {};
         const createIssue = this.createIssue;
         const result = onError({
           createIssue,
@@ -44,8 +48,8 @@ class ErrorHandler {
 
       errorName ? logFn(errorName, error) : logFn(error);
 
-      if (showDialog && !errorName.includes('rejection')) {
-        electronApi.showErrorBox(
+      if (showDialog && !errorName.includes('rejection') && this.externalApi) {
+        this.externalApi.showErrorBox(
           `A JavaScript error occurred in the ${processType} process`,
           error.stack,
         );
@@ -55,7 +59,11 @@ class ErrorHandler {
     }
   }
 
-  setOptions({ logFn, onError, showDialog }) {
+  setOptions({ externalApi, logFn, onError, showDialog }) {
+    if (typeof externalApi === 'object') {
+      this.externalApi = externalApi;
+    }
+
     if (typeof logFn === 'function') {
       this.logFn = logFn;
     }
@@ -87,7 +95,7 @@ class ErrorHandler {
   }
 
   createIssue(pageUrl, queryParams) {
-    electronApi.openUrl(
+    this.externalApi?.openUrl(
       `${pageUrl}?${new URLSearchParams(queryParams).toString()}`,
     );
   }

@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.1.0
+
+- New entry point for NW.js / Node.js apps: `'electron-log/node'`
+
 ## 5.0.0
 
 ### Core

@@ -1,10 +1,9 @@
 'use strict';
 
 const fs = require('fs');
-const path = require('path');
 const os = require('os');
+const path = require('path');
 const FileRegistry = require('./FileRegistry');
-const variables = require('./variables');
 const { transform } = require('../../transforms/transform');
 const { removeStyles } = require('../../transforms/style');
 const { format } = require('../../transforms/format');
@@ -15,7 +14,10 @@ module.exports = fileTransportFactory;
 // Shared between multiple file transport instances
 const globalRegistry = new FileRegistry();
 
-function fileTransportFactory(logger, registry = globalRegistry) {
+function fileTransportFactory(
+  logger,
+  { registry = globalRegistry, externalApi } = {},
+) {
   /** @type {PathVariables} */
   let pathVariables;
 
@@ -79,7 +81,7 @@ function fileTransportFactory(logger, registry = globalRegistry) {
       Object.prototype,
       {
         ...Object.getOwnPropertyDescriptors(
-          variables.getPathVariables(process.platform),
+          externalApi.getPathVariables(),
         ),
         fileName: {
           get() {

@@ -1,7 +1,5 @@
 'use strict';
 
-const electronApi = require('./electronApi');
-
 class EventLogger {
   disposers = [];
   format = '{eventSource}#{eventName}:';
@@ -79,6 +77,7 @@ class EventLogger {
     },
   };
 
+  externalApi = undefined;
   level = 'error';
   scope = '';
 
@@ -86,9 +85,21 @@ class EventLogger {
     this.setOptions(options);
   }
 
-  setOptions({ events, level, logger, format, formatters, scope }) {
+  setOptions({
+    events,
+    externalApi,
+    level,
+    logger,
+    format,
+    formatters,
+    scope,
+  }) {
     if (typeof events === 'object') {
       this.events = events;
+    }
+
+    if (typeof externalApi === 'object') {
+      this.externalApi = externalApi;
     }
 
     if (typeof level === 'string') {
@@ -119,7 +130,7 @@ class EventLogger {
 
     for (const eventName of this.getEventNames(this.events.app)) {
       this.disposers.push(
-        electronApi.onAppEvent(eventName, (...handlerArgs) => {
+        this.externalApi.onAppEvent(eventName, (...handlerArgs) => {
           this.handleEvent({ eventSource: 'app', eventName, handlerArgs });
         }),
       );
@@ -127,11 +138,14 @@ class EventLogger {
 
     for (const eventName of this.getEventNames(this.events.webContents)) {
       this.disposers.push(
-        electronApi.onEveryWebContentsEvent(eventName, (...handlerArgs) => {
-          this.handleEvent(
-            { eventSource: 'webContents', eventName, handlerArgs },
-          );
-        }),
+        this.externalApi.onEveryWebContentsEvent(
+          eventName,
+          (...handlerArgs) => {
+            this.handleEvent(
+              { eventSource: 'webContents', eventName, handlerArgs },
+            );
+          },
+        ),
       );
     }
   }

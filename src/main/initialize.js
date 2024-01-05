@@ -3,21 +3,22 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const electronApi = require('./electronApi');
 const preloadInitializeFn = require('../renderer/electron-log-preload');
 
 module.exports = {
   initialize({
+    externalApi,
     getSessions,
     includeFutureSession,
     logger,
     preload = true,
     spyRendererConsole = false,
   }) {
-    electronApi.onAppReady(() => {
+    externalApi.onAppReady(() => {
       try {
         if (preload) {
           initializePreload({
+            externalApi,
             getSessions,
             includeFutureSession,
             preloadOption: preload,
@@ -25,7 +26,7 @@ module.exports = {
         }
 
         if (spyRendererConsole) {
-          initializeSpyRendererConsole({ logger });
+          initializeSpyRendererConsole({ externalApi, logger });
         }
       } catch (err) {
         logger.warn(err);
@@ -35,6 +36,7 @@ module.exports = {
 };
 
 function initializePreload({
+  externalApi,
   getSessions,
   includeFutureSession,
   preloadOption,
@@ -54,7 +56,7 @@ function initializePreload({
 
   if (!preloadPath || !fs.existsSync(preloadPath)) {
     preloadPath = path.join(
-      electronApi.getAppUserDataPath() || os.tmpdir(),
+      externalApi.getAppUserDataPath() || os.tmpdir(),
       'electron-log-preload.js',
     );
     const preloadCode = `
@@ -67,16 +69,16 @@ function initializePreload({
     fs.writeFileSync(preloadPath, preloadCode, 'utf8');
   }
 
-  electronApi.setPreloadFileForSessions({
+  externalApi.setPreloadFileForSessions({
     filePath: preloadPath,
     includeFutureSession,
     getSessions,
   });
 }
 
-function initializeSpyRendererConsole({ logger }) {
+function initializeSpyRendererConsole({ externalApi, logger }) {
   const levels = ['verbose', 'info', 'warning', 'error'];
-  electronApi.onEveryWebContentsEvent(
+  externalApi.onEveryWebContentsEvent(
     'console-message',
     (event, level, message) => {
       logger.processMessage({

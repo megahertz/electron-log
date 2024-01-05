@@ -7,6 +7,7 @@ const FileRegistry = require('../FileRegistry');
 const fileTransportFactory = require('../index');
 const makeTmpDir = require('./makeTmpDir');
 const Logger = require('../../../../core/Logger');
+const NodeExternalApi = require('../../../NodeExternalApi');
 
 describe('File transport', () => {
   const TEST_MESSAGE = createMessage('test');
@@ -89,7 +90,10 @@ function createTransport(options = {}) {
       console: () => console.log,
     },
   });
-  const transport = fileTransportFactory(logger, new FileRegistry());
+  const transport = fileTransportFactory(logger, {
+    registry: new FileRegistry(),
+    externalApi: new NodeExternalApi(),
+  });
 
   Object.assign(transport, options);
 
