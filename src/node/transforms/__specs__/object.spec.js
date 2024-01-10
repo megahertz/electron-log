@@ -18,24 +18,29 @@ describe('transform/object', () => {
 
   describe('serialize', () => {
     it('should serialize object', () => {
-      expect(serialize(null, { a: 1 })).toEqual({ a: 1 });
+      expect(serialize('', { a: 1 })).toEqual({ a: 1 });
     });
 
     it('should serialize errors', () => {
-      expect(serialize(null, new Error('test'))).toMatch('Error: test\n');
+      expect(serialize('', new Error('test'))).toMatch('Error: test\n');
     });
 
     it('should serialize functions', () => {
-      expect(serialize(null, () => 1)).toEqual('[function] () => 1');
+      expect(serialize('', () => 1)).toEqual('[function] () => 1');
+    });
+
+    it('should serialize Date', () => {
+      expect(serialize('', new Date('2000-01-01T00:00:00.000Z')))
+        .toEqual('2000-01-01T00:00:00.000Z');
     });
 
     it('should serialize set', () => {
-      expect(serialize(null, new Set([1]))).toEqual([1]);
+      expect(serialize('', new Set([1]))).toEqual([1]);
     });
 
     it('should serialize map', () => {
       if (Object.fromEntries) {
-        expect(serialize(null, new Map([['a', 1]]))).toEqual({ a: 1 });
+        expect(serialize('', new Map([['a', 1]]))).toEqual({ a: 1 });
       }
     });
   });

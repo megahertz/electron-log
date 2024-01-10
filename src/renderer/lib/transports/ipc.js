@@ -9,20 +9,27 @@ function ipcTransportRendererFactory(logger) {
     depth: 5,
 
     serializeFn(data, { depth = 5, seen = new WeakSet() } = {}) {
-      if (depth < 1) {
-        return `[${typeof data}]`;
+      if (seen.has(data)) {
+        return '[Circular]';
       }
 
-      if (seen.has(data)) {
-        return data;
+      if (depth < 1) {
+        if (isPrimitive(data)) {
+          return data;
+        }
+
+        if (Array.isArray(data)) {
+          return '[Array]';
+        }
+
+        return `[${typeof data}]`;
       }
 
       if (['function', 'symbol'].includes(typeof data)) {
         return data.toString();
       }
 
-      // Primitive types (including null and undefined)
-      if (Object(data) !== data) {
+      if (isPrimitive(data)) {
         return data;
       }
 
@@ -37,6 +44,10 @@ function ipcTransportRendererFactory(logger) {
           item,
           { depth: depth - 1, seen },
         ));
+      }
+
+      if (data instanceof Date) {
+        return data.toISOString();
       }
 
       if (data instanceof Error) {
@@ -98,4 +109,13 @@ function ipcTransportRendererFactory(logger) {
       });
     }
   }
+}
+
+/**
+ * Is type primitive, including null and undefined
+ * @param {any} value
+ * @returns {boolean}
+ */
+function isPrimitive(value) {
+  return Object(value) !== value;
 }

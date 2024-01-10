@@ -121,6 +121,10 @@ function serialize(key, value, options = {}) {
     return `[function] ${value.toString()}`;
   }
 
+  if (value instanceof Date) {
+    return value.toISOString();
+  }
+
   if (serializeMapAndSet && value instanceof Map && Object.fromEntries) {
     return Object.fromEntries(value);
   }
