@@ -5,6 +5,7 @@ const ErrorHandler = require('./ErrorHandler');
 const EventLogger = require('./EventLogger');
 const transportConsole = require('./transports/console');
 const transportFile = require('./transports/file');
+const transportIpc = require('./transports/ipc');
 const transportRemote = require('./transports/remote');
 
 module.exports = createDefaultLogger;
@@ -20,6 +21,7 @@ function createDefaultLogger({ dependencies, initializeFn }) {
     transportFactories: {
       console: transportConsole,
       file: transportFile,
+      ipc: transportIpc,
       remote: transportRemote,
     },
     variables: {
