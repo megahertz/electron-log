@@ -1,22 +1,21 @@
 'use strict';
 
-const electron = require('electron');
 const path = require('path');
 const NodeExternalApi = require('../node/NodeExternalApi');
 
 class ElectronExternalApi extends NodeExternalApi {
   /**
-   * @type {typeof electron}
+   * @type {typeof Electron}
    */
   electron = undefined;
 
   /**
    * @param {object} options
-   * @param {typeof electron} [options.electron]
+   * @param {typeof Electron} [options.electron]
    */
-  constructor(options = {}) {
-    super(options);
-    this.electron = options?.electron ?? electron;
+  constructor({ electron } = {}) {
+    super();
+    this.electron = electron;
   }
 
   getAppName() {
@@ -147,7 +146,7 @@ class ElectronExternalApi extends NodeExternalApi {
   setPreloadFileForSessions({
     filePath,
     includeFutureSession = true,
-    getSessions = () => [electron.session?.defaultSession],
+    getSessions = () => [this.electron.session?.defaultSession],
   }) {
     for (const session of getSessions().filter(Boolean)) {
       setPreload(session);

@@ -1,10 +1,11 @@
 'use strict';
 
+const electron = require('electron');
 const ElectronExternalApi = require('./ElectronExternalApi');
 const { initialize } = require('./initialize');
 const createDefaultLogger = require('../node/createDefaultLogger');
 
-const externalApi = new ElectronExternalApi();
+const externalApi = new ElectronExternalApi({ electron });
 const defaultLogger = createDefaultLogger({
   dependencies: { externalApi },
   initializeFn: initialize,
