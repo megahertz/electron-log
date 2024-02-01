@@ -1,16 +1,31 @@
 'use strict';
 
-const electron = require('electron');
 const path = require('path');
 const NodeExternalApi = require('../node/NodeExternalApi');
 
 class ElectronExternalApi extends NodeExternalApi {
+  /**
+   * @type {typeof Electron}
+   */
+  electron = undefined;
+
+  /**
+   * @param {object} options
+   * @param {typeof Electron} [options.electron]
+   */
+  constructor({ electron } = {}) {
+    super();
+    this.electron = electron;
+  }
+
   getAppName() {
+    let appName;
     try {
-      return electron.app?.name || electron.app?.getName();
+      appName = this.electron.app?.name || this.electron.app?.getName();
     } catch {
-      return super.getAppName();
+      // fallback to default value below
     }
+    return appName || super.getAppName();
   }
 
   getAppUserDataPath(appName) {
@@ -18,11 +33,13 @@ class ElectronExternalApi extends NodeExternalApi {
   }
 
   getAppVersion() {
+    let appVersion;
     try {
-      return electron.app?.getVersion();
+      appVersion = this.electron.app?.getVersion();
     } catch {
-      return super.getAppVersion();
+      // fallback to default value below
     }
+    return appVersion || super.getAppVersion();
   }
 
   getElectronLogPath() {
@@ -36,7 +53,7 @@ class ElectronExternalApi extends NodeExternalApi {
    */
   getPath(name) {
     try {
-      return electron.app?.getPath(name);
+      return this.electron.app?.getPath(name);
     } catch {
       return undefined;
     }
@@ -55,8 +72,8 @@ class ElectronExternalApi extends NodeExternalApi {
   }
 
   isDev() {
-    if (electron.app?.isPackaged !== undefined) {
-      return !electron.app.isPackaged;
+    if (this.electron.app?.isPackaged !== undefined) {
+      return !this.electron.app.isPackaged;
     }
 
     if (typeof process.execPath === 'string') {
@@ -68,36 +85,36 @@ class ElectronExternalApi extends NodeExternalApi {
   }
 
   onAppEvent(eventName, handler) {
-    electron.app?.on(eventName, handler);
+    this.electron.app?.on(eventName, handler);
 
     return () => {
-      electron.app?.off(eventName, handler);
+      this.electron.app?.off(eventName, handler);
     };
   }
 
   onAppReady(handler) {
-    if (electron.app?.isReady()) {
+    if (this.electron.app?.isReady()) {
       handler();
-    } else if (electron.app?.once) {
-      electron.app?.once('ready', handler);
+    } else if (this.electron.app?.once) {
+      this.electron.app?.once('ready', handler);
     } else {
       handler();
     }
   }
 
   onEveryWebContentsEvent(eventName, handler) {
-    electron.webContents?.getAllWebContents().forEach((webContents) => {
+    this.electron.webContents?.getAllWebContents()?.forEach((webContents) => {
       webContents.on(eventName, handler);
     });
 
-    electron.app?.on('web-contents-created', onWebContentsCreated);
+    this.electron.app?.on('web-contents-created', onWebContentsCreated);
 
     return () => {
-      electron.webContents?.getAllWebContents().forEach((webContents) => {
+      this.electron.webContents?.getAllWebContents().forEach((webContents) => {
         webContents.off(eventName, handler);
       });
 
-      electron.app?.off('web-contents-created', onWebContentsCreated);
+      this.electron.app?.off('web-contents-created', onWebContentsCreated);
     };
 
     function onWebContentsCreated(_, webContents) {
@@ -111,11 +128,11 @@ class ElectronExternalApi extends NodeExternalApi {
    * @param {function} listener
    */
   onIpc(channel, listener) {
-    electron.ipcMain?.on(channel, listener);
+    this.electron.ipcMain?.on(channel, listener);
   }
 
   onIpcInvoke(channel, listener) {
-    electron.ipcMain?.handle?.(channel, listener);
+    this.electron.ipcMain?.handle?.(channel, listener);
   }
 
   /**
@@ -123,13 +140,13 @@ class ElectronExternalApi extends NodeExternalApi {
    * @param {Function} [logFunction]
    */
   openUrl(url, logFunction = console.error) { // eslint-disable-line no-console
-    electron.shell?.openExternal(url).catch(logFunction);
+    this.electron.shell?.openExternal(url).catch(logFunction);
   }
 
   setPreloadFileForSessions({
     filePath,
     includeFutureSession = true,
-    getSessions = () => [electron.session?.defaultSession],
+    getSessions = () => [this.electron.session?.defaultSession],
   }) {
     for (const session of getSessions().filter(Boolean)) {
       setPreload(session);
@@ -155,7 +172,7 @@ class ElectronExternalApi extends NodeExternalApi {
    * @param {any} message
    */
   sendIpc(channel, message) {
-    electron.BrowserWindow?.getAllWindows().forEach((wnd) => {
+    this.electron.BrowserWindow?.getAllWindows()?.forEach((wnd) => {
       if (wnd.webContents?.isDestroyed() === false) {
         wnd.webContents.send(channel, message);
       }
@@ -163,7 +180,7 @@ class ElectronExternalApi extends NodeExternalApi {
   }
 
   showErrorBox(title, message) {
-    electron.dialog?.showErrorBox(title, message);
+    this.electron.dialog?.showErrorBox(title, message);
   }
 }
 
