@@ -21,6 +21,10 @@ function ipcTransportFactory(logger, { externalApi }) {
   return externalApi?.isElectron() ? transport : undefined;
 
   function transport(message) {
+    if (message?.variables?.processType === 'renderer') {
+      return;
+    }
+
     externalApi?.sendIpc(transport.eventId, {
       ...message,
       data: transform({ logger, message, transport }),
