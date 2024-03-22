@@ -86,6 +86,7 @@ ipcRenderer.send('__ELECTRON_LOG__', {
   // LogMessage-like object
   data: ['Log from a renderer'],
   level: 'info',
+  variables: { processType: 'renderer' },
   // ... some other optional fields like scope, logId and so on
 });
 ```
