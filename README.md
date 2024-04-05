@@ -153,6 +153,10 @@ Transport is just a function `(msg: LogMessage) => void`, so you can
 easily override/add your own transport.
 [More info](docs/extend.md#transport).
 
+#### Third-party transports
+
+- [Datadog](https://github.com/theogravity/electron-log-transport-datadog)
+
 ### Overriding console.log
 
 Sometimes it's helpful to use electron-log instead of default `console`. It's
