@@ -125,7 +125,12 @@ function fileTransportFactory(
   }
 
   function readAllLogs({ fileFilter = (f) => f.endsWith('.log') } = {}) {
+    initializeOnFirstAccess();
     const logsPath = path.dirname(transport.resolvePathFn(pathVariables));
+
+    if (!fs.existsSync(logsPath)) {
+      return [];
+    }
 
     return fs.readdirSync(logsPath)
       .map((fileName) => path.join(logsPath, fileName))
