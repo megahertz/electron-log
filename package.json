@@ -19,9 +19,9 @@
   "typings": "src/index.d.ts",
   "repository": "megahertz/electron-log",
   "files": [
+    "src/*",
     "!**/__specs__",
     "!**/.*",
-    "src/*",
     "main.js",
     "main.d.ts",
     "node.js",
