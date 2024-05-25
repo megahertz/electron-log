@@ -125,4 +125,8 @@ Reads content of all log files.
 Be careful, if you use multiple log directories through overriding resolvePath,
 it won't return all the files.
 
+#### `setAppName(appName: string)`
+
+Overrides appName used for resolving the log path
+
 <!-- spech-dictionary whether -->

@@ -54,6 +54,10 @@ function fileTransportFactory(
     resolvePathFn(vars) {
       return path.join(vars.libraryDefaultDir, vars.fileName);
     },
+
+    setAppName(name) {
+      logger.dependencies.externalApi.setAppName(name);
+    },
   });
 
   function transport(message) {

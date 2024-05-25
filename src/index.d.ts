@@ -262,6 +262,12 @@ declare namespace Logger {
     resolvePathFn: (variables: PathVariables, message?: LogMessage) => string;
 
     /**
+     * Override appName used for resolving log path
+     * @param appName
+     */
+    setAppName(appName: string): void;
+
+    /**
      * Whether to write a log file synchronously. Default to true
      */
     sync: boolean;

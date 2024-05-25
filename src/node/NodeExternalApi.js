@@ -21,7 +21,17 @@ class NodeExternalApi {
   }
 
   getAppName() {
-    return this.appName || this.getAppPackageJson()?.name;
+    const appName = this.appName || this.getAppPackageJson()?.name;
+    if (!appName) {
+      throw new Error(
+        'electron-log can\'t determine the app name. It tried these methods:\n'
+        + '1. Use `electron.app.name`\n'
+        + '2. Use productName or name from the nearest package.json`\n'
+        + 'You can also set it through log.transports.file.setAppName()',
+      );
+    }
+
+    return appName;
   }
 
   /**
@@ -179,6 +189,10 @@ class NodeExternalApi {
         logFunction(err);
       }
     });
+  }
+
+  setAppName(appName) {
+    this.appName = appName;
   }
 
   setPlatform(platform) {

@@ -21,7 +21,9 @@ class ElectronExternalApi extends NodeExternalApi {
   getAppName() {
     let appName;
     try {
-      appName = this.electron.app?.name || this.electron.app?.getName();
+      appName = this.appName
+        || this.electron.app?.name
+        || this.electron.app?.getName();
     } catch {
       // fallback to default value below
     }
