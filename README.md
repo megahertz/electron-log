@@ -245,6 +245,9 @@ userLog.info('message with user scope');
 // Prints 12:12:21.962 (user) › message with user scope
 ```
 
+By default, scope labels are padded in logs. To disable it, set  
+`log.scope.labelPadding = false`.
+
 ## Related
 
  - [electron-cfg](https://github.com/megahertz/electron-cfg) -
