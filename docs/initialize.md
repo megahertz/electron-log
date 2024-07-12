@@ -39,7 +39,15 @@ log.initialize({ getSessions: () => [customSession] });
 To disable preload script injection, pass `includeFutureSession: false` option
 to the `initizlize` function.
 
-## Use a global instance when no bundler used and nodeIntegration is disabled
+## 2. Inject preload code manually
+
+Instead of calling `log.initialize()`, you can inject the preload script 
+manually.
+Add the import inside your preload script:
+
+`import 'electron-log/preload';`
+
+## 3. Use `window.__electronLog` with isolated context without bundling
 
 **main.js**
 ```js
@@ -56,7 +64,7 @@ __electronLog.info('Log from the renderer');
 Please be aware that `__electronLog` global variable only exposes log functions,
 no errorHandler, scope and other members.
 
-## Spy on `console.log` calls
+## 4. Spy on `console.log` calls
 
 It's possible to collect logs written by `console.log` in the renderer process
 
@@ -69,11 +77,11 @@ log.initialize({ spyRendererConsole: true });
 ````
 
 After that, any console call from a renderer will be processed in the
-main process. But in that case it's not possible to log object. For example,
-when `console.log('test', { a: 1 })` is called in a renderer, `test [Object]`
-is received on the main side.
+main process. But in that case, it's not possible to log object. 
+For example, when `console.log('test', { a: 1 })` is called in a renderer,
+`test [Object]` is received on the main side.
 
-## Using IPC directly
+## 5. Using IPC directly
 
 Starting from electron-log v5, an electron-log IPC call has a constant
 signature. So you can call it directly if you don't want to use a renderer-side
@@ -90,3 +98,7 @@ ipcRenderer.send('__ELECTRON_LOG__', {
   // ... some other optional fields like scope, logId and so on
 });
 ```
+
+When context isolation is enabled or nodeIntegration is disabled, which is the
+default WebContext state in Electron, this code only works in a preload script.
+Otherwise, it can be used in a renderer code as well.
