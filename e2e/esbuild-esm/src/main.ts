@@ -7,9 +7,8 @@ async function createWindow() {
 
   log.info('log from the main process');
 
-  const win = new BrowserWindow();
-
   const t = process.argv.includes('--test') ? 'true' : 'false';
+  const win = new BrowserWindow({ show: t === 'false' });
   await win.loadURL(`file://${path.join(process.cwd(), 'index.html')}?test=${t}`);
 }
 

@@ -14,7 +14,9 @@ async function createWindow() {
   Promise.reject(new Error('Unhandled main rejection'));
   setTimeout(() => { throw new Error('Unhandled main error') }, 0);
 
+  const t = process.argv.includes('--test') ? 'true' : 'false';
   const win = new BrowserWindow({
+    show: t === 'false',
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true,
@@ -22,7 +24,6 @@ async function createWindow() {
     },
   });
 
-  const t = process.argv.includes('--test') ? 'true' : 'false';
   await win.loadURL(`file://${path.join(__dirname, 'index.html')}?test=${t}`);
 }
 

@@ -1,3 +1,5 @@
+// noinspection DuplicatedCode
+
 'use strict';
 
 const { app, BrowserWindow } = require('electron');
@@ -8,7 +10,9 @@ async function createWindow() {
   log.initialize();
   log.info('log from the main process');
 
+  const t = process.argv.includes('--test') ? 'true' : 'false';
   const win = new BrowserWindow({
+    show: t === 'false',
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true,
@@ -16,7 +20,6 @@ async function createWindow() {
     },
   });
 
-  const t = process.argv.includes('--test') ? 'true' : 'false';
   await win.loadURL(`file://${path.join(__dirname, 'index.html')}?test=${t}`);
 }
 

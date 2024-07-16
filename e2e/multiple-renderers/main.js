@@ -8,10 +8,11 @@ async function createWindow() {
   log.initialize();
   log.info('log from the main process');
 
-  const win = new BrowserWindow();
+  const t = process.argv.includes('--test').toString();
+  const win = new BrowserWindow({ show: t === 'false' });
 
   const initUrl = new URL(`file://${path.join(__dirname, 'index.html')}`);
-  initUrl.searchParams.set('test', process.argv.includes('--test').toString());
+  initUrl.searchParams.set('test', t);
   initUrl.searchParams.set('dirname', __dirname);
 
   await win.loadURL(initUrl.href);

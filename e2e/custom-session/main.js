@@ -12,13 +12,12 @@ async function createWindow() {
 
   log.info('log from the main process');
 
+  const t = process.argv.includes('--test').toString();
   const win = new BrowserWindow({
-    webPreferences: {
-      partition: PARTITION,
-    },
+    show: t === 'false',
+    webPreferences: { partition: PARTITION },
   });
 
-  const t = process.argv.includes('--test') ? 'true' : 'false';
   await win.loadURL(`file://${path.join(__dirname, 'index.html')}?test=${t}`);
 }
 
