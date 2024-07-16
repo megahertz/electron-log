@@ -2,7 +2,8 @@
   "name": "electron-log-test-node",
   "version": "1.0.0",
   "private": true,
+  "main": "main.js",
   "scripts": {
-    "start": "node main.js"
+    "start": "node ."
   }
 }

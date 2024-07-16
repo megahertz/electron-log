@@ -6,7 +6,10 @@ const path = require('path');
 const FileRegistry = require('./FileRegistry');
 const { transform } = require('../../transforms/transform');
 const { removeStyles } = require('../../transforms/style');
-const { format } = require('../../transforms/format');
+const {
+  format,
+  concatFirstStringElements,
+} = require('../../transforms/format');
 const { toString } = require('../../transforms/object');
 
 module.exports = fileTransportFactory;
@@ -36,7 +39,7 @@ function fileTransportFactory(
     maxSize: 1024 ** 2,
     readAllLogs,
     sync: true,
-    transforms: [removeStyles, format, toString],
+    transforms: [removeStyles, format, concatFirstStringElements, toString],
     writeOptions: { flag: 'a', mode: 0o666, encoding: 'utf8' },
 
     archiveLogFn(file) {
