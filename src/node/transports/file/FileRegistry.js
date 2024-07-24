@@ -21,7 +21,7 @@ class FileRegistry extends EventEmitter {
    * @param {boolean} [writeAsync]
    * @return {File}
    */
-  provide({ filePath, writeOptions, writeAsync = false }) {
+  provide({ filePath, writeOptions = {}, writeAsync = false }) {
     let file;
     try {
       filePath = path.resolve(filePath);
@@ -49,7 +49,7 @@ class FileRegistry extends EventEmitter {
    * @private
    */
   createFile({ filePath, writeOptions, writeAsync }) {
-    this.testFileWriting(filePath);
+    this.testFileWriting({ filePath, writeOptions });
     return new File({ path: filePath, writeOptions, writeAsync });
   }
 
@@ -64,11 +64,12 @@ class FileRegistry extends EventEmitter {
 
   /**
    * @param {string} filePath
+   * @param {WriteOptions} writeOptions
    * @private
    */
-  testFileWriting(filePath) {
+  testFileWriting({ filePath, writeOptions }) {
     fs.mkdirSync(path.dirname(filePath), { recursive: true });
-    fs.writeFileSync(filePath, '', { flag: 'a' });
+    fs.writeFileSync(filePath, '', { flag: 'a', mode: writeOptions.mode });
   }
 }
 
