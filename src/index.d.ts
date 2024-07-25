@@ -6,7 +6,15 @@ declare namespace Logger {
     'silly';
   type LevelOption = LogLevel | false;
 
-  type Format = (({ message: LogMessage }) => any[]) | string;
+  interface FormatParams {
+    data: any[];
+    level: LogLevel;
+    logger: Logger;
+    message: LogMessage;
+    transport: Transport;
+  }
+
+  type Format = string | ((params: FormatParams) => any[]);
 
   type FOpenFlags = 'r' | 'r+' | 'rs+' | 'w' | 'wx' | 'w+' | 'wx+' |
     'a' | 'ax' | 'a+' | 'ax+';

@@ -32,10 +32,28 @@ log.transports.console.format = '[{h}:{i}:{s}.{ms}] [{label}] {text}';
 
 ## Function
 
-`(message: LogMessage) => string`
+`(params: FormatParams) => any[]`
+
+```ts
+interface FormatParams {
+  data: any[];
+  level: LogLevel;
+  logger: Logger;
+  message: LogMessage;
+  transport: Transport;
+}
+```
 
 ```js
-log.transports.console.format = ({ message }) => {
-  return util.format(...message.data);
-}
+import util from 'node:util';
+
+log.transports.console.format = ({ data, level, message }) => {
+  const text = util.format(...data);
+  
+  return [
+    message.date.toISOString().slice(11, -1),
+    `[${level}]`,
+    text
+  ];
+};
 ```
