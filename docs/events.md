@@ -4,40 +4,43 @@ Sometimes it's helpful to save critical electron events to the log file.
 
 `log.eventLogger.startLogging(options?)`;
 
-By default, it save the following events:
+By default, it saves the following events:
 - `certificate-error`, `child-process-gone`, `render-process-gone` of `app`
 - `crashed`, `gpu-process-crashed` of `webContents`
 - `did-fail-load`, `did-fail-provisional-load`, `plugin-crashed`,
   `preload-error` of every WebContents. You can switch any event on/off.
 
-#### `log.eventLogger.startLogging(options?)`
+## Methods
 
-Start saving logs. See options argument description below.
+#### `log.eventLogger.startLogging(options?: EventLoggerOptions)`
+
+Start saving event logs.
 
 #### `log.eventLogger.stopLogging()`
 
 Stop saving logs.
 
-#### `log.eventLogger.setOptions()`
+#### `log.eventLogger.setOptions(options: EventLoggerOptions)`
 
 Set logging options.
 
-#### `log.eventLogger.format` {string | Function}
+## Options
+
+#### `log.eventLogger.format` {string | (input: EventFormatterInput) => any[]}
 
 Default: `'{eventSource}#{eventName}:'`
 
-Custom format example:
+Custom format function example:
 
 ```js
-log.eventLogger.format = ({ eventName, eventSource, handlerArgs }) => {
-  const [event, ...eventArgs] = handlerArgs;
-  return [`${eventSource}#${eventName}:`, JSON.stringify(eventArgs)];
+log.eventLogger.format = ({ args, event, eventName, eventSource }) => {
+  return [`${eventSource}#${eventName}:`, JSON.stringify(args)];
 };
 ```
 
 #### `log.eventLogger.formatters` {object}
 
-A set of function which formats a specific event.
+A set of functions which formats a specific event.
 
 ```js
 log.eventLogger.formatters.webContents['console-message'] = ({
@@ -58,7 +61,7 @@ log.eventLogger.formatters.webContents['console-message'] = ({
 
 #### `log.eventLogger.events` {object}
 
-Allow to switch specific events on/off easily
+Allow switching specific events on/off easily
 
 Default:
 
@@ -90,8 +93,3 @@ Default: `'warn'`
 Which log scope is used for logging
 
 Default: `''`
-
-### Options
-
-Options is just an object which may contain some eventLogger properties
-(`events`, `level`, `logger`, `format`, `formatters`, `scope`)

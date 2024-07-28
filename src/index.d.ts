@@ -509,40 +509,29 @@ declare namespace Logger {
 
   type EventSource = 'app' | 'webContents';
 
+  interface EventFormatterInput {
+    args: unknown[];
+    event: object;
+    eventName: string;
+    eventSource: string;
+  }
+
   interface EventLoggerOptions {
     /**
      * String template or function which prepares event data for logging
      */
-    format?:
-      | string
-      | ((
-          args: {
-            eventName: string;
-            eventSource: EventSource;
-            handlerArgs: unknown[];
-          }
-        ) => unknown[]);
+    format?: string | ((input: EventFormatterInput) => unknown[]);
 
     /**
      * Formatter callbacks for a specific event
      */
     formatters?: Record<
       EventSource,
-      Record<
-        string,
-        (
-          args: {
-            args: unknown[];
-            event: object;
-            eventName: string;
-            eventSource: string;
-          }
-        ) => unknown
-      >
+      Record<string, (input: EventFormatterInput) => object | unknown[]>
     >;
 
     /**
-     * Allow to switch specific events on/off easily
+     * Allow switching specific events on/off easily
      */
     events?: Record<EventSource, Record<string, boolean>>;
 
