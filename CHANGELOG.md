@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.2.0
+
+- [fix](https://github.com/megahertz/electron-log/commit/a52f3e5863ba5caf6cb19b2cdb32c43d28545b9d):
+  [#436](https://github.com/megahertz/electron-log/issues/436) `log.log` 
+  isn't bound to `log.info`. Previously, it was processed with non-existent
+  `log` level.
+
 ## 5.1.0
 
 - New entry point for NW.js / Node.js apps: `'electron-log/node'`
