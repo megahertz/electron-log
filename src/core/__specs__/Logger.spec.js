@@ -19,6 +19,12 @@ describe('Logger', () => {
       expect(log.memory[0]).toMatchObject({ data: ['test'], level: 'info' });
     });
 
+    it('should bind the log level to the info', () => {
+      const log = createLogger();
+      log.log('test');
+      expect(log.memory[0]).toMatchObject({ data: ['test'], level: 'info' });
+    });
+
     it('should process undefined value', () => {
       const log = createLogger();
       log.info(undefined);

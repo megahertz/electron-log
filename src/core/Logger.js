@@ -53,10 +53,11 @@ class Logger {
     this.variables = variables || {};
     this.scope = scopeFactory(this);
 
-    this.addLevel('log', false);
     for (const name of this.levels) {
       this.addLevel(name, false);
     }
+    this.log = this.info;
+    this.functions.log = this.log;
 
     this.errorHandler = errorHandler;
     errorHandler?.setOptions({ ...dependencies, logFn: this.error });
@@ -114,6 +115,7 @@ class Logger {
   compareLevels(passLevel, checkLevel, levels = this.levels) {
     const pass = levels.indexOf(passLevel);
     const check = levels.indexOf(checkLevel);
+
     if (check === -1 || pass === -1) {
       return true;
     }
