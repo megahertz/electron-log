@@ -60,7 +60,7 @@ function concatFirstStringElements({ data }) {
 
 function timeZoneFromOffset(minutesOffset) {
   const minutesPositive = Math.abs(minutesOffset);
-  const sign = minutesOffset >= 0 ? '-' : '+';
+  const sign = minutesOffset > 0 ? '-' : '+';
   const hours = Math.floor(minutesPositive / 60).toString().padStart(2, '0');
   const minutes = (minutesPositive % 60).toString().padStart(2, '0');
   return `${sign}${hours}:${minutes}`;
