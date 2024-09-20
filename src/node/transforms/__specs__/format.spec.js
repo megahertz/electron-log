@@ -135,6 +135,7 @@ describe('transform/format', () => {
 
   it('timeZoneFromOffset', () => {
     expect(format.timeZoneFromOffset(-60)).toBe('+01:00');
+    expect(format.timeZoneFromOffset(0)).toBe('+00:00');
     expect(format.timeZoneFromOffset(60)).toBe('-01:00');
     expect(format.timeZoneFromOffset(-570)).toBe('+09:30');
   });
