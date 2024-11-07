@@ -148,6 +148,7 @@ class Logger {
 
     const normalizedMessage = {
       date: new Date(),
+      logId: this.logId,
       ...message,
       level,
       variables: {
