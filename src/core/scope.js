@@ -22,9 +22,10 @@ function scopeFactory(logger) {
     scope.maxLabelLength = Math.max(scope.maxLabelLength, label.length);
 
     const newScope = {};
-    for (const level of [...logger.levels, 'log']) {
+    for (const level of logger.levels) {
       newScope[level] = (...d) => logger.logData(d, { level, scope: label });
     }
+    newScope.log = newScope.info;
     return newScope;
   }
 }
