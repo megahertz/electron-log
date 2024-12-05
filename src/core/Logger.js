@@ -1,6 +1,7 @@
 'use strict';
 
 const scopeFactory = require('./scope');
+const Buffering = require('./Buffering');
 
 /**
  * @property {Function} error
@@ -44,14 +45,15 @@ class Logger {
     this.processMessage = this.processMessage.bind(this);
 
     this.allowUnknownLevel = allowUnknownLevel;
+    this.buffering = new Buffering(this);
     this.dependencies = dependencies;
     this.initializeFn = initializeFn;
     this.isDev = isDev;
     this.levels = levels;
     this.logId = logId;
+    this.scope = scopeFactory(this);
     this.transportFactories = transportFactories;
     this.variables = variables || {};
-    this.scope = scopeFactory(this);
 
     for (const name of this.levels) {
       this.addLevel(name, false);
@@ -128,7 +130,11 @@ class Logger {
   }
 
   logData(data, options = {}) {
-    this.processMessage({ data, ...options });
+    if (this.buffering.enabled) {
+      this.buffering.addMessage({ data, ...options });
+    } else {
+      this.processMessage({ data, ...options });
+    }
   }
 
   processMessage(message, { transports = this.transports } = {}) {

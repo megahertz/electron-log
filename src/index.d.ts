@@ -366,6 +366,30 @@ declare namespace Logger {
     [key: string]: Transport | null;
   }
 
+  interface Buffering {
+    /**
+     * Buffered log messages
+     */
+    buffer: LogMessage[];
+
+    enabled: boolean;
+
+    /**
+     * Start buffering log messages
+     */
+    begin(): void;
+
+    /**
+     * Stop buffering and process all buffered logs
+     */
+    commit(): void;
+
+    /**
+     * Stop buffering and discard all buffered logs
+     */
+    reject(): void;
+  }
+
   interface Scope {
     (label: string): LogFunctions;
 
@@ -553,6 +577,11 @@ declare namespace Logger {
   }
 
   interface Logger extends LogFunctions {
+    /**
+     * Buffering helper
+     */
+    buffering: Buffering;
+
     /**
      * Error handling helper
      */

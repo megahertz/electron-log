@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.2.4
+
+- Add Buffering feature.
+
 ## 5.2.0
 
 - [fix](https://github.com/megahertz/electron-log/commit/a52f3e5863ba5caf6cb19b2cdb32c43d28545b9d):
@@ -131,7 +135,7 @@ was implemented.
 ## 2.0.0
  - Move log.appName property to log.transports.file.appName.
  - Change a log message object.
-   See updated [Override transport section](README.md#override-transport) if you
+   See updated [Override transport section](docs/extend.md) if you
    use custom transport.
  - Now it's not possible to configure transports from a renderer
    process, only from the main.
