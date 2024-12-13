@@ -25,7 +25,7 @@ log.info('Log from the renderer');
 
 This method injects a built-in preload script into a renderer process through
 sessions. The preload script is injected into the default session and any
-sessions created after a `log.initizlie()` call.
+sessions created after a `log.initialize()` call.
 
 ### Using custom sessions
 
