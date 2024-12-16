@@ -67,7 +67,7 @@ class E2eApp {
       const output = [];
 
       let additionalArgs = '';
-      if (process.env.DOCKER) {
+      if (process.platform === 'linux') {
         additionalArgs += ' --no-sandbox';
       }
 
