@@ -175,7 +175,10 @@ class ElectronExternalApi extends NodeExternalApi {
    */
   sendIpc(channel, message) {
     this.electron.BrowserWindow?.getAllWindows()?.forEach((wnd) => {
-      if (wnd.webContents?.isDestroyed() === false) {
+      if (
+        wnd.webContents?.isDestroyed() === false
+        && wnd.webContents?.isCrashed() === false
+      ) {
         wnd.webContents.send(channel, message);
       }
     });
