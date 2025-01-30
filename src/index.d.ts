@@ -36,7 +36,7 @@ declare namespace Logger {
     message: LogMessage,
     transport: Transport,
     logger: Logger
-  }) => any[];
+  }) => any;
 
   interface LogMessage {
     /**

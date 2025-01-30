@@ -4,12 +4,12 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const FileRegistry = require('./FileRegistry');
-const { transform } = require('../../transforms/transform');
-const { removeStyles } = require('../../transforms/style');
+const { transform } = require('../../../core/transforms/transform');
+const { removeStyles } = require('../../../core/transforms/style');
 const {
   format,
   concatFirstStringElements,
-} = require('../../transforms/format');
+} = require('../../../core/transforms/format');
 const { toString } = require('../../transforms/object');
 
 module.exports = fileTransportFactory;

@@ -1,7 +1,7 @@
 'use strict';
 
 const { maxDepth, toJSON } = require('../transforms/object');
-const { transform } = require('../transforms/transform');
+const { transform } = require('../../core/transforms/transform');
 
 module.exports = ipcTransportFactory;
 
