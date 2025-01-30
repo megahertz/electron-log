@@ -2,10 +2,16 @@
 
 /* eslint-disable no-console */
 
-const { concatFirstStringElements, format } = require('../transforms/format');
+const {
+  concatFirstStringElements,
+  format,
+} = require('../../core/transforms/format');
 const { maxDepth, toJSON } = require('../transforms/object');
-const { applyAnsiStyles, removeStyles } = require('../transforms/style');
-const { transform } = require('../transforms/transform');
+const {
+  applyAnsiStyles,
+  removeStyles,
+} = require('../../core/transforms/style');
+const { transform } = require('../../core/transforms/transform');
 
 const consoleMethods = {
   error: console.error,

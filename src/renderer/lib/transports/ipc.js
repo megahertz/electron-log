@@ -1,5 +1,7 @@
 'use strict';
 
+const { transform } = require('../../../core/transforms/transform');
+
 module.exports = ipcTransportRendererFactory;
 
 const RESTRICTED_TYPES = new Set([Promise, WeakMap, WeakSet]);
@@ -7,83 +9,7 @@ const RESTRICTED_TYPES = new Set([Promise, WeakMap, WeakSet]);
 function ipcTransportRendererFactory(logger) {
   return Object.assign(transport, {
     depth: 5,
-
-    serializeFn(data, { depth = 5, seen = new WeakSet() } = {}) {
-      if (seen.has(data)) {
-        return '[Circular]';
-      }
-
-      if (depth < 1) {
-        if (isPrimitive(data)) {
-          return data;
-        }
-
-        if (Array.isArray(data)) {
-          return '[Array]';
-        }
-
-        return `[${typeof data}]`;
-      }
-
-      if (['function', 'symbol'].includes(typeof data)) {
-        return data.toString();
-      }
-
-      if (isPrimitive(data)) {
-        return data;
-      }
-
-      // Object types
-
-      if (RESTRICTED_TYPES.has(data.constructor)) {
-        return `[${data.constructor.name}]`;
-      }
-
-      if (Array.isArray(data)) {
-        return data.map((item) => transport.serializeFn(
-          item,
-          { depth: depth - 1, seen },
-        ));
-      }
-
-      if (data instanceof Date) {
-        return data.toISOString();
-      }
-
-      if (data instanceof Error) {
-        return data.stack;
-      }
-
-      if (data instanceof Map) {
-        return new Map(
-          Array
-            .from(data)
-            .map(([key, value]) => [
-              transport.serializeFn(key, { depth: depth - 1, seen }),
-              transport.serializeFn(value, { depth: depth - 1, seen }),
-            ]),
-        );
-      }
-
-      if (data instanceof Set) {
-        return new Set(
-          Array.from(data).map(
-            (val) => transport.serializeFn(val, { depth: depth - 1, seen }),
-          ),
-        );
-      }
-
-      seen.add(data);
-
-      return Object.fromEntries(
-        Object.entries(data).map(
-          ([key, value]) => [
-            key,
-            transport.serializeFn(value, { depth: depth - 1, seen }),
-          ],
-        ),
-      );
-    },
+    transforms: [serializeFn],
   });
 
   function transport(message) {
@@ -99,9 +25,14 @@ function ipcTransportRendererFactory(logger) {
     }
 
     try {
-      __electronLog.sendToMain(transport.serializeFn(message, {
-        depth: transport.depth,
-      }));
+      const serialized = transform({
+        initialData: message,
+        logger,
+        message,
+        transport,
+      });
+
+      __electronLog.sendToMain(serialized);
     } catch (e) {
       logger.transports.console({
         data: ['electronLog.transports.ipc', e, 'data:', message.data],
@@ -118,4 +49,89 @@ function ipcTransportRendererFactory(logger) {
  */
 function isPrimitive(value) {
   return Object(value) !== value;
+}
+
+function serializeFn({
+  data,
+  depth,
+  seen = new WeakSet(),
+  transport = {},
+} = {}) {
+  const actualDepth = depth || transport.depth || 5;
+
+  if (seen.has(data)) {
+    return '[Circular]';
+  }
+
+  if (actualDepth < 1) {
+    if (isPrimitive(data)) {
+      return data;
+    }
+
+    if (Array.isArray(data)) {
+      return '[Array]';
+    }
+
+    return `[${typeof data}]`;
+  }
+
+  if (['function', 'symbol'].includes(typeof data)) {
+    return data.toString();
+  }
+
+  if (isPrimitive(data)) {
+    return data;
+  }
+
+  // Object types
+
+  if (RESTRICTED_TYPES.has(data.constructor)) {
+    return `[${data.constructor.name}]`;
+  }
+
+  if (Array.isArray(data)) {
+    return data.map((item) => serializeFn({
+      data: item,
+      depth: actualDepth - 1,
+      seen,
+    }));
+  }
+
+  if (data instanceof Date) {
+    return data.toISOString();
+  }
+
+  if (data instanceof Error) {
+    return data.stack;
+  }
+
+  if (data instanceof Map) {
+    return new Map(
+      Array
+        .from(data)
+        .map(([key, value]) => [
+          serializeFn({ data: key, depth: actualDepth - 1, seen }),
+          serializeFn({ data: value, depth: actualDepth - 1, seen }),
+        ]),
+    );
+  }
+
+  if (data instanceof Set) {
+    return new Set(
+      Array.from(data).map(
+        (val) => serializeFn({ data: val, depth: actualDepth - 1, seen }),
+      ),
+    );
+  }
+
+  seen.add(data);
+
+  return Object.fromEntries(
+    Object.entries(data).map(
+      ([key, value]) => [
+        key,
+        serializeFn({ data: value, depth: actualDepth - 1, seen }),
+      ],
+    ),
+  );
 }
