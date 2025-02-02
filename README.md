@@ -53,6 +53,14 @@ only log functions like `info`, `warn` and so on.
 There are a few other ways how a logger can be initialized for a renderer
 process. [Read more](docs/initialize.md).
 
+### Preload script
+
+To use the logger inside a preload script, use the 
+`electron-log/renderer` import. 
+There's also the `electron-log/preload` entrypoint, but it's used only as a 
+bridge between the main and renderer processes and doesn't export a logger. In
+most cases, you don't need this preload entrypoint.
+
 ### Node.js and NW.js
 
 ```typescript
