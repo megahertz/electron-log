@@ -43,7 +43,13 @@ function formatDataFn({
   transport = {},
 }) {
   if (typeof transport.format === 'function') {
-    return transport.format({ ...message, data });
+    return transport.format({
+      data,
+      level: message?.level || 'info',
+      logger,
+      message,
+      transport,
+    });
   }
 
   if (typeof transport.format !== 'string') {
