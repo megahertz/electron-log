@@ -164,7 +164,15 @@ class ElectronExternalApi extends NodeExternalApi {
      * @param {Session} session
      */
     function setPreload(session) {
-      session.setPreloads([...session.getPreloads(), filePath]);
+      if (typeof session.registerPreloadScript === 'function') {
+        session.registerPreloadScript({
+          filePath,
+          id: 'electron-log-preload',
+          type: 'frame',
+        });
+      } else {
+        session.setPreloads([...session.getPreloads(), filePath]);
+      }
     }
   }
 
