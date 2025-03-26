@@ -77,7 +77,7 @@ function initializePreload({
 }
 
 function initializeSpyRendererConsole({ externalApi, logger }) {
-  const levels = ['verbose', 'info', 'warning', 'error'];
+  const levels = ['debug', 'info', 'warn', 'error'];
   externalApi.onEveryWebContentsEvent(
     'console-message',
     (event, level, message) => {
