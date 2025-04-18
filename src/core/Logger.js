@@ -131,7 +131,7 @@ class Logger {
 
   logData(data, options = {}) {
     if (this.buffering.enabled) {
-      this.buffering.addMessage({ data, ...options });
+      this.buffering.addMessage({ data, date: new Date(), ...options });
     } else {
       this.processMessage({ data, ...options });
     }
