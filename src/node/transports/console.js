@@ -61,7 +61,7 @@ function consoleTransportFactory(logger) {
 }
 
 function addTemplateColors({ data, message, transport }) {
-  if (transport.format !== DEFAULT_FORMAT) {
+  if (!transport.format?.includes('%c')) {
     return data;
   }
 
