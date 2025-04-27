@@ -60,7 +60,7 @@ function formatDataFn({
 
   // Concatenate the first two data items to support printf-like templates
   if (typeof data[1] === 'string' && data[1].match(/%[1cdfiOos]/)) {
-    data = [`${data[0]} ${data[1]}`, ...data.slice(2)];
+    data = [`${data[0]}${data[1]}`, ...data.slice(2)];
   }
 
   const date = message.date || new Date();
