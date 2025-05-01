@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.4.0
+
+- [#465](https://github.com/megahertz/electron-log/issues/465) Allow using `%c` 
+  template for the `transports.console.format`. This change may break formatting
+  if you already use `%c` in your format string. In this case, you can run 
+  `log.transports.console.transforms.shift()` before initializing the logger.
+
 ## 5.2.4
 
 - Add Buffering feature.
