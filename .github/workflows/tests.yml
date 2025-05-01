@@ -46,7 +46,7 @@ jobs:
             electron_version: latest
             experimental: true
           - os: windows-latest
-            node_version: latest
+            node_version: builtin # For an unknown reason, setup-node freezes
             electron_version: latest
             experimental: true
 
@@ -59,6 +59,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node_version }}
+        if: matrix.node_version != 'builtin'
 
       - run: npm config set script-shell 'bash'
         if: runner.os == 'Windows'
@@ -66,7 +67,7 @@ jobs:
       - run: npm install
 
       - run: npm install -D electron@${{ matrix.electron_version }}
-        if: ${{ matrix.electron_version != 'latest' }}
+        if: matrix.electron_version != 'latest'
 
       - run: |
           if [ "${RUNNER_OS}" = 'Linux' ]; then
