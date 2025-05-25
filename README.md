@@ -163,7 +163,7 @@ easily override/add your own transport.
 
 #### Third-party transports
 
-- [Datadog](https://github.com/theogravity/electron-log-transport-datadog)
+- [Datadog](https://github.com/marklai1998/datadog-logger-integrations)
 
 ### Overriding console.log
 
