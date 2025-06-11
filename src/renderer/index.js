@@ -5,6 +5,14 @@ const RendererErrorHandler = require('./lib/RendererErrorHandler');
 const transportConsole = require('./lib/transports/console');
 const transportIpc = require('./lib/transports/ipc');
 
+if (typeof process === 'object' && process.type === 'browser') {
+  // eslint-disable-next-line no-console
+  console.warn(
+    'electron-log/renderer is loaded in the main process. '
+    + 'It could cause unexpected behaviour.',
+  );
+}
+
 module.exports = createLogger();
 module.exports.Logger = Logger;
 module.exports.default = module.exports;
