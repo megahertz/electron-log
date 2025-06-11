@@ -53,7 +53,7 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.29.1",
     "humile": "^0.5.3",
-    "nw": "^0.83.0",
+    "nw": "^0.100.1",
     "typescript": "^5.3.3",
     "vite": "^4.5.9",
     "vite-plugin-electron": "^0.15.5",
