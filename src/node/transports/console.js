@@ -89,6 +89,6 @@ function formatStyles(args) {
 }
 
 function levelToStyle(level) {
-  const map = { error: 'red', warn: 'yellow', info: 'cyan', default: 'unset' };
+  const map = { error: 'red', warn: 'yellow', info: 'cyan', verbose: 'gray', debug: 'gray', silly: 'gray', default: 'unset' };
   return map[level] || map.default;
 }
