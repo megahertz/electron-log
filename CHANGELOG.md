@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.4.2
+
+- [#472](https://github.com/megahertz/electron-log/pull/472) Add the gray color
+  and `log.transports.console.colorMap` option.
+
 ## 5.4.0
 
 - [#465](https://github.com/megahertz/electron-log/issues/465) Allow using `%c` 

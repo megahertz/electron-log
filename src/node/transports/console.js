@@ -34,6 +34,15 @@ Object.assign(consoleTransportFactory, {
 
 function consoleTransportFactory(logger) {
   return Object.assign(transport, {
+    colorMap: {
+      error: 'red',
+      warn: 'yellow',
+      info: 'cyan',
+      verbose: 'unset',
+      debug: 'gray',
+      silly: 'gray',
+      default: 'unset',
+    },
     format: DEFAULT_FORMAT,
     level: 'silly',
     transforms: [
@@ -68,7 +77,11 @@ function addTemplateColors({ data, message, transport }) {
     return data;
   }
 
-  return [`color:${levelToStyle(message.level)}`, 'color:unset', ...data];
+  return [
+    `color:${levelToStyle(message.level, transport)}`,
+    'color:unset',
+    ...data,
+  ];
 }
 
 function canUseStyles(useStyleValue, level) {
@@ -88,7 +101,6 @@ function formatStyles(args) {
   return nextTransform(args);
 }
 
-function levelToStyle(level) {
-  const map = { error: 'red', warn: 'yellow', info: 'cyan', verbose: 'gray', debug: 'gray', silly: 'gray', default: 'unset' };
-  return map[level] || map.default;
+function levelToStyle(level, transport) {
+  return transport.colorMap[level] || transport.colorMap.default;
 }
