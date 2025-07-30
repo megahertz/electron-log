@@ -4,6 +4,23 @@ Displays a log message in the console
 
 ## Options
 
+#### `colorMap` {Record<LogLevel, string>}
+
+Default:
+```
+{
+  error: 'red', 
+  warn: 'yellow',
+  info: 'cyan',
+  verbose: 'unset',
+  debug: 'gray',
+  silly: 'gray',
+  default: 'unset',
+}
+```
+
+A map of log levels to colors.
+
 #### `format` {string | (message: LogMessage) => void}
 
 Default: `'[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}'`

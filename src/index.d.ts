@@ -83,6 +83,11 @@ declare namespace Logger {
 
   interface ConsoleTransport extends Transport {
     /**
+     * A mapping of log levels to their corresponding color name
+     */
+    colorMap: Record<LogLevel, string>;
+
+    /**
      * String template of function for message serialization
      */
     format: Format | string;

@@ -22,6 +22,7 @@ const ANSI_COLORS = {
   magenta: '\x1b[35m',
   cyan: '\x1b[36m',
   white: '\x1b[37m',
+  gray: '\x1b[90m',
 };
 
 function styleToAnsi(style) {

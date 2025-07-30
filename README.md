@@ -196,6 +196,7 @@ Available colors:
  - magenta
  - cyan
  - white
+ - gray
  
 For DevTools console you can use other CSS properties.
 
