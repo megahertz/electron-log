@@ -1,6 +1,6 @@
-# File transport
+# File transport (main process only)
 
-The file transport writes log messages to a file.
+The file transport writes log messages to a file 
 
 ## Options
 

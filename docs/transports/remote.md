@@ -1,4 +1,4 @@
-# Remote transport
+# Remote transport (main process only)
 
 Sends a JSON POST request with `LogMessage` in the body to the specified url.
 

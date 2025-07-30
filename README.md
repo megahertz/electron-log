@@ -106,7 +106,7 @@ DevTools console (renderer process).
 
 [Read more about console transport](docs/transports/console.md).
 
-#### File transport
+#### File transport (main process only)
 
 The file transport writes log messages to a file.
 
@@ -128,12 +128,16 @@ It displays log messages from main process in the renderer's DevTools console.
 By default, it's disabled for a production build. You can enable in the
 production mode by setting the `level` property.
 
+In the renderer process, this transport does the opposite: it sends the data
+to the main process via IPC. Then, the data is written to the console and 
+the filesystem.
+
 
 ##### Options
 
  - **level**, default 'silly' in the dev mode, `false` in the production.
 
-#### Remote transport
+#### Remote transport (main process only)
 
 Sends a JSON POST request with `LogMessage` in the body to the specified url.
 
