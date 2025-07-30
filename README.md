@@ -29,7 +29,7 @@ Install with [npm](https://npmjs.org/package/electron-log):
 ```js
 import log from 'electron-log/main';
 
-// Optional, initialize the logger for any renderer process
+// Initialize the logger to be available in renderer process
 log.initialize();
 
 log.info('Log from the main process');
@@ -37,15 +37,12 @@ log.info('Log from the main process');
 
 ### Renderer process
 
-If a bundler is used, you can just import the module:
+If a bundler is used, you can import the module in a renderer code:
 
 ```typescript
 import log from 'electron-log/renderer';
 log.info('Log from the renderer process');
 ```
-
-This function uses sessions to inject a preload script to make the logger
-available in a renderer process.
 
 Without a bundler, you can use a global variable `__electronLog`. It contains
 only log functions like `info`, `warn` and so on.
@@ -57,6 +54,7 @@ process. [Read more](docs/initialize.md).
 
 To use the logger inside a preload script, use the 
 `electron-log/renderer` import. 
+
 There's also the `electron-log/preload` entrypoint, but it's used only as a 
 bridge between the main and renderer processes and doesn't export a logger. In
 most cases, you don't need this preload entrypoint.
