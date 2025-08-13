@@ -31,7 +31,7 @@ Default: `'main.log'`
 
 The actual file name without path.
 
-#### `format` {string | (message: LogMessage) => void}
+#### `format` {string | (params: FormatParams) => any[]}
 
 Default: `'[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}'`
 
