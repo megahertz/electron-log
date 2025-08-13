@@ -21,7 +21,7 @@ Default:
 
 A map of log levels to colors.
 
-#### `format` {string | (message: LogMessage) => void}
+#### `format` {string | (params: FormatParams) => any[]}
 
 Default: `'[{y}-{m}-{d} {h}:{i}:{s}.{ms}] [{level}] {text}'`
 
