@@ -5,6 +5,9 @@ const os = require('os');
 const path = require('path');
 const preloadInitializeFn = require('../renderer/electron-log-preload');
 
+let preloadInitialized = false;
+let spyConsoleInitialized = false;
+
 module.exports = {
   initialize({
     externalApi,
@@ -21,6 +24,7 @@ module.exports = {
             externalApi,
             getSessions,
             includeFutureSession,
+            logger,
             preloadOption: preload,
           });
         }
@@ -39,11 +43,19 @@ function initializePreload({
   externalApi,
   getSessions,
   includeFutureSession,
+  logger,
   preloadOption,
 }) {
   let preloadPath = typeof preloadOption === 'string'
     ? preloadOption
     : undefined;
+
+  if (preloadInitialized) {
+    logger.warn(new Error('log.initialize({ preload }) already called').stack);
+    return;
+  }
+
+  preloadInitialized = true;
 
   try {
     preloadPath = path.resolve(
@@ -77,6 +89,15 @@ function initializePreload({
 }
 
 function initializeSpyRendererConsole({ externalApi, logger }) {
+  if (spyConsoleInitialized) {
+    logger.warn(
+      new Error('log.initialize({ spyRendererConsole }) already called').stack,
+    );
+    return;
+  }
+
+  spyConsoleInitialized = true;
+
   const levels = ['debug', 'info', 'warn', 'error'];
   externalApi.onEveryWebContentsEvent(
     'console-message',
