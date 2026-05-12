@@ -4,6 +4,32 @@
   "description": "Just a simple logging module for your Electron application",
   "main": "src/index.js",
   "browser": "src/renderer/index.js",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./main": {
+      "types": "./main.d.ts",
+      "import": "./main.js",
+      "require": "./main.js"
+    },
+    "./renderer": {
+      "types": "./renderer.d.ts",
+      "import": "./renderer.js",
+      "require": "./renderer.js"
+    },
+    "./preload": {
+      "import": "./preload.js",
+      "require": "./preload.js"
+    },
+    "./node": {
+      "types": "./node.d.ts",
+      "import": "./node.js",
+      "require": "./node.js"
+    },
+    "./package.json": "./package.json"
+  },
   "engines": {
     "node": ">= 14"
   },
