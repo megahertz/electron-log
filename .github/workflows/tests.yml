@@ -78,9 +78,9 @@ jobs:
             mkdir -p node_modules/electron/dist
             unzip -q -o "$ZIPPATH" -d node_modules/electron/dist
             case "$RUNNER_OS" in
-              Linux)   echo electron                                > node_modules/electron/path.txt ;;
-              macOS)   echo "Electron.app/Contents/MacOS/Electron" > node_modules/electron/path.txt ;;
-              Windows) echo electron.exe                            > node_modules/electron/path.txt ;;
+              Linux)   printf electron                                > node_modules/electron/path.txt ;;
+              macOS)   printf "Electron.app/Contents/MacOS/Electron"  > node_modules/electron/path.txt ;;
+              Windows) printf electron.exe                            > node_modules/electron/path.txt ;;
             esac
           fi
           test -f node_modules/electron/path.txt || { echo "ERROR: path.txt missing"; ls -la node_modules/electron/; exit 1; }
