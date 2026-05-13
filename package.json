@@ -49,6 +49,7 @@
   "exports": {
     ".": {
       "types": "./src/index.d.ts",
+      "browser": "./src/renderer/index.js",
       "default": "./src/index.js"
     },
     "./*": "./*",
