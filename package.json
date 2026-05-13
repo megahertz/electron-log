@@ -46,6 +46,27 @@
   "license": "MIT",
   "bugs": "https://github.com/megahertz/electron-log/issues",
   "homepage": "https://github.com/megahertz/electron-log#readme",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "browser": "./src/renderer/index.js",
+      "default": "./src/index.js"
+    },
+    "./*": "./*",
+    "./main": {
+      "types": "./main.d.ts",
+      "default": "./main.js"
+    },
+    "./node": {
+      "types": "./node.d.ts",
+      "default": "./node.js"
+    },
+    "./preload": "./preload.js",
+    "./renderer": {
+      "types": "./renderer.d.ts",
+      "default": "./renderer.js"
+    }
+  },
   "devDependencies": {
     "@types/node": "^20.10.6",
     "electron": "*",
