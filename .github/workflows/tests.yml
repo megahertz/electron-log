@@ -1,18 +1,16 @@
 name: Tests
 
-on:
-  - pull_request
-  - push
+on: push
 
 env:
   CI: 1
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   main:
-    defaults:
-      run:
-        shell: bash
-
     strategy:
       matrix:
         include:
@@ -24,6 +22,7 @@ jobs:
           - os: ubuntu-latest
             node_version: 14
             electron_version: 41
+            nw_version: 0.85.0
             experimental: true
 
           # Different electron version
@@ -64,8 +63,12 @@ jobs:
           if [ "${{ matrix.electron_version }}" != 'latest' ]; then
             npm install -D electron@${{ matrix.electron_version }}
           fi
+          if [ -n "${{ matrix.nw_version }}" ]; then
+            npm install -D nw@${{ matrix.nw_version }}
+          fi
           npm install
           node node_modules/electron/install.js
+          test -f node_modules/electron/path.txt || { echo "ERROR: node_modules/electron/path.txt missing after install.js"; ls -la node_modules/electron/; exit 1; }
 
       - run: |
           if [ "${RUNNER_OS}" = 'Linux' ]; then
