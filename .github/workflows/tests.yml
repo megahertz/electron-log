@@ -22,12 +22,8 @@ jobs:
             electron_version: latest
             experimental: false
           - os: ubuntu-latest
-            node_version: 16
-            electron_version: latest
-            experimental: false
-          - os: ubuntu-latest
             node_version: 14
-            electron_version: latest
+            electron_version: 41
             experimental: true
 
           # Different electron version
@@ -64,10 +60,12 @@ jobs:
       - run: npm config set script-shell 'bash'
         if: runner.os == 'Windows'
 
-      - run: npm install
-
-      - run: npm install -D electron@${{ matrix.electron_version }}
-        if: matrix.electron_version != 'latest'
+      - run: |
+          if [ "${{ matrix.electron_version }}" = 'latest' ]; then
+            npm install
+          else
+            npm install -D electron@${{ matrix.electron_version }}
+          fi
 
       - run: |
           if [ "${RUNNER_OS}" = 'Linux' ]; then
