@@ -67,7 +67,23 @@ jobs:
             npm install -D nw@${{ matrix.nw_version }}
           fi
           npm install
-          npx install-electron || echo "Skip running install-electron"
+          if [ ! -f node_modules/electron/path.txt ]; then
+            cd node_modules/electron && node -e "(async () => {
+              const fs = require('fs');
+              const path = require('path');
+              const { version } = require('./package.json');
+              const platformPath = process.platform === 'darwin' ? 'Electron.app/Contents/MacOS/Electron' : process.platform === 'win32' ? 'electron.exe' : 'electron';
+              const { downloadArtifact } = await import('@electron/get');
+              const extract = require('extract-zip');
+              console.log('Downloading electron@' + version + ' for ' + process.platform + '-' + process.arch);
+              const zipPath = await downloadArtifact({ version, artifactName: 'electron', platform: process.platform, arch: process.arch });
+              console.log('Downloaded to ' + zipPath + ', extracting...');
+              await extract(zipPath, { dir: path.join(process.cwd(), 'dist') });
+              await fs.promises.writeFile('path.txt', platformPath);
+              console.log('Wrote path.txt = ' + platformPath);
+            })().catch(e => { console.error(e); process.exit(1); });" && cd -
+          fi
+          test -f node_modules/electron/path.txt || { echo "ERROR: path.txt missing"; ls -la node_modules/electron/; exit 1; }
 
       - run: |
           if [ "${RUNNER_OS}" = 'Linux' ]; then
