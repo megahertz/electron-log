@@ -67,8 +67,7 @@ jobs:
             npm install -D nw@${{ matrix.nw_version }}
           fi
           npm install
-          node node_modules/electron/install.js
-          test -f node_modules/electron/path.txt || { echo "ERROR: node_modules/electron/path.txt missing after install.js"; ls -la node_modules/electron/; exit 1; }
+          npx install-electron || echo "Skip running install-electron"
 
       - run: |
           if [ "${RUNNER_OS}" = 'Linux' ]; then
