@@ -28,10 +28,6 @@ jobs:
           # Different electron version
           - os: ubuntu-latest
             node_version: latest
-            electron_version: 16
-            experimental: true
-          - os: ubuntu-latest
-            node_version: latest
             electron_version: 13
             experimental: true
 
