@@ -22,7 +22,7 @@ jobs:
           - os: ubuntu-latest
             node_version: 14
             electron_version: 41
-            nw_version: 0.85.0
+            nw_version: 0.81.0
             experimental: true
 
           # Different electron version
