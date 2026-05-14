@@ -37,7 +37,7 @@ jobs:
             electron_version: latest
             experimental: true
           - os: windows-latest
-            node_version: builtin # For an unknown reason, setup-node freezes
+            node_version: latest
             electron_version: latest
             experimental: true
 
@@ -46,11 +46,10 @@ jobs:
     continue-on-error: ${{ matrix.experimental }}
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node_version }}
-        if: matrix.node_version != 'builtin'
 
       - run: npm config set script-shell 'bash'
         if: runner.os == 'Windows'
