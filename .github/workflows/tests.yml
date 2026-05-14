@@ -1,18 +1,16 @@
 name: Tests
 
-on:
-  - pull_request
-  - push
+on: push
 
 env:
   CI: 1
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   main:
-    defaults:
-      run:
-        shell: bash
-
     strategy:
       matrix:
         include:
@@ -22,19 +20,12 @@ jobs:
             electron_version: latest
             experimental: false
           - os: ubuntu-latest
-            node_version: 16
-            electron_version: latest
-            experimental: false
-          - os: ubuntu-latest
             node_version: 14
-            electron_version: latest
+            electron_version: 41
+            nw_version: 0.81.0
             experimental: true
 
           # Different electron version
-          - os: ubuntu-latest
-            node_version: latest
-            electron_version: 16
-            experimental: true
           - os: ubuntu-latest
             node_version: latest
             electron_version: 13
@@ -46,7 +37,7 @@ jobs:
             electron_version: latest
             experimental: true
           - os: windows-latest
-            node_version: builtin # For an unknown reason, setup-node freezes
+            node_version: latest
             electron_version: latest
             experimental: true
 
@@ -55,19 +46,23 @@ jobs:
     continue-on-error: ${{ matrix.experimental }}
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node_version }}
-        if: matrix.node_version != 'builtin'
 
-      - run: npm config set script-shell 'bash'
-        if: runner.os == 'Windows'
-
-      - run: npm install
-
-      - run: npm install -D electron@${{ matrix.electron_version }}
-        if: matrix.electron_version != 'latest'
+      - run: |
+          if [ "${{ matrix.electron_version }}" != 'latest' ]; then
+            npm install -D electron@${{ matrix.electron_version }}
+          fi
+          if [ -n "${{ matrix.nw_version }}" ]; then
+            npm install -D nw@${{ matrix.nw_version }}
+          fi
+          npm install
+          # Workaround for broken electron@42 installer on modern Node.
+          # Remove this call when upgrading to electron 43+ and the
+          # upstream installer works again.
+          .github/scripts/install-electron.sh
 
       - run: |
           if [ "${RUNNER_OS}" = 'Linux' ]; then

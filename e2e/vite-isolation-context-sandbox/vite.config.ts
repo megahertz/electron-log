@@ -31,6 +31,7 @@ export default defineConfig({
         vite: mergeConfig(commonConfig, {
           resolve: {
             browserField: false,
+            conditions: ['node', 'module', 'import', 'require', 'default'],
           }
         }),
       },
