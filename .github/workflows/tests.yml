@@ -51,9 +51,6 @@ jobs:
         with:
           node-version: ${{ matrix.node_version }}
 
-      - run: npm config set script-shell 'bash'
-        if: runner.os == 'Windows'
-
       - run: |
           if [ "${{ matrix.electron_version }}" != 'latest' ]; then
             npm install -D electron@${{ matrix.electron_version }}
