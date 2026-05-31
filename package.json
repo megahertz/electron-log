@@ -2,7 +2,7 @@
   "name": "electron-log",
   "version": "5.4.4",
   "description": "Just a simple logging module for your Electron application",
-  "main": "src/index.js",
+  "main": "main.js",
   "browser": "src/renderer/index.js",
   "engines": {
     "node": ">= 14"
