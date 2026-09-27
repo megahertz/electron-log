@@ -288,6 +288,10 @@ try {
 }
 ```
 
+## Troubleshooting
+
+See [common problems and solutions](docs/troubleshooting.md).
+
 ## Related
 
  - [electron-cfg](https://github.com/megahertz/electron-cfg) -
