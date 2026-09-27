@@ -4,7 +4,7 @@ The file transport writes log messages to a file
 
 ## Options
 
-#### `archiveLogFn` {(oldLogFile: LogFile) => void}
+#### `archiveLogFn` {(oldLogFile: [LogFile](#logfile)) => void}
 
 Default:
 
@@ -111,7 +111,7 @@ Options for
 
 ## Methods
 
-#### `getFile(message?: Partial<LogMessage>) => LogFile`
+#### `getFile(message?: Partial<LogMessage>)` => [LogFile](#logfile)
 
 Return the current file instance used for the transport.
 
@@ -128,5 +128,11 @@ it won't return all the files.
 #### `setAppName(appName: string)`
 
 Overrides appName used for resolving the log path
+
+## LogFile
+
+- `path` {string} Full path to the log file, also returned by `toString()`
+- `size` {number} Current file size in bytes
+- `clear()` Removes the file content
 
 <!-- spech-dictionary whether -->
