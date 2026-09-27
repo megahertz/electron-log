@@ -59,6 +59,11 @@ There's also the `electron-log/preload` entrypoint, but it's used only as a
 bridge between the main and renderer processes and doesn't export a logger. In
 most cases, you don't need this preload entrypoint.
 
+### Utility process
+
+Logs from a `utilityProcess` aren't sent to the main process automatically.
+[Read how to forward them](docs/utility.md).
+
 ### Node.js and NW.js
 
 ```typescript
