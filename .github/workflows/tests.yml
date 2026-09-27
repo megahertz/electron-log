@@ -21,7 +21,7 @@ jobs:
             experimental: false
           - os: ubuntu-latest
             node_version: 14
-            electron_version: 41
+            electron_version: 41.7.1
             nw_version: 0.81.0
             experimental: true
 
